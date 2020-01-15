@@ -4,7 +4,9 @@ import { Button } from "antd";
 import Signin from "./pages/sign/SignIn";
 import SignUp from "./pages/sign/SignUp";
 import MainPage from "./pages/Main";
-import "./App.css";
+
+import "antd/dist/antd.css";
+
 
 class App extends React.Component {
   constructor() {
@@ -37,5 +39,4 @@ class App extends React.Component {
     );
   }
 }
-
 export default App;
