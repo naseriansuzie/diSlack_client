@@ -7,33 +7,48 @@ import MainPage from "./pages/Main";
 
 import "antd/dist/antd.css";
 
-
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
       isLogin: false,
-      workSpace: null,
-      userInfo: {},
+      workSpace: [1],
+      userInfo: { user_id: 1 },
     };
   }
 
+  // 로그인 시 isLogin 업데이트 해주는 함수 필요
+
+  // workSpace 리스트 업데이트 해주는 함수 필요
+
   render() {
-    const { isLogin, workSpace } = this.state;
-    return isLogin && workSpace ? (
-      <div> Main.js </div>
+    const { isLogin, workSpace, userInfo } = this.state;
+    return isLogin && workSpace.length ? (
+      <div>
+        <Redirect to="main" />
+      </div> //일단 이렇게 하고 워크스페이스 선택 ui 나오면 거기로 리다이렉트
     ) : (
       <div className="App">
         최상위 컴포넌트
         <Link to="/signin">로그인</Link>
         <Link to="/signup">회원가입</Link>
         <Link to="/workspace">워크스페이스</Link>
+        <Link to="/main">main page</Link>
         <Switch>
           <Route exact path="/" />
           <Route path="/signin" render={() => <Signin />} />
           <Route path="/signup" render={() => <SignUp />} />
           <Route path="/workspace" />
-          <Route path="/main" render={() => <MainPage />} />
+          <Route
+            path="/main"
+            render={() => (
+              <MainPage
+                isLogin={isLogin}
+                userInfo={userInfo}
+                workSpace={workSpace}
+              />
+            )}
+          />
         </Switch>
       </div>
     );
