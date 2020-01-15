@@ -27,11 +27,15 @@ export default function MessageEntries(props) {
           </span>
           <span>{time}</span>
           <div>{msg}</div>
-          <div>
-            <a onClick={handleClickReply.bind(null, id)}>
-              {replies.length} replies
-            </a>
-          </div>
+          {replies.length ? (
+            <div>
+              <a onClick={handleClickReply.bind(null, id)}>
+                {replies.length} replies
+              </a>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </Col>
       </Row>
     </div>
