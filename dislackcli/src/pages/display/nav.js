@@ -3,8 +3,9 @@ import { Row, Col, Icon, Input } from "antd";
 
 const { Search } = Input;
 
-const Nav = ({ username }) => {
-  console.log("1");
+const Nav = props => {
+  console.log("NAV_PROPS : ", props);
+
   return (
     <Row>
       <Col span={8}>

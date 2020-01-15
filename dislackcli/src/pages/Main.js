@@ -2,18 +2,19 @@ import React from "react";
 // import { Redirect, Route, Switch, Link } from "react-router-dom";
 import { Layout, Row, Col } from "antd";
 import Side from "./sider/Sider";
-import Nav from "./display/head";
-import Foot from "./display/footer";
+import Nav from "./display/nav";
+import InputMsg from "./display/inputMsg";
 import "antd/dist/antd.css";
 
 const { Header, Footer, Sider, Content } = Layout;
 
 class MainPage extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.log("APP->MAIN : ", props);
     this.state = {
-      channels: [1],
-      currentDisplay: 1,
+      channels: [{ id: 1, name: "general" }],
+      currentDisplay: { id: 1, name: "general" },
       msgs: [
         {
           user_id: 1,
@@ -35,9 +36,13 @@ class MainPage extends React.Component {
     };
   }
 
+  // 채널을 클릭했을 때, currentDisplay가 바뀌고, msgs도 그에 따라 변경되어야 한다.
+
   render() {
-    const { msgs } = this.state.msgs;
+    const { msgs, channels, currentDisplay } = this.state;
+    console.log("MSG입력? ", this.state.msgs);
     return (
+      // sticky사용을 위해 div수정 필요
       <div>
         <Row
           style={{
@@ -69,7 +74,7 @@ class MainPage extends React.Component {
               borderWidth: "0.5px",
             }}
           >
-            <Nav username={msgs} style={{}} />
+            <Nav msgs={msgs} props={this.props} />
           </Col>
         </Row>
         <Row style={{ width: "1600px", height: "744px" }}>
@@ -88,7 +93,7 @@ class MainPage extends React.Component {
                   padding: 0,
                 }}
               >
-                <Foot />
+                <InputMsg />
               </Footer>
             </Layout>
           </Col>

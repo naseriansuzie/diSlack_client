@@ -3,7 +3,7 @@ import { Row, Col, Icon, Input, Form } from "antd";
 
 const { Search } = Input;
 
-class Foot extends React.Component {
+class InputMsg extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,4 +42,4 @@ class Foot extends React.Component {
   }
 }
 
-export default Foot;
+export default InputMsg;

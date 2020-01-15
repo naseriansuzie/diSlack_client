@@ -13,12 +13,12 @@ class App extends React.Component {
     this.state = {
       isLogin: false,
       workSpace: null,
-      userInfo: { user_id: 1 },
+      userInfo: { user_id: 1, name: "hello", email: "hello@gmail.com" },
     };
   }
 
   render() {
-    const { isLogin, workSpace } = this.state;
+    const { isLogin, workSpace, userInfo } = this.state;
     return isLogin && workSpace ? (
       <div> Main.js </div>
     ) : (
@@ -32,7 +32,16 @@ class App extends React.Component {
           <Route path="/signin" render={() => <Signin />} />
           <Route path="/signup" render={() => <SignUp />} />
           <Route path="/workspace" />
-          <Route path="/main" render={() => <MainPage />} />
+          <Route
+            path="/main"
+            render={() => (
+              <MainPage
+                userInfo={userInfo}
+                isLogin={isLogin}
+                workSpace={workSpace}
+              />
+            )}
+          />
         </Switch>
       </div>
     );
