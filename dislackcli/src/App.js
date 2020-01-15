@@ -7,14 +7,13 @@ import MainPage from "./pages/Main";
 
 import "antd/dist/antd.css";
 
-
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
       isLogin: false,
       workSpace: null,
-      userInfo: {},
+      userInfo: { user_id: 1 },
     };
   }
 

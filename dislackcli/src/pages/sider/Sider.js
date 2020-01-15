@@ -41,7 +41,7 @@ class Side extends React.Component {
         <Menu
           theme={theme}
           onClick={this.handleClick}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", backgroundColor: "#38ada9" }}
           defaultOpenKeys={["sub1"]}
           selectedKeys={[current]}
           mode="inline"
