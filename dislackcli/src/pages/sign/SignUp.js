@@ -6,7 +6,6 @@ import { Form, Input, Tooltip, Icon, Checkbox, Button, Row, Col } from "antd";
 class SignUp extends React.Component {
   state = {
     confirmDirty: false,
-    values: null,
     isSignUp: false,
   };
 
@@ -15,10 +14,8 @@ class SignUp extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        this.setState({ values: values });
         //여기에서 서버로 가입 보내고
-        //결과 받으면
-        //this.setState({isSignUp : true}) -> state를 업데이트하고 나서 state 값을 api에 태워서 서버로 보내고 싶음 그리고 서버 결과 받아야 리다이렉트
+        //결과 받아서 정상이면 this.setState({isSignUp : true})
       }
     });
   };
