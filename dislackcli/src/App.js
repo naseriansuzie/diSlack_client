@@ -3,7 +3,10 @@ import { Redirect, Route, Switch, Link } from "react-router-dom";
 import { Button } from "antd";
 import Signin from "./pages/sign/SignIn";
 import SignUp from "./pages/sign/SignUp";
+import MainPage from "./pages/Main";
+
 import "antd/dist/antd.css";
+
 
 class App extends React.Component {
   constructor() {
@@ -30,6 +33,7 @@ class App extends React.Component {
           <Route path="/signin" render={() => <Signin />} />
           <Route path="/signup" render={() => <SignUp />} />
           <Route path="/workspace" />
+          <Route path="/main" render={() => <MainPage />} />
         </Switch>
       </div>
     );
