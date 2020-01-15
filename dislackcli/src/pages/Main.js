@@ -74,7 +74,7 @@ class MainPage extends React.Component {
               borderWidth: "0.5px",
             }}
           >
-            <Nav msgs={msgs} props={this.props} />
+            <Nav msgs={msgs} props={this.props} channels={channels} />
           </Col>
         </Row>
         <Row style={{ width: "1600px", height: "744px" }}>
@@ -93,7 +93,7 @@ class MainPage extends React.Component {
                   padding: 0,
                 }}
               >
-                <InputMsg />
+                <InputMsg props={this.props} />
               </Footer>
             </Layout>
           </Col>
