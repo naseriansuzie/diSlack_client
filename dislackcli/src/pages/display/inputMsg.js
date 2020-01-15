@@ -29,6 +29,7 @@ class InputMsg extends React.Component {
       if (e.target.value !== "") {
         this.handleChange(e);
       }
+      console.log(e.target.value);
     }
   };
 
@@ -43,7 +44,15 @@ class InputMsg extends React.Component {
             className="input_msg"
             placeholder="Message"
             style={{ height: "100%" }}
-            onKeyPress={this.enterClick}
+            onKeyPress={
+              (this.enterClick,
+              e => {
+                console.log("1)", e.target.value);
+                if (e.key === "Enter") {
+                  e.target.value = "";
+                }
+              })
+            }
           />
         </Form>
       </div>
