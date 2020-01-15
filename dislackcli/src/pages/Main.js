@@ -8,8 +8,8 @@ class MainPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      channels: [1],
-      currentDisplay: 1,
+      channels: [{ id: 1, name: "general" }],
+      currentDisplay: { id: 1, name: "general" },
       msgs: [
         {
           id: 1,
@@ -68,8 +68,8 @@ class MainPage extends React.Component {
 
   handleClickProfile(userId) {
     console.log(userId);
-    // replyThread style을 none에서 취소하고,
-    // 클릭한 userId 정보를 replyThread에 props로 내려줘야 함
+    // Profile style을 none에서 취소하고,
+    // 클릭한 userId 정보를 Profile에 props로 내려줘야 함
   }
 
   render() {

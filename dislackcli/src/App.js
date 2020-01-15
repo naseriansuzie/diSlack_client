@@ -12,8 +12,8 @@ class App extends React.Component {
     super();
     this.state = {
       isLogin: false,
-      workSpace: [1],
-      userInfo: { user_id: 1 },
+      workSpace: [{ id: 1, name: "crong" }],
+      userInfo: { user_id: 1, name: "hello", email: "hell@gmail.com" },
     };
   }
 
