@@ -4,8 +4,10 @@ import { Row, Col } from "antd";
 import Signin from "./pages/sign/SignIn";
 import SignUp from "./pages/sign/SignUp";
 import MainPage from "./pages/Main";
+import axios from "axios";
 import MyWorkSpace from "./pages/workspace/MyWorkSpace";
 import AllWorkSpace from "./pages/workspace/AllWorkSpace";
+import CreateWorkSpace from "./pages/workspace/createWorkSpace";
 
 import "antd/dist/antd.css";
 import axios from "axios";
@@ -13,7 +15,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLogin: true,
+      isLogin: false,
       userInfo: { user_id: 1, name: "hello", email: "hello@gmail.com" },
       currentWorkspace: null,
       workSpaceList: [],
@@ -65,10 +67,29 @@ class App extends React.Component {
     ) : (
       <div className="App">
         최상위 컴포넌트
-        <Link to="/signin">로그인</Link>
-        <Link to="/signup">회원가입</Link>
+        {this.state.isLogin ? null : <Link to="/signin">로그인</Link>}
+        {this.state.isLogin ? null : <Link to="/signup">회원가입</Link>}
         <Link to="/workspace">워크스페이스</Link>
         <Link to="/main">main page</Link>
+        {this.state.isLogin ? (
+          <button
+            onClick={() => {
+              axios
+                .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
+                  withCredentials: true,
+                })
+                .then(result => {
+                  console.log(result);
+                  this.setState({ isLogin: false });
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            }}
+          >
+            로그아웃
+          </button>
+        ) : null}
         <Switch>
           <Route
             exact
@@ -82,9 +103,14 @@ class App extends React.Component {
           />
           <Route
             path="/signin"
-            render={() => <Signin userLogin={this.userLogin} />}
+            render={() => (
+              <Signin isLogin={this.state.isLogin} userLogin={this.userLogin} />
+            )}
           />
-          <Route path="/signup" render={() => <SignUp />} />
+          <Route
+            path="/signup"
+            render={() => <SignUp isLogin={this.state.isLogin} />}
+          />
           <Route
             path="/workspace"
             render={() => (
@@ -106,7 +132,13 @@ class App extends React.Component {
                     />
                   </Col>
                 </Row>
-                <Row>create workspace</Row>
+                <Row style={{ marginBottom: "20%" }}>
+                  <Col span={8} />
+                  <Col span={8}>
+                    <CreateWorkSpace />
+                  </Col>
+                  <Col span={8} />
+                </Row>
               </div>
             )}
           />

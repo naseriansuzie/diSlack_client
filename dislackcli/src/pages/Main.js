@@ -126,136 +126,138 @@ class MainPage extends React.Component {
     });
     return (
       // sticky사용을 위해 div수정 필요
-      <div>
-        <Row
-          style={{
-            width: "1600px",
-            height: "70px",
-            position: "sticky",
-            top: 0,
-            zIndex: 3,
-          }}
-        >
-          <Col
-            span={3}
+      this.props.isLogin ? (
+        <div>
+          <Row
             style={{
-              height: "100%",
-              backgroundColor: "#38ada9",
-              // borderStyle: "solid",
-              // borderWidth: "0.5px",
+              width: "1600px",
+              height: "70px",
+              position: "sticky",
+              top: 0,
+              zIndex: 3,
             }}
           >
-            Side_Header
-          </Col>
-          <Col
-            span={21}
-            style={{
-              height: "100%",
-              backgroundColor: "#ecf0f1",
-              borderColor: "#bdc3c7",
-              borderStyle: "solid",
-              borderWidth: "0.5px",
-            }}
-          >
-            <Nav msgs={msgs} props={this.props} channels={channels} />
-          </Col>
-        </Row>
-        <Row style={{ width: "1600px", height: "744px" }}>
-          <Col span={3} style={{ height: "100%" }}>
-            <Side channels={channels} dms={dms} />
-          </Col>
-          <Col span={clickedMsg.length ? 12 : 21} style={{ height: "100%" }}>
-            <Layout style={{ height: "100%" }}>
-              <Content>
-                {msgs ? (
-                  <MessageList
-                    msgs={msgs}
-                    handleClickReply={handleClickReply}
-                    handleClickProfile={handleClickProfile}
-                  />
-                ) : (
-                  <div>아직 메시지가 없습니다.</div>
-                )}
-              </Content>
-              <Footer
-                style={{
-                  backgroundColor: "#ecf0f1",
-                  position: "sticky",
-                  bottom: 0,
-                  width: "100%",
-                  padding: 0,
-                }}
-              >
-                <InputMsg props={this.props} />
-              </Footer>
-            </Layout>
-          </Col>
-          {clickedMsg.length ? (
             <Col
-              span={9}
+              span={3}
               style={{
-                backgroundColor: "#eeeeee",
                 height: "100%",
-                overflow: "scroll",
+                backgroundColor: "#38ada9",
+                // borderStyle: "solid",
+                // borderWidth: "0.5px",
               }}
             >
-              <Row style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
-                <Col span={12}>
-                  <Row
-                    style={{
-                      height: "70px",
-                    }}
-                  >
-                    <div style={{ fontSize: "1.5em", fontWeight: "bold" }}>
-                      Thread
-                    </div>
-                    <div>#general</div>
-                  </Row>
-                </Col>
-                <Col
+              Side_Header
+            </Col>
+            <Col
+              span={21}
+              style={{
+                height: "100%",
+                backgroundColor: "#ecf0f1",
+                borderColor: "#bdc3c7",
+                borderStyle: "solid",
+                borderWidth: "0.5px",
+              }}
+            >
+              <Nav msgs={msgs} props={this.props} channels={channels} />
+            </Col>
+          </Row>
+          <Row style={{ width: "1600px", height: "744px" }}>
+            <Col span={3} style={{ height: "100%" }}>
+              <Side channels={channels} dms={dms} />
+            </Col>
+            <Col span={clickedMsg.length ? 12 : 21} style={{ height: "100%" }}>
+              <Layout style={{ height: "100%" }}>
+                <Content>
+                  {msgs ? (
+                    <MessageList
+                      msgs={msgs}
+                      handleClickReply={handleClickReply}
+                      handleClickProfile={handleClickProfile}
+                    />
+                  ) : (
+                    <div>아직 메시지가 없습니다.</div>
+                  )}
+                </Content>
+                <Footer
                   style={{
-                    padding: "15px 15px 0 0",
-                    float: "right",
-                    fontSize: "large",
+                    backgroundColor: "#ecf0f1",
+                    position: "sticky",
+                    bottom: 0,
+                    width: "100%",
+                    padding: 0,
                   }}
                 >
-                  <a onClick={handleClickReplyClose}>X</a>
-                </Col>
-              </Row>
-              <Row style={{ padding: "10px" }}>
-                {clickedMsg.length ? (
-                  <MessageList
-                    msgs={noReplyClickedMsg}
-                    handleClickReply={handleClickReply}
-                    handleClickProfile={handleClickProfile}
-                  />
-                ) : (
-                  ""
-                )}
-              </Row>
-              <Row style={{ padding: "10px" }}>
-                Reply : {clickedMsg[0].replies.length}
-              </Row>
-              <Row style={{ padding: "10px" }}>
-                {clickedMsg.length ? (
-                  <MessageList
-                    msgs={clickedMsg[0].replies}
-                    handleClickReply={handleClickReply}
-                    handleClickProfile={handleClickProfile}
-                  />
-                ) : (
-                  ""
-                )}
-              </Row>
-              <Row>
-                <InputMsg props={this.props} />
-              </Row>
+                  <InputMsg props={this.props} />
+                </Footer>
+              </Layout>
             </Col>
-          ) : (
-            <div />
-          )}
-        </Row>
-      </div>
+            {clickedMsg.length ? (
+              <Col
+                span={9}
+                style={{
+                  backgroundColor: "#eeeeee",
+                  height: "100%",
+                  overflow: "scroll",
+                }}
+              >
+                <Row style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
+                  <Col span={12}>
+                    <Row
+                      style={{
+                        height: "70px",
+                      }}
+                    >
+                      <div style={{ fontSize: "1.5em", fontWeight: "bold" }}>
+                        Thread
+                      </div>
+                      <div>#general</div>
+                    </Row>
+                  </Col>
+                  <Col
+                    style={{
+                      padding: "15px 15px 0 0",
+                      float: "right",
+                      fontSize: "large",
+                    }}
+                  >
+                    <a onClick={handleClickReplyClose}>X</a>
+                  </Col>
+                </Row>
+                <Row style={{ padding: "10px" }}>
+                  {clickedMsg.length ? (
+                    <MessageList
+                      msgs={noReplyClickedMsg}
+                      handleClickReply={handleClickReply}
+                      handleClickProfile={handleClickProfile}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </Row>
+                <Row style={{ padding: "10px" }}>
+                  Reply : {clickedMsg[0].replies.length}
+                </Row>
+                <Row style={{ padding: "10px" }}>
+                  {clickedMsg.length ? (
+                    <MessageList
+                      msgs={clickedMsg[0].replies}
+                      handleClickReply={handleClickReply}
+                      handleClickProfile={handleClickProfile}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </Row>
+                <Row>
+                  <InputMsg props={this.props} />
+                </Row>
+              </Col>
+            ) : (
+              <div />
+            )}
+          </Row>
+        </div>
+      ) : null
     );
   }
 }

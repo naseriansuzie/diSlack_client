@@ -41,7 +41,7 @@ export default function MyWorkSpace(props) {
               )}
             />
           </Col>
-          <Col span={6}></Col>
+          <Col span={6} />
         </Row>
       </div>
     </Col>
