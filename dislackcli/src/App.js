@@ -10,7 +10,6 @@ import AllWorkSpace from "./pages/workspace/AllWorkSpace";
 import CreateWorkSpace from "./pages/workspace/createWorkSpace";
 
 import "antd/dist/antd.css";
-import axios from "axios";
 class App extends React.Component {
   constructor() {
     super();
@@ -37,7 +36,7 @@ class App extends React.Component {
       console.log("from server res =", res);
       this.setState({
         isLogin: true,
-        workSpaceList: res,
+        workSpaceList: res.data,
       });
     } catch (err) {
       console.log(err);

@@ -10,19 +10,18 @@ class CreateWorkSpace extends React.Component {
   createWS = e => {
     console.log(e.target.value);
     this.setState({ name: e.target.value });
-    // const workspaceName = { name: this.state.name };
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_DEV_URL}/workspace/create`,
-    //     workspaceName,
-    //     {
-    //       withCredentials: true, // 쿠키전달
-    //     },
-    //   )
-    //   .then(res => {
-    //     console.log(this.state);
-    //   });
-    console.log(this.state);
+    const workspaceName = { name: this.state.name };
+    axios
+      .post(
+        `${process.env.REACT_APP_DEV_URL}/workspace/create`,
+        workspaceName,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        console.log(this.state);
+      });
   };
 
   clearInput = input => {
@@ -49,7 +48,11 @@ class CreateWorkSpace extends React.Component {
             this.clickEnter(e);
           }}
         />
-        <Button type="primary" style={{ marginTop: "5%", width: "100%" }}>
+        <Button
+          onClick={this.createWS}
+          type="primary"
+          style={{ marginTop: "5%", width: "100%" }}
+        >
           Create
         </Button>
       </Card>

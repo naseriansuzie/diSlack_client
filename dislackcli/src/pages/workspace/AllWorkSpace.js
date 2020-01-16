@@ -13,11 +13,11 @@ class AllWorkSpace extends React.Component {
   }
 
   async handleJoinWS(e) {
-    const workSpaceCode = e.target.code;
+    const workSpaceCode = e.target.id;
     try {
       const res = axios.post(
         `${process.env.REACT_APP_DEV_URL}/workspace/join`,
-        workSpaceCode,
+        { code: workSpaceCode },
         {
           withCredentials: true,
         },
@@ -38,7 +38,7 @@ class AllWorkSpace extends React.Component {
       .then(res => {
         console.log("from server res =", res);
         this.setState({
-          list: res,
+          list: res.data,
         });
       })
       .catch(err => console.log(err));
