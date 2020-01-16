@@ -22,7 +22,7 @@ class App extends React.Component {
     console.log(this.state);
     // 서버에 요청을 해서 userinfo에 데이터전달
     // axios
-    //   .get("http://localhost:4000/user", {
+    //   .post("http://localhost:4000/user",{
     //     withCredentials: true, // 쿠키가 전달이 된다.
     //   })
     //   .then(res => {
