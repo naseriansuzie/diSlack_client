@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 import { Form, Icon, Input, Button, Checkbox, Card } from "antd";
 import "antd/dist/antd.css";
 
@@ -12,19 +13,7 @@ class Signin extends React.Component {
       password: "",
     };
     this.handleInputValue = this.handleInputValue.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  handleSubmit = e => {
-    e.preventDefault();
-    // console.log(e.target.value);
-    const userInfo = {
-      email: this.state.email,
-      password: this.state.password,
-    };
-    console.log(userInfo);
-    // 포스트 요청하고 난 뒤 리다이렉트를 워크스페이스목록으로 이동한다
-  };
 
   handleInputValue = key => e => {
     this.setState({ [key]: e.target.value });
@@ -32,6 +21,7 @@ class Signin extends React.Component {
   };
 
   render() {
+    console.log(this.props.userLogin);
     return (
       <Card
         style={{
@@ -42,7 +32,31 @@ class Signin extends React.Component {
           backgroundColor: "#bdc3c7",
         }}
       >
-        <Form className="login_form" onSubmit={this.handleSubmit} />
+        <Form
+          className="login_form"
+          onSubmit={e => {
+            e.preventDefault();
+            const userInfo = {
+              email: this.state.email,
+              password: this.state.password,
+            };
+
+            axios
+              .post(`${process.env.REACT_APP_DEV_URL}/signin`, userInfo, {
+                withCredentials: true, // 쿠키전달
+              })
+              .then(res => {
+                if (res.status === 200) {
+                  this.props.userLogin();
+                } else {
+                  alert("이메일이나 패스워드 확인하세요");
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }}
+        />
         <Form.Item>
           <Input
             className="login_input"
