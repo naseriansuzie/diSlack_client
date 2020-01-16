@@ -1,5 +1,6 @@
 import React from "react";
 import { Layout, Row, Col } from "antd";
+
 import Nav from "./display/nav";
 import InputMsg from "./display/inputMsg";
 import "antd/dist/antd.css";
@@ -38,9 +39,11 @@ class MainPage extends React.Component {
           clicked: false,
         },
       ],
+      clickedMsg: null,
     };
     this.handleClickReply = this.handleClickReply.bind(this);
     this.handleClickProfile = this.handleClickProfile.bind(this);
+    this.handleClickReplyClose = this.handleClickReplyClose.bind(this);
   }
 
   handleClickReply(msgId) {
@@ -59,12 +62,31 @@ class MainPage extends React.Component {
     // Profile style을 none에서 취소하고,
     // 클릭한 userId 정보를 Profile에 props로 내려줘야 함
   }
+  handleClickReplyClose() {
+    let renewMsgs = this.state.msgs.map(msg => {
+      if (msg.clicked) {
+        msg.clicked = false;
+      }
+      return msg;
+    });
+    this.setState({ clickedMsg: null, msgs: renewMsgs });
+  }
+
+  componentDidMount() {
+    this.setState({
+      clickedMsg: this.state.msgs.filter(msg => msg.clicked),
+    });
+  }
 
   render() {
     console.log(this.state);
-    const { msgs, channels, currentDisplay } = this.state;
+    const { msgs, channels, currentDisplay, clickedMsg } = this.state;
     const { Footer, Content } = Layout;
-    const { handleClickReply, handleClickProfile } = this;
+    const {
+      handleClickReply,
+      handleClickProfile,
+      handleClickReplyClose,
+    } = this;
     return (
       // sticky사용을 위해 div수정 필요
       <div>
@@ -102,10 +124,10 @@ class MainPage extends React.Component {
           </Col>
         </Row>
         <Row style={{ width: "1600px", height: "744px" }}>
-          <Col span={4} style={{ height: "100%" }}>
+          <Col span={3} style={{ height: "100%" }}>
             <Side />
           </Col>
-          <Col span={20} style={{ height: "100%" }}>
+          <Col span={clickedMsg ? 12 : 21} style={{ height: "100%" }}>
             <Layout style={{ height: "100%" }}>
               <Content>
                 {msgs ? (
@@ -131,6 +153,53 @@ class MainPage extends React.Component {
               </Footer>
             </Layout>
           </Col>
+          {clickedMsg ? (
+            <Col
+              span={9}
+              style={{
+                backgroundColor: "#eeeeee",
+                height: "100%",
+                overflow: "scroll",
+              }}
+            >
+              <Row style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
+                <Col span={12}>
+                  <Row
+                    style={{
+                      height: "70px",
+                    }}
+                  >
+                    <div style={{ fontSize: "1.5em", fontWeight: "bold" }}>
+                      Thread
+                    </div>
+                    <div>#general</div>
+                  </Row>
+                </Col>
+                <Col
+                  style={{
+                    padding: "15px 15px 0 0",
+                    float: "right",
+                    fontSize: "large",
+                  }}
+                >
+                  <a onClick={handleClickReplyClose}>X</a>
+                </Col>
+              </Row>
+              <Row>
+                {clickedMsg
+                  ? clickedMsg[0].msg //메시지 엔트리스 컴포넌트 붙이기
+                  : ""}
+              </Row>
+              <div>{}replies</div>
+              <Row>
+                {clickedMsg
+                  ? clickedMsg[0].replies[0].msg //메시지 리스트 컴포넌트 붙이기
+                  : ""}
+              </Row>
+            </Col>
+          ) : (
+            <div></div>
+          )}
         </Row>
       </div>
     );
