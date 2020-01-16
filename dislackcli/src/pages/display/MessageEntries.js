@@ -27,7 +27,7 @@ export default function MessageEntries(props) {
           </span>
           <span>{time}</span>
           <div>{msg}</div>
-          {replies.length ? (
+          {replies && replies.length ? (
             <div>
               <a onClick={handleClickReply.bind(null, id)}>
                 {replies.length} replies

@@ -6,6 +6,7 @@ import InputMsg from "./display/inputMsg";
 import "antd/dist/antd.css";
 import Side from "./sider/Sider";
 import MessageList from "./display/MessageList";
+import MessageEntries from "./display/MessageEntries";
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class MainPage extends React.Component {
       currentDisplay: { id: 1, name: "general" },
       msgs: [
         {
+          id: 1,
           user_id: 1,
           username: "hello",
           msg: "hello world",
@@ -23,6 +25,7 @@ class MainPage extends React.Component {
           clicked: false,
         },
         {
+          id: 2,
           user_id: 2,
           username: "welcome",
           msg: "diSlack is good :)",
@@ -31,15 +34,24 @@ class MainPage extends React.Component {
           clicked: false,
         },
         {
+          id: 3,
           user_id: 3,
           username: "welcome2",
           msg: "diSlack is good :) say hello",
           created_at: `${new Date().getFullYear()}-${new Date().getMonth()}${1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-          replies: [],
+          replies: [
+            {
+              id: 4,
+              user_id: 2,
+              username: "welcome",
+              msg: "this is a reply",
+              created_at: `${new Date().getFullYear()}-${new Date().getMonth()}${1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+            },
+          ],
           clicked: false,
         },
       ],
-      clickedMsg: null,
+      clickedMsg: [],
     };
     this.handleClickReply = this.handleClickReply.bind(this);
     this.handleClickProfile = this.handleClickProfile.bind(this);
@@ -50,7 +62,7 @@ class MainPage extends React.Component {
     this.setState({
       msgs: this.state.msgs.map(msg => {
         if (msg.id === msgId) {
-          msg.clicked = !msg.clicked;
+          msg.clicked = true;
         }
         return msg;
       }),
@@ -69,17 +81,22 @@ class MainPage extends React.Component {
       }
       return msg;
     });
-    this.setState({ clickedMsg: null, msgs: renewMsgs });
+    this.setState({ clickedMsg: [], msgs: renewMsgs });
   }
 
-  componentDidMount() {
-    this.setState({
-      clickedMsg: this.state.msgs.filter(msg => msg.clicked),
-    });
+  componentDidUpdate() {
+    console.log("update");
+    const clicked = this.state.msgs.filter(msg => msg.clicked);
+    if (clicked.length && this.state.clickedMsg[0] !== clicked[0]) {
+      this.setState({
+        clickedMsg: clicked,
+      });
+    }
   }
 
   render() {
     console.log(this.state);
+    console.log("clickedMsg =", this.state.clickedMsg);
     const { msgs, channels, currentDisplay, clickedMsg } = this.state;
     const { Footer, Content } = Layout;
     const {
@@ -87,6 +104,18 @@ class MainPage extends React.Component {
       handleClickProfile,
       handleClickReplyClose,
     } = this;
+    let noReplyClickedMsg = [];
+    for (let msg of clickedMsg) {
+      let obj = {};
+      for (let key in msg) {
+        obj[key] = msg[key];
+      }
+      noReplyClickedMsg.push(obj);
+    }
+    noReplyClickedMsg.map(msg => {
+      delete msg.replies;
+      return msg;
+    });
     return (
       // sticky사용을 위해 div수정 필요
       <div>
@@ -127,7 +156,7 @@ class MainPage extends React.Component {
           <Col span={3} style={{ height: "100%" }}>
             <Side />
           </Col>
-          <Col span={clickedMsg ? 12 : 21} style={{ height: "100%" }}>
+          <Col span={clickedMsg.length ? 12 : 21} style={{ height: "100%" }}>
             <Layout style={{ height: "100%" }}>
               <Content>
                 {msgs ? (
@@ -153,7 +182,7 @@ class MainPage extends React.Component {
               </Footer>
             </Layout>
           </Col>
-          {clickedMsg ? (
+          {clickedMsg.length ? (
             <Col
               span={9}
               style={{
@@ -186,15 +215,26 @@ class MainPage extends React.Component {
                 </Col>
               </Row>
               <Row>
-                {clickedMsg
-                  ? clickedMsg[0].msg //메시지 엔트리스 컴포넌트 붙이기
-                  : ""}
+                {clickedMsg.length ? (
+                  <MessageList
+                    msgs={noReplyClickedMsg}
+                    handleClickReply={handleClickReply}
+                    handleClickProfile={handleClickProfile}
+                  /> //clickedMsg[0].msg 메시지 엔트리스 컴포넌트 붙이기
+                ) : (
+                  ""
+                )}
               </Row>
-              <div>{}replies</div>
               <Row>
-                {clickedMsg
-                  ? clickedMsg[0].replies[0].msg //메시지 리스트 컴포넌트 붙이기
-                  : ""}
+                {clickedMsg.length ? (
+                  <MessageList
+                    msgs={clickedMsg[0].replies}
+                    handleClickReply={handleClickReply}
+                    handleClickProfile={handleClickProfile}
+                  /> //clickedMsg[0].replies[0].msg 메시지 리스트 컴포넌트 붙이기
+                ) : (
+                  ""
+                )}
               </Row>
             </Col>
           ) : (
