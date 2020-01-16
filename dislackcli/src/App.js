@@ -12,9 +12,17 @@ class App extends React.Component {
     super();
     this.state = {
       isLogin: false,
-      workSpace: [{ id: 1, name: "crong" }],
-      userInfo: { user_id: 1, name: "hello", email: "hell@gmail.com" },
+      currentWorkspace: null,
+      workSpaceList: [],
+      userInfo: {},
     };
+    this.userLogin = this.userLogin.bind(this);
+  }
+
+  userLogin() {
+    console.log("로그인되었습니다.");
+    this.setState({ isLogin: true });
+    console.log(this.state);
   }
 
   // 로그인 시 isLogin 업데이트 해주는 함수 필요
@@ -22,11 +30,9 @@ class App extends React.Component {
   // workSpace 리스트 업데이트 해주는 함수 필요
 
   render() {
-    const { isLogin, workSpace, userInfo } = this.state;
-    return isLogin && workSpace.length ? (
-      <div>
-        <Redirect to="main" />
-      </div> //일단 이렇게 하고 워크스페이스 선택 ui 나오면 거기로 리다이렉트
+    const { isLogin, currentWorkspace } = this.state;
+    return isLogin && currentWorkspace ? (
+      <div> Main.js </div>
     ) : (
       <div className="App">
         최상위 컴포넌트
@@ -35,8 +41,20 @@ class App extends React.Component {
         <Link to="/workspace">워크스페이스</Link>
         <Link to="/main">main page</Link>
         <Switch>
-          <Route exact path="/" />
-          <Route path="/signin" render={() => <Signin />} />
+          <Route
+            exact
+            path="/"
+            render={() => {
+              if (isLogin) {
+                return <Redirect to="/workspace" />;
+              }
+              return <Redirect to="/sigin" />;
+            }}
+          />
+          <Route
+            path="/signin"
+            render={() => <Signin userLogin={this.userLogin} />}
+          />
           <Route path="/signup" render={() => <SignUp />} />
           <Route path="/workspace" />
           <Route
