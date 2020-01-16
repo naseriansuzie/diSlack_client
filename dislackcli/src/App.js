@@ -127,6 +127,7 @@ class App extends React.Component {
                     <AllWorkSpace
                       isLogin={isLogin}
                       userInfo={userInfo}
+                      workSpaceList={workSpaceList}
                       updateCurrentWS={updateCurrentWS}
                     />
                   </Col>

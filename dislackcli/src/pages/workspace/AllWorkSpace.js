@@ -15,7 +15,7 @@ class AllWorkSpace extends React.Component {
   async handleJoinWS(e) {
     const workSpaceCode = e.target.id;
     try {
-      const res = axios.post(
+      const res = await axios.post(
         `${process.env.REACT_APP_DEV_URL}/workspace/join`,
         { code: workSpaceCode },
         {
@@ -37,6 +37,9 @@ class AllWorkSpace extends React.Component {
       })
       .then(res => {
         console.log("from server res =", res);
+        const myList = this.props.workSpaceList.map(myWs => myWs.id);
+        res.data = res.data.filter(ws => !myList.includes(ws.id));
+        console.log("filtered ws =", res.data);
         this.setState({
           list: res.data,
         });
