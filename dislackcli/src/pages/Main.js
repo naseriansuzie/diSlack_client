@@ -32,6 +32,14 @@ class MainPage extends React.Component {
           replies: [],
           clicked: false,
         },
+        {
+          user_id: 3,
+          username: "welcome2",
+          msg: "diSlack is good :) say hello",
+          created_at: `${new Date().getFullYear()}-${new Date().getMonth()}${1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+          replies: [],
+          clicked: false,
+        },
       ],
     };
   }
