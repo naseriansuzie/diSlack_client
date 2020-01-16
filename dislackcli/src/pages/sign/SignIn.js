@@ -41,15 +41,20 @@ class Signin extends React.Component {
               password: this.state.password,
             };
 
-            this.props.userLogin();
-
-            // axios
-            //   .post("url", userInfo, {
-            //     withCredentials: true, // 쿠키전달
-            //   })
-            //   .then(res => {
-            //     this.props.userLogin();
-            //   });
+            axios
+              .post(`${process.env.REACT_APP_DEV_URL}/signin`, userInfo, {
+                withCredentials: true, // 쿠키전달
+              })
+              .then(res => {
+                if (res.status === 200) {
+                  this.props.userLogin();
+                } else {
+                  alert("이메일이나 패스워드 확인하세요");
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
           }}
         />
         <Form.Item>
