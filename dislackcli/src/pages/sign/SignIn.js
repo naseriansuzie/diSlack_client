@@ -7,7 +7,6 @@ import "antd/dist/antd.css";
 class Signin extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       email: "",
       password: "",
@@ -15,19 +14,29 @@ class Signin extends React.Component {
     this.handleInputValue = this.handleInputValue.bind(this);
   }
 
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log("Received values of form: ", values);
+      }
+    });
+  };
+
   handleInputValue = key => e => {
     this.setState({ [key]: e.target.value });
-    console.log(this.state);
+    // console.log(this.state);
   };
 
   render() {
-    console.log(this.props.userLogin);
+    // console.log(this.props.form);
+    const { getFieldDecorator } = this.props.form;
     return (
       <Card
         style={{
           borderRadius: 10,
-          marginTop: 80,
-          marginLeft: 600,
+          marginTop: "10%",
+          marginLeft: "20%",
           width: 600,
           backgroundColor: "#bdc3c7",
         }}
@@ -58,29 +67,47 @@ class Signin extends React.Component {
           }}
         >
           <Form.Item>
-            <Input
-              className="login_input"
-              style={{ height: 50 }}
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Username"
-              onChange={this.handleInputValue("email")}
-            />
+            {getFieldDecorator("username", {
+              rules: [
+                { required: true, message: "Please input your username!" },
+              ],
+            })(
+              <Input
+                style={{ height: 50 }}
+                prefix={
+                  <Icon
+                    type="user"
+                    style={{ color: "rgba(0,0,0,.25)" }}
+                    onChange={this.handleInputValue("email")}
+                  />
+                }
+                placeholder="Username"
+              />,
+            )}
           </Form.Item>
           <Form.Item>
-            <Input
-              style={{ height: 50 }}
-              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-              type="password"
-              placeholder="Password"
-              onChange={this.handleInputValue("password")}
-            />
+            {getFieldDecorator("password", {
+              rules: [
+                { required: true, message: "Please input your Password!" },
+              ],
+            })(
+              <Input
+                style={{ height: 50 }}
+                prefix={
+                  <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
+                }
+                type="password"
+                placeholder="Password"
+                onChange={this.handleInputValue("password")}
+              />,
+            )}
           </Form.Item>
           <Form.Item>
             <Button
               style={{
                 float: "right",
                 height: 60,
-                width: 90,
+                width: "100%",
                 fontSize: 20,
               }}
               type="primary"
@@ -89,6 +116,7 @@ class Signin extends React.Component {
             >
               Log in
             </Button>
+            <a href="/signup">register now!</a>
           </Form.Item>
         </Form>
       </Card>
@@ -96,4 +124,4 @@ class Signin extends React.Component {
   }
 }
 
-export default Signin;
+export default Form.create({ name: "normal_login" })(Signin);
