@@ -30,7 +30,7 @@ class App extends React.Component {
   // workSpace 리스트 업데이트 해주는 함수 필요
 
   render() {
-    const { isLogin, currentWorkspace } = this.state;
+    const { isLogin, currentWorkspace, userInfo } = this.state;
     return isLogin && currentWorkspace ? (
       <div> Main.js </div>
     ) : (
@@ -63,7 +63,7 @@ class App extends React.Component {
               <MainPage
                 isLogin={isLogin}
                 userInfo={userInfo}
-                workSpace={workSpace}
+                currentWorkspace={currentWorkspace}
               />
             )}
           />

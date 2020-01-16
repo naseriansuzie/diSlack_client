@@ -56,40 +56,41 @@ class Signin extends React.Component {
                 console.log(err);
               });
           }}
-        />
-        <Form.Item>
-          <Input
-            className="login_input"
-            style={{ height: 50 }}
-            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-            placeholder="Username"
-            onChange={this.handleInputValue("email")}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Input
-            style={{ height: 50 }}
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-            type="password"
-            placeholder="Password"
-            onChange={this.handleInputValue("password")}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            style={{
-              float: "right",
-              height: 60,
-              width: 90,
-              fontSize: 20,
-            }}
-            type="primary"
-            htmlType="submit"
-            className="login-form-button"
-          >
-            Log in
-          </Button>
-        </Form.Item>
+        >
+          <Form.Item>
+            <Input
+              className="login_input"
+              style={{ height: 50 }}
+              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+              placeholder="Username"
+              onChange={this.handleInputValue("email")}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Input
+              style={{ height: 50 }}
+              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+              type="password"
+              placeholder="Password"
+              onChange={this.handleInputValue("password")}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              style={{
+                float: "right",
+                height: 60,
+                width: 90,
+                fontSize: 20,
+              }}
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+            >
+              Log in
+            </Button>
+          </Form.Item>
+        </Form>
       </Card>
     );
   }
