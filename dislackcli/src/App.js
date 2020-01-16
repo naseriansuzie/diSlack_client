@@ -30,7 +30,7 @@ class App extends React.Component {
   // workSpace 리스트 업데이트 해주는 함수 필요
 
   render() {
-    const { isLogin, currentWorkspace, userInfo } = this.state;
+    const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
     return isLogin && currentWorkspace ? (
       <div> Main.js </div>
     ) : (
@@ -48,7 +48,7 @@ class App extends React.Component {
               if (isLogin) {
                 return <Redirect to="/workspace" />;
               }
-              return <Redirect to="/sigin" />;
+              return <Redirect to="/" />;
             }}
           />
           <Route
@@ -63,6 +63,7 @@ class App extends React.Component {
               <MainPage
                 isLogin={isLogin}
                 userInfo={userInfo}
+                workSpaceList={workSpaceList}
                 currentWorkspace={currentWorkspace}
               />
             )}
