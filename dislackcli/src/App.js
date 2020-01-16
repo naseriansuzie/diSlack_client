@@ -6,6 +6,7 @@ import SignUp from "./pages/sign/SignUp";
 import MainPage from "./pages/Main";
 import axios from "axios";
 import MyWorkSpace from "./pages/workspace/MyWorkSpace";
+import CreateWorkSpace from "./pages/workspace/createWorkSpace";
 
 import "antd/dist/antd.css";
 
@@ -31,7 +32,6 @@ class App extends React.Component {
   }
 
   // 로그인 시 isLogin 업데이트 해주는 함수 필요
-
   // workSpace 리스트 업데이트 해주는 함수 필요
 
   render() {
@@ -88,18 +88,27 @@ class App extends React.Component {
           <Route
             path="/workspace"
             render={() => (
-              <Row>
-                <Col span={12}>
-                  <MyWorkSpace
-                    isLogin={isLogin}
-                    userInfo={userInfo}
-                    workSpaceList={workSpaceList}
-                  />
-                </Col>
-                <Col span={12}>
-                  <MyWorkSpace isLogin={isLogin} userInfo={userInfo} />
-                </Col>
-              </Row>
+              <div>
+                <Row>
+                  <Col span={12}>
+                    <MyWorkSpace
+                      isLogin={isLogin}
+                      userInfo={userInfo}
+                      workSpaceList={workSpaceList}
+                    />
+                  </Col>
+                  <Col span={12}>
+                    <MyWorkSpace isLogin={isLogin} userInfo={userInfo} />
+                  </Col>
+                </Row>
+                <Row style={{ marginBottom: "20%" }}>
+                  <Col span={8} />
+                  <Col span={8}>
+                    <CreateWorkSpace />
+                  </Col>
+                  <Col span={8} />
+                </Row>
+              </div>
             )}
           />
           <Route

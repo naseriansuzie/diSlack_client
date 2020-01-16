@@ -8,7 +8,7 @@ export default function MyWorkSpace(props) {
     <Col>
       <div>
         <Row style={{ height: "600px" }}>
-          <Col span={6}></Col>
+          <Col span={6} />
           <Col span={12}>
             <Row
               style={{ padding: "10px", fontWeight: "bold", fontSize: "2em" }}
@@ -35,7 +35,7 @@ export default function MyWorkSpace(props) {
               )}
             />
           </Col>
-          <Col span={6}></Col>
+          <Col span={6} />
         </Row>
       </div>
     </Col>
