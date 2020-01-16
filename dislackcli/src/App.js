@@ -11,7 +11,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLogin: true,
+      isLogin: false,
       currentWorkspace: null,
       workSpaceList: [],
       userInfo: {},
@@ -25,6 +25,10 @@ class App extends React.Component {
     console.log(this.state);
   }
 
+  // 로그인 시 isLogin 업데이트 해주는 함수 필요
+
+  // workSpace 리스트 업데이트 해주는 함수 필요
+
   render() {
     const { isLogin, currentWorkspace } = this.state;
     return isLogin && currentWorkspace ? (
@@ -35,6 +39,7 @@ class App extends React.Component {
         <Link to="/signin">로그인</Link>
         <Link to="/signup">회원가입</Link>
         <Link to="/workspace">워크스페이스</Link>
+        <Link to="/main">main page</Link>
         <Switch>
           <Route
             exact
@@ -52,7 +57,16 @@ class App extends React.Component {
           />
           <Route path="/signup" render={() => <SignUp />} />
           <Route path="/workspace" />
-          <Route path="/main" render={() => <MainPage />} />
+          <Route
+            path="/main"
+            render={() => (
+              <MainPage
+                isLogin={isLogin}
+                userInfo={userInfo}
+                workSpace={workSpace}
+              />
+            )}
+          />
         </Switch>
       </div>
     );
