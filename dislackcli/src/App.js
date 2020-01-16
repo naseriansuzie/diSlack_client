@@ -64,6 +64,7 @@ class App extends React.Component {
                 isLogin={isLogin}
                 userInfo={userInfo}
                 workSpaceList={workSpaceList}
+                currentWorkspace={currentWorkspace}
               />
             )}
           />

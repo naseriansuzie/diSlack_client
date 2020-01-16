@@ -12,7 +12,15 @@ class MainPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      channels: [{ id: 1, name: "general" }],
+      channels: [
+        { id: 1, name: "general" },
+        { id: 2, name: "project" },
+      ],
+      dms: [
+        { id: 1, name: "16_김동인" },
+        { id: 2, name: "16_김수지" },
+        { id: 3, name: "16_김희주" },
+      ],
       currentDisplay: { id: 1, name: "general" },
       msgs: [
         {
@@ -74,8 +82,9 @@ class MainPage extends React.Component {
     // Profile style을 none에서 취소하고,
     // 클릭한 userId 정보를 Profile에 props로 내려줘야 함
   }
+
   handleClickReplyClose() {
-    let renewMsgs = this.state.msgs.map(msg => {
+    const renewMsgs = this.state.msgs.map(msg => {
       if (msg.clicked) {
         msg.clicked = false;
       }
@@ -96,8 +105,7 @@ class MainPage extends React.Component {
 
   render() {
     console.log(this.state);
-    console.log("clickedMsg =", this.state.clickedMsg);
-    const { msgs, channels, currentDisplay, clickedMsg } = this.state;
+    const { msgs, dms, channels, currentDisplay, clickedMsg } = this.state;
     const { Footer, Content } = Layout;
     const {
       handleClickReply,
@@ -129,7 +137,7 @@ class MainPage extends React.Component {
           }}
         >
           <Col
-            span={4}
+            span={3}
             style={{
               height: "100%",
               backgroundColor: "#38ada9",
@@ -140,7 +148,7 @@ class MainPage extends React.Component {
             Side_Header
           </Col>
           <Col
-            span={20}
+            span={21}
             style={{
               height: "100%",
               backgroundColor: "#ecf0f1",
@@ -154,7 +162,7 @@ class MainPage extends React.Component {
         </Row>
         <Row style={{ width: "1600px", height: "744px" }}>
           <Col span={3} style={{ height: "100%" }}>
-            <Side />
+            <Side channels={channels} dms={dms} />
           </Col>
           <Col span={clickedMsg.length ? 12 : 21} style={{ height: "100%" }}>
             <Layout style={{ height: "100%" }}>
@@ -244,7 +252,7 @@ class MainPage extends React.Component {
               </Row>
             </Col>
           ) : (
-            <div></div>
+            <div />
           )}
         </Row>
       </div>
