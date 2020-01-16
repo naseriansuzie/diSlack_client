@@ -1,26 +1,41 @@
 import React from "react";
 import { Redirect, Route, Switch, Link } from "react-router-dom";
-import { Button } from "antd";
+import { Row, Col } from "antd";
 import Signin from "./pages/sign/SignIn";
 import SignUp from "./pages/sign/SignUp";
 import MainPage from "./pages/Main";
+import MyWorkSpace from "./pages/workspace/MyWorkSpace";
 
 import "antd/dist/antd.css";
-
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLogin: false,
-      workSpace: null,
-      userInfo: {},
+      isLogin: true,
+      userInfo: { user_id: 1, name: "hello", email: "hello@gmail.com" },
+      currentWorkspace: null,
+      workSpaceList: [
+        { id: 1, name: "crong1", code: "!@#$%" },
+        { id: 2, name: "crong2", code: "QWER" },
+      ],
     };
+    this.userLogin = this.userLogin.bind(this);
   }
 
+  userLogin() {
+    console.log("로그인되었습니다.");
+    this.setState({ isLogin: true });
+    console.log(this.state);
+  }
+
+  // 로그인 시 isLogin 업데이트 해주는 함수 필요
+
+  // workSpace 리스트 업데이트 해주는 함수 필요
+
   render() {
-    const { isLogin, workSpace } = this.state;
-    return isLogin && workSpace ? (
+    const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
+    return isLogin && currentWorkspace ? (
       <div> Main.js </div>
     ) : (
       <div className="App">
@@ -28,12 +43,51 @@ class App extends React.Component {
         <Link to="/signin">로그인</Link>
         <Link to="/signup">회원가입</Link>
         <Link to="/workspace">워크스페이스</Link>
+        <Link to="/main">main page</Link>
         <Switch>
-          <Route exact path="/" />
-          <Route path="/signin" render={() => <Signin />} />
+          <Route
+            exact
+            path="/"
+            render={() => {
+              if (isLogin) {
+                return <Redirect to="/workspace" />;
+              }
+              return <Redirect to="/" />;
+            }}
+          />
+          <Route
+            path="/signin"
+            render={() => <Signin userLogin={this.userLogin} />}
+          />
           <Route path="/signup" render={() => <SignUp />} />
-          <Route path="/workspace" />
-          <Route path="/main" render={() => <MainPage />} />
+          <Route
+            path="/workspace"
+            render={() => (
+              <Row>
+                <Col span={12}>
+                  <MyWorkSpace
+                    isLogin={isLogin}
+                    userInfo={userInfo}
+                    workSpaceList={workSpaceList}
+                  />
+                </Col>
+                <Col span={12}>
+                  <MyWorkSpace isLogin={isLogin} userInfo={userInfo} />
+                </Col>
+              </Row>
+            )}
+          />
+          <Route
+            path="/main"
+            render={() => (
+              <MainPage
+                isLogin={isLogin}
+                userInfo={userInfo}
+                workSpaceList={workSpaceList}
+                currentWorkspace={currentWorkspace}
+              />
+            )}
+          />
         </Switch>
       </div>
     );

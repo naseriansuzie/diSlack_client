@@ -1,14 +1,11 @@
 import React from "react";
-// import { Redirect, Route, Switch, Link } from "react-router-dom";
-import { Menu, Switch } from "antd";
-// import "./sider.css";
+import { Menu, Icon } from "antd";
 import "antd/dist/antd.css";
 
 class Side extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      theme: "dark",
       current: "1",
     };
   }
@@ -20,38 +17,65 @@ class Side extends React.Component {
     });
   };
 
-  changeTheme = value => {
-    this.setState({
-      theme: value ? "dark" : "light",
-    });
+  clickedChannel = e => {
+    console.log("채널이클릭되었습니다 : ", e);
   };
 
   render() {
-    const { theme, current } = this.state;
+    // console.log("SIDER_PROPS", this.props);
+    const { channels, dms } = this.props;
+    const { current } = this.state;
     return (
       <div style={{ height: "100%" }}>
-        {/* <Switch
-          checked={theme === "dark"}
-          onChange={this.changeTheme}
-          checkedChildren="Dark"
-          unCheckedChildren="Light"
-        /> */}
-        {/* <br /> */}
-        {/* <br /> */}
         <Menu
-          theme={theme}
           onClick={this.handleClick}
-          style={{ width: "100%", height: "100%" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "#38ada9",
+            color: "white",
+          }}
           defaultOpenKeys={["sub1"]}
           selectedKeys={[current]}
           mode="inline"
         >
-          <div>Chanenl</div>
-          <Menu.Item key="1">Option 1</Menu.Item>
-          <Menu.Item key="2">Option 2</Menu.Item>
-          <Menu.Item key="3">Option 3</Menu.Item>
-          <Menu.Item key="4">Option 4</Menu.Item>
-          <div>Dm</div>
+          <div style={{ marginTop: "5%", marginBottom: "7%" }}>Chanenl</div>
+
+          {channels.map((item, i) => (
+            <Menu.Item
+              key={i}
+              style={{
+                backgroundColor: "#38ada9",
+                color: "#ecf0f1",
+                margin: "0",
+                height: "30px",
+              }}
+              onClick={e => {
+                this.clickedChannel(e);
+              }}
+            >
+              <Icon type="container" style={{ marginRight: "3%" }} />
+              {item.name}
+            </Menu.Item>
+          ))}
+          <div style={{ marginTop: "10%", marginBottom: "7%" }}>Dm</div>
+          {dms.map((item, i) => (
+            <Menu.Item
+              key={i}
+              style={{
+                backgroundColor: "#38ada9",
+                color: "#ecf0f1",
+                margin: "0",
+                height: "30px",
+              }}
+              onClick={e => {
+                this.clickedChannel(e);
+              }}
+            >
+              <Icon type="message" style={{ marginRight: "3%" }} />
+              {item.name}
+            </Menu.Item>
+          ))}
         </Menu>
       </div>
     );
