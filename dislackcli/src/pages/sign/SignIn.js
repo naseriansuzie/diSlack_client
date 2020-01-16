@@ -25,13 +25,15 @@ class Signin extends React.Component {
 
   handleInputValue = key => e => {
     this.setState({ [key]: e.target.value });
-    // console.log(this.state);
+    console.log(this.state);
   };
 
   render() {
     // console.log(this.props.form);
     const { getFieldDecorator } = this.props.form;
-    return (
+    return this.props.isLogin ? (
+      <Redirect to="/workspace" />
+    ) : (
       <Card
         style={{
           borderRadius: 10,
@@ -51,7 +53,7 @@ class Signin extends React.Component {
             };
 
             axios
-              .post(`${process.env.REACT_APP_DEV_URL}/signin`, userInfo, {
+              .post(`${process.env.REACT_APP_DEV_URL}/user/signin`, userInfo, {
                 withCredentials: true, // 쿠키전달
               })
               .then(res => {
@@ -75,12 +77,9 @@ class Signin extends React.Component {
               <Input
                 style={{ height: 50 }}
                 prefix={
-                  <Icon
-                    type="user"
-                    style={{ color: "rgba(0,0,0,.25)" }}
-                    onChange={this.handleInputValue("email")}
-                  />
+                  <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                 }
+                onChange={this.handleInputValue("email")}
                 placeholder="Username"
               />,
             )}

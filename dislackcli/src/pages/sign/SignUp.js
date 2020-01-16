@@ -19,18 +19,18 @@ class SignUp extends React.Component {
         //console.log("Received values of form: ", values);
         // ec2 엔드포인트 나오면 URL 업데이트
         axios
-          .post(process.env.REACT_APP_DEV_URL + "/signup", values, {
+          .post(process.env.REACT_APP_DEV_URL + "/user/signup", values, {
             withCredentials: true,
           })
           .then(res => {
             if (res.status === 201) {
               this.setState({ isSignUp: true });
             } else {
-              alert("이미 가입한 회원입니다.")
+              alert("이미 가입한 회원입니다.");
             }
           })
           .catch(err => {
-            console.log(err)
+            console.log(err);
           });
       }
     });
@@ -71,7 +71,6 @@ class SignUp extends React.Component {
   };
 
   render() {
-    console.log("state.values =", this.state.values);
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -104,8 +103,9 @@ class SignUp extends React.Component {
         </div>
       );
     }
-
-    return (
+    return this.props.isLogin ? (
+      <Redirect to="/workspace" />
+    ) : (
       <div>
         <Row>
           <Col span={24}>header</Col>
