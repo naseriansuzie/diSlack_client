@@ -1,9 +1,10 @@
 import React from "react";
 import { Redirect, Route, Switch, Link } from "react-router-dom";
-import { Button } from "antd";
+import { Row, Col } from "antd";
 import Signin from "./pages/sign/SignIn";
 import SignUp from "./pages/sign/SignUp";
 import MainPage from "./pages/Main";
+import MyWorkSpace from "./pages/workspace/MyWorkSpace";
 
 import "antd/dist/antd.css";
 
@@ -11,10 +12,13 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLogin: false,
+      isLogin: true,
       userInfo: { user_id: 1, name: "hello", email: "hello@gmail.com" },
       currentWorkspace: null,
-      workSpaceList: [],
+      workSpaceList: [
+        { id: 1, name: "crong1", code: "!@#$%" },
+        { id: 2, name: "crong2", code: "QWER" },
+      ],
     };
     this.userLogin = this.userLogin.bind(this);
   }
@@ -56,7 +60,23 @@ class App extends React.Component {
             render={() => <Signin userLogin={this.userLogin} />}
           />
           <Route path="/signup" render={() => <SignUp />} />
-          <Route path="/workspace" />
+          <Route
+            path="/workspace"
+            render={() => (
+              <Row>
+                <Col span={12}>
+                  <MyWorkSpace
+                    isLogin={isLogin}
+                    userInfo={userInfo}
+                    workSpaceList={workSpaceList}
+                  />
+                </Col>
+                <Col span={12}>
+                  <MyWorkSpace isLogin={isLogin} userInfo={userInfo} />
+                </Col>
+              </Row>
+            )}
+          />
           <Route
             path="/main"
             render={() => (
