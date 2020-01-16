@@ -12,9 +12,9 @@ class App extends React.Component {
     super();
     this.state = {
       isLogin: false,
+      userInfo: { user_id: 1, name: "hello", email: "hello@gmail.com" },
       currentWorkspace: null,
       workSpaceList: [],
-      userInfo: {},
     };
     this.userLogin = this.userLogin.bind(this);
   }
