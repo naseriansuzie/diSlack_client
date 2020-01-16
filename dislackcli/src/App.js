@@ -7,13 +7,13 @@ import MainPage from "./pages/Main";
 
 import "antd/dist/antd.css";
 
-
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLogin: false,
-      workSpace: null,
+      isLogin: true,
+      currentWorkspace: null,
+      workSpaceList: [],
       userInfo: {},
     };
     this.userLogin = this.userLogin.bind(this);
@@ -23,20 +23,11 @@ class App extends React.Component {
     console.log("로그인되었습니다.");
     this.setState({ isLogin: true });
     console.log(this.state);
-    // 서버에 요청을 해서 userinfo에 데이터전달
-    // axios
-    //   .post("http://localhost:4000/user",{
-    //     withCredentials: true, // 쿠키가 전달이 된다.
-    //   })
-    //   .then(res => {
-    //     console.log(res.data);
-    //     this.setState({ userinfo: res.data });
-    //   });
   }
 
   render() {
-    const { isLogin, workSpace } = this.state;
-    return isLogin && workSpace ? (
+    const { isLogin, currentWorkspace } = this.state;
+    return isLogin && currentWorkspace ? (
       <div> Main.js </div>
     ) : (
       <div className="App">
@@ -45,7 +36,16 @@ class App extends React.Component {
         <Link to="/signup">회원가입</Link>
         <Link to="/workspace">워크스페이스</Link>
         <Switch>
-          <Route exact path="/" />
+          <Route
+            exact
+            path="/"
+            render={() => {
+              if (isLogin) {
+                return <Redirect to="/workspace" />;
+              }
+              return <Redirect to="/sigin" />;
+            }}
+          />
           <Route
             path="/signin"
             render={() => <Signin userLogin={this.userLogin} />}

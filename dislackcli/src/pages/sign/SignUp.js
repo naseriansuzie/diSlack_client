@@ -25,7 +25,12 @@ class SignUp extends React.Component {
           .then(res => {
             if (res.status === 201) {
               this.setState({ isSignUp: true });
+            } else {
+              alert("이미 가입한 회원입니다.")
             }
+          })
+          .catch(err => {
+            console.log(err)
           });
       }
     });
@@ -95,7 +100,7 @@ class SignUp extends React.Component {
     if (this.state.isSignUp) {
       return (
         <div>
-          <Redirect to="/login" />
+          <Redirect to="/signin" />
         </div>
       );
     }
