@@ -1,17 +1,14 @@
 import React from "react";
-// import { Redirect, Route, Switch, Link } from "react-router-dom";
 import { Layout, Row, Col } from "antd";
-import Side from "./sider/Sider";
 import Nav from "./display/nav";
 import InputMsg from "./display/inputMsg";
 import "antd/dist/antd.css";
-
-const { Header, Footer, Sider, Content } = Layout;
+import Side from "./sider/Sider";
+import MessageList from "./display/MessageList";
 
 class MainPage extends React.Component {
   constructor(props) {
     super(props);
-    console.log("APP->MAIN : ", props);
     this.state = {
       channels: [{ id: 1, name: "general" }],
       currentDisplay: { id: 1, name: "general" },
@@ -42,13 +39,32 @@ class MainPage extends React.Component {
         },
       ],
     };
+    this.handleClickReply = this.handleClickReply.bind(this);
+    this.handleClickProfile = this.handleClickProfile.bind(this);
   }
 
-  // 채널을 클릭했을 때, currentDisplay가 바뀌고, msgs도 그에 따라 변경되어야 한다.
+  handleClickReply(msgId) {
+    this.setState({
+      msgs: this.state.msgs.map(msg => {
+        if (msg.id === msgId) {
+          msg.clicked = !msg.clicked;
+        }
+        return msg;
+      }),
+    });
+  }
+
+  handleClickProfile(userId) {
+    console.log(userId);
+    // Profile style을 none에서 취소하고,
+    // 클릭한 userId 정보를 Profile에 props로 내려줘야 함
+  }
 
   render() {
+    console.log(this.state);
     const { msgs, channels, currentDisplay } = this.state;
-    console.log("MSG입력? ", this.state.msgs);
+    const { Footer, Content } = Layout;
+    const { handleClickReply, handleClickProfile } = this;
     return (
       // sticky사용을 위해 div수정 필요
       <div>
@@ -91,7 +107,17 @@ class MainPage extends React.Component {
           </Col>
           <Col span={20} style={{ height: "100%" }}>
             <Layout style={{ height: "100%" }}>
-              <Content>Con</Content>
+              <Content>
+                {msgs ? (
+                  <MessageList
+                    msgs={msgs}
+                    handleClickReply={handleClickReply}
+                    handleClickProfile={handleClickProfile}
+                  />
+                ) : (
+                  <div>아직 메시지가 없습니다.</div>
+                )}
+              </Content>
               <Footer
                 style={{
                   backgroundColor: "#ecf0f1",
