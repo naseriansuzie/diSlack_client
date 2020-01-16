@@ -18,11 +18,15 @@ class SignUp extends React.Component {
       if (!err) {
         //console.log("Received values of form: ", values);
         // ec2 엔드포인트 나오면 URL 업데이트
-        axios.post(process.env.REACT_APP_DEV_URL, values).then(res => {
-          if (res.status === 201) {
-            this.setState({ isSignUp: true });
-          }
-        });
+        axios
+          .post(process.env.REACT_APP_DEV_URL + "/signup", values, {
+            withCredentials: true,
+          })
+          .then(res => {
+            if (res.status === 201) {
+              this.setState({ isSignUp: true });
+            }
+          });
       }
     });
   };
