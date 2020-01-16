@@ -6,10 +6,11 @@ import SignUp from "./pages/sign/SignUp";
 import MainPage from "./pages/Main";
 import axios from "axios";
 import MyWorkSpace from "./pages/workspace/MyWorkSpace";
+import AllWorkSpace from "./pages/workspace/AllWorkSpace";
 import CreateWorkSpace from "./pages/workspace/createWorkSpace";
 
 import "antd/dist/antd.css";
-
+import axios from "axios";
 class App extends React.Component {
   constructor() {
     super();
@@ -17,25 +18,50 @@ class App extends React.Component {
       isLogin: false,
       userInfo: { user_id: 1, name: "hello", email: "hello@gmail.com" },
       currentWorkspace: null,
-      workSpaceList: [
-        { id: 1, name: "crong1", code: "!@#$%" },
-        { id: 2, name: "crong2", code: "QWER" },
-      ],
+      workSpaceList: [],
     };
     this.userLogin = this.userLogin.bind(this);
+    this.handleClickMyWS = this.handleClickMyWS.bind(this);
+    this.updateCurrentWS = this.updateCurrentWS.bind(this);
   }
 
-  userLogin() {
+  async userLogin() {
     console.log("로그인되었습니다.");
-    this.setState({ isLogin: true });
-    console.log(this.state);
+    try {
+      const res = await axios.get(
+        process.env.REACT_APP_DEV_URL + "/workspace/list/my",
+        {
+          withCredentials: true,
+        },
+      );
+      console.log("from server res =", res);
+      this.setState({
+        isLogin: true,
+        workSpaceList: res,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  // 로그인 시 isLogin 업데이트 해주는 함수 필요
-  // workSpace 리스트 업데이트 해주는 함수 필요
+  handleClickMyWS(e) {
+    const workSpaceId = e.target.id;
+    const clickedWorkspace = this.state.workSpaceList.filter(
+      ws => ws.id === workSpaceId,
+    );
+    this.setState({ currentWorkspace: clickedWorkspace });
+  }
+
+  updateCurrentWS(code) {
+    const joinedWorkspace = this.state.workSpaceList.filter(
+      ws => ws.code === code,
+    );
+    this.setState({ currentWorkspace: joinedWorkspace });
+  }
 
   render() {
     const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
+    const { handleClickMyWS, updateCurrentWS } = this;
     return isLogin && currentWorkspace ? (
       <div> Main.js </div>
     ) : (
@@ -95,10 +121,15 @@ class App extends React.Component {
                       isLogin={isLogin}
                       userInfo={userInfo}
                       workSpaceList={workSpaceList}
+                      handleClickMyWS={handleClickMyWS}
                     />
                   </Col>
                   <Col span={12}>
-                    <MyWorkSpace isLogin={isLogin} userInfo={userInfo} />
+                    <AllWorkSpace
+                      isLogin={isLogin}
+                      userInfo={userInfo}
+                      updateCurrentWS={updateCurrentWS}
+                    />
                   </Col>
                 </Row>
                 <Row style={{ marginBottom: "20%" }}>

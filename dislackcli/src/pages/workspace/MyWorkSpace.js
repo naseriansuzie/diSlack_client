@@ -1,14 +1,18 @@
 import { List, Avatar, Row, Col, Button } from "antd";
 import React from "react";
 import { Redirect } from "react-router-dom";
+import "./myws.css";
 
 export default function MyWorkSpace(props) {
-  const { isLogin } = props;
+  const { isLogin, workSpaceList } = props;
   return isLogin ? (
     <Col>
       <div>
-        <Row style={{ height: "600px" }}>
-          <Col span={6} />
+        <Row
+          className="scrollY"
+          style={{ height: "600px", overFlow: "scroll" }}
+        >
+          <Col span={6}></Col>
           <Col span={12}>
             <Row
               style={{ padding: "10px", fontWeight: "bold", fontSize: "2em" }}
@@ -30,7 +34,9 @@ export default function MyWorkSpace(props) {
                     title={item.name}
                     description={`${process.env.REACT_APP_DEV_URL}/${item.code}`}
                   />
-                  <Button>Launch</Button>
+                  <Button id={item.id} onClick={props.handleClickMyWS}>
+                    Launch
+                  </Button>
                 </List.Item>
               )}
             />
