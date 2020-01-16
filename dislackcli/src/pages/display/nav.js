@@ -37,7 +37,7 @@ class Nav extends React.Component {
   };
 
   render() {
-    const { channels, msgs } = this.props;
+    const { channels, msgs, isLogin } = this.props;
     // const { userInfo } = this.props.props;
     // console.log("NAV_PROPS : ", this.props);
     // console.log(msgs);
@@ -45,7 +45,12 @@ class Nav extends React.Component {
       <Row>
         <Col span={8}>
           <strong style={{ fontSize: "30px" }}>{channels[0].name}</strong>
-          <Icon type="aliwangwang" style={{ fontSize: "30px" }} />
+          <Icon
+            type="aliwangwang"
+            theme="filled"
+            // 로그인 되어 있으면 #2ecc71 || #bdc3c7
+            style={{ fontSize: "20px", marginLeft: "1%", color: "#2ecc71" }}
+          />
         </Col>
         <Col span={8} />
         <Col span={8}>
