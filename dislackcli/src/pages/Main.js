@@ -214,27 +214,33 @@ class MainPage extends React.Component {
                   <a onClick={handleClickReplyClose}>X</a>
                 </Col>
               </Row>
-              <Row>
+              <Row style={{ padding: "10px" }}>
                 {clickedMsg.length ? (
                   <MessageList
                     msgs={noReplyClickedMsg}
                     handleClickReply={handleClickReply}
                     handleClickProfile={handleClickProfile}
-                  /> //clickedMsg[0].msg 메시지 엔트리스 컴포넌트 붙이기
+                  />
                 ) : (
                   ""
                 )}
               </Row>
-              <Row>
+              <Row style={{ padding: "10px" }}>
+                Reply : {clickedMsg[0].replies.length}
+              </Row>
+              <Row style={{ padding: "10px" }}>
                 {clickedMsg.length ? (
                   <MessageList
                     msgs={clickedMsg[0].replies}
                     handleClickReply={handleClickReply}
                     handleClickProfile={handleClickProfile}
-                  /> //clickedMsg[0].replies[0].msg 메시지 리스트 컴포넌트 붙이기
+                  />
                 ) : (
                   ""
                 )}
+              </Row>
+              <Row>
+                <InputMsg props={this.props} />
               </Row>
             </Col>
           ) : (
