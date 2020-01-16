@@ -2,6 +2,9 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import "antd/dist/antd.css";
 import { Form, Input, Tooltip, Icon, Checkbox, Button, Row, Col } from "antd";
+import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
 
 class SignUp extends React.Component {
   state = {
@@ -13,9 +16,17 @@ class SignUp extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
-        //여기에서 서버로 가입 보내고
-        //결과 받아서 정상이면 this.setState({isSignUp : true})
+        //console.log("Received values of form: ", values);
+        // ec2 엔드포인트 나오면 URL 업데이트
+        axios
+          .post(process.env.REACT_APP_DEV_URL + "/signup", values, {
+            withCredentials: true,
+          })
+          .then(res => {
+            if (res.status === 201) {
+              this.setState({ isSignUp: true });
+            }
+          });
       }
     });
   };
