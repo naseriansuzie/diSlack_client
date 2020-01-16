@@ -1,7 +1,5 @@
 import React from "react";
-import { Row, Col, Icon, Input, Form } from "antd";
-
-const { Search } = Input;
+import { Input, Form } from "antd";
 
 class InputMsg extends React.Component {
   constructor(props) {
@@ -10,7 +8,15 @@ class InputMsg extends React.Component {
     this.state = {
       message: "",
     };
+    this.deleteInput = this.deleteInput.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.enterClick = this.enterClick.bind(this);
   }
+
+  deleteInput = e => {
+    console.log(e.target.value);
+    e.target.value = "";
+  };
 
   handleChange = e => {
     const { userInfo } = this.props.props;
@@ -21,15 +27,17 @@ class InputMsg extends React.Component {
       message: e.target.value,
     });
     // state를 객체로 만들어 서버에 POST한다.
-    console.log(this.state);
+    // console.log("핸들체인지E", e.target.value);
   };
 
   enterClick = e => {
     if (e.key === "Enter") {
+      e.preventDefault();
       if (e.target.value !== "") {
         this.handleChange(e);
+        // console.log("인풋값 : ", e.target.value);
+        this.deleteInput(e);
       }
-      console.log(e.target.value);
     }
   };
 
@@ -44,15 +52,10 @@ class InputMsg extends React.Component {
             className="input_msg"
             placeholder="Message"
             style={{ height: "100%" }}
-            onKeyPress={
-              (this.enterClick,
-              e => {
-                console.log("1)", e.target.value);
-                if (e.key === "Enter") {
-                  e.target.value = "";
-                }
-              })
-            }
+            type="text"
+            onKeyPress={e => {
+              this.enterClick(e);
+            }}
           />
         </Form>
       </div>
