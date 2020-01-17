@@ -4,6 +4,7 @@ import "antd/dist/antd.css";
 import { Form, Input, Tooltip, Icon, Checkbox, Button, Row, Col } from "antd";
 import axios from "axios";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 class SignUp extends React.Component {
@@ -16,10 +17,10 @@ class SignUp extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        //console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
         // ec2 엔드포인트 나오면 URL 업데이트
         axios
-          .post(process.env.REACT_APP_DEV_URL + "/user/signup", values, {
+          .post(`${process.env.REACT_APP_DEV_URL}/user/signup`, values, {
             withCredentials: true,
           })
           .then(res => {
@@ -111,7 +112,7 @@ class SignUp extends React.Component {
           <Col span={24}>header</Col>
         </Row>
         <Row>
-          <Col span={4}></Col>
+          <Col span={4} />
           <Col span={12} value={120}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
               <Form.Item label="이메일 주소">
@@ -191,7 +192,7 @@ class SignUp extends React.Component {
               </Form.Item>
             </Form>
           </Col>
-          <Col span={4}></Col>
+          <Col span={4} />
         </Row>
         <Row>
           <Col span={24}>footer</Col>
