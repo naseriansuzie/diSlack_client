@@ -48,8 +48,6 @@ class App extends React.Component {
     // console.log("워크스페이스아이디", workSpaceId);
     // console.log("전체워크스페이스",this.state.workSpaceList)
     const clickedWorkspace = this.state.workSpaceList.filter(
-      ws =>
-        // console.log("WS? :",ws)
         ws.id === Number(workSpaceId),
     );
     // console.log("선택한 워크스페이스", clickedWorkspace);
@@ -138,6 +136,7 @@ class App extends React.Component {
                     <AllWorkSpace
                       isLogin={isLogin}
                       userInfo={userInfo}
+                      workSpaceList={workSpaceList}
                       updateCurrentWS={updateCurrentWS}
                     />
                   </Col>

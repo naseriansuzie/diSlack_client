@@ -56,7 +56,11 @@ class CreateWorkSpace extends React.Component {
             this.clickEnter(e);
           }}
         />
-        <Button type="primary" style={{ marginTop: "5%", width: "100%" }}>
+        <Button
+          onClick={this.createWS}
+          type="primary"
+          style={{ marginTop: "5%", width: "100%" }}
+        >
           Create
         </Button>
       </Card>
