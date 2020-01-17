@@ -46,7 +46,7 @@ class App extends React.Component {
   handleClickMyWS(e) {
     const workSpaceId = e.target.id;
     const clickedWorkspace = this.state.workSpaceList.filter(
-      ws => ws.id === workSpaceId,
+      ws => Number(ws.id) === workSpaceId,
     );
     this.setState({ currentWorkspace: clickedWorkspace });
   }
