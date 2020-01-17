@@ -3,7 +3,10 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import "./allws.css";
 import axios from "axios";
+
 class AllWorkSpace extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,10 +32,11 @@ class AllWorkSpace extends React.Component {
       console.log(err);
     }
   }
+
   componentDidMount() {
-    //프론트 테스트용 this.setState({ list: [{ id: 1, name: "all1", code: "!@#$%^&" }] });
+    this._isMounted = true;
     axios
-      .get(process.env.REACT_APP_DEV_URL + "/workspace/list/all", {
+      .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/all`, {
         withCredentials: true,
       })
       .then(res => {
@@ -46,6 +50,11 @@ class AllWorkSpace extends React.Component {
       })
       .catch(err => console.log(err));
   }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
     const { isLogin } = this.props;
     const { list } = this.state;
@@ -58,7 +67,7 @@ class AllWorkSpace extends React.Component {
               className="scrollY"
               style={{ height: "600px", overFlow: "scroll" }}
             >
-              <Col span={6}></Col>
+              <Col span={6} />
               <Col span={12}>
                 <Row
                   style={{
@@ -91,7 +100,7 @@ class AllWorkSpace extends React.Component {
                   )}
                 />
               </Col>
-              <Col span={6}></Col>
+              <Col span={6} />
             </Row>
           </div>
         </Col>

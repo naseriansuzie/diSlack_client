@@ -1,64 +1,20 @@
 import React from "react";
 import { Layout, Row, Col } from "antd";
-
 import Nav from "./display/nav";
 import InputMsg from "./display/inputMsg";
 import "antd/dist/antd.css";
 import Side from "./sider/Sider";
 import MessageList from "./display/MessageList";
-import MessageEntries from "./display/MessageEntries";
+import axios from "axios";
 
 class MainPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      channels: [
-        { id: 1, name: "general" },
-        { id: 2, name: "project" },
-      ],
-      dms: [
-        { id: 1, name: "16_김동인" },
-        { id: 2, name: "16_김수지" },
-        { id: 3, name: "16_김희주" },
-      ],
-      currentDisplay: { id: 1, name: "general" },
-      msgs: [
-        {
-          id: 1,
-          user_id: 1,
-          username: "hello",
-          msg: "hello world",
-          created_at: `${new Date().getFullYear()}-${new Date().getMonth()}${1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-          replies: [],
-          clicked: false,
-        },
-        {
-          id: 2,
-          user_id: 2,
-          username: "welcome",
-          msg: "diSlack is good :)",
-          created_at: `${new Date().getFullYear()}-${new Date().getMonth()}${1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-          replies: [],
-          clicked: false,
-        },
-        {
-          id: 3,
-          user_id: 3,
-          username: "welcome2",
-          msg: "diSlack is good :) say hello",
-          created_at: `${new Date().getFullYear()}-${new Date().getMonth()}${1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-          replies: [
-            {
-              id: 4,
-              user_id: 2,
-              username: "welcome",
-              msg: "this is a reply",
-              created_at: `${new Date().getFullYear()}-${new Date().getMonth()}${1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-            },
-          ],
-          clicked: false,
-        },
-      ],
+      channels: [],
+      dms: [],
+      currentDisplay: null,
+      msgs: [],
       clickedMsg: [],
     };
     this.handleClickReply = this.handleClickReply.bind(this);
@@ -66,6 +22,7 @@ class MainPage extends React.Component {
     this.handleClickReplyClose = this.handleClickReplyClose.bind(this);
   }
 
+  // Methods
   handleClickReply(msgId) {
     this.setState({
       msgs: this.state.msgs.map(msg => {
@@ -93,6 +50,18 @@ class MainPage extends React.Component {
     this.setState({ clickedMsg: [], msgs: renewMsgs });
   }
 
+  // LifeCycle
+  componentDidMount() {
+    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
+    axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,{
+      withCredentials: true, // 쿠키전달
+    })
+    .then(res => {
+      console.log("채널리스트 겟요청",res)
+      this.setState({channels: res.data , currentDisplay:res.data[0]})
+    })
+  }
+
   componentDidUpdate() {
     console.log("update");
     const clicked = this.state.msgs.filter(msg => msg.clicked);
@@ -105,6 +74,7 @@ class MainPage extends React.Component {
 
   render() {
     console.log(this.state);
+    console.log("로그인상태? : ", this.props.isLogin);
     const { msgs, dms, channels, currentDisplay, clickedMsg } = this.state;
     const { Footer, Content } = Layout;
     const {
@@ -125,8 +95,9 @@ class MainPage extends React.Component {
       return msg;
     });
     return (
-      // 로그인 뿐만
-      this.props.isLogin ? (
+      // 로그인 뿐만 채널 or 디엠 null
+      this.props.isLogin &&
+        (this.state.channels.length || this.state.dms.length) ? (
         <div>
           <Row
             style={{

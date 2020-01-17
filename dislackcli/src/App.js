@@ -68,6 +68,74 @@ class App extends React.Component {
     return isLogin && currentWorkspace ? (
       <div>
         <Redirect to={`/main/${currentWorkspace[0].code}`} />
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => {
+              if (isLogin) {
+                return <Redirect to="/workspace" />;
+              }
+              return <Redirect to="/" />;
+            }}
+          />
+          <Route
+            path="/signin"
+            render={() => (
+              <Signin
+                isLogin={this.state.isLogin}
+                getWorkSpace={this.getWorkSpace}
+              />
+            )}
+          />
+          <Route
+            path="/signup"
+            render={() => <SignUp isLogin={this.state.isLogin} />}
+          />
+          <Route
+            path="/workspace"
+            render={() => (
+              <div>
+                <Row>
+                  <Col span={12}>
+                    <MyWorkSpace
+                      isLogin={isLogin}
+                      userInfo={userInfo}
+                      workSpaceList={workSpaceList}
+                      handleClickMyWS={handleClickMyWS}
+                    />
+                  </Col>
+                  <Col span={12}>
+                    <AllWorkSpace
+                      isLogin={isLogin}
+                      userInfo={userInfo}
+                      workSpaceList={workSpaceList}
+                      updateCurrentWS={updateCurrentWS}
+                    />
+                  </Col>
+                </Row>
+                <Row style={{ marginBottom: "20%" }}>
+                  <Col span={8} />
+                  <Col span={8}>
+                    <CreateWorkSpace getWorkSpace={this.getWorkSpace} />
+                  </Col>
+                  <Col span={8} />
+                </Row>
+              </div>
+            )}
+          />
+          <Route
+            path={currentWorkspace ? `/main/tsa4hg5C` : "/"}
+            render={() => (
+              <MainPage
+                isLogin={isLogin}
+                userInfo={userInfo}
+                workSpaceList={workSpaceList}
+                currentWorkspace={currentWorkspace}
+              />
+            )}
+          />
+        </Switch>
       </div>
     ) : (
       <div className="App">
@@ -152,7 +220,7 @@ class App extends React.Component {
             )}
           />
           <Route
-            path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
+            path={currentWorkspace ? `/main/tsa4hg5C` : "/"}
             render={() => (
               <MainPage
                 isLogin={isLogin}
