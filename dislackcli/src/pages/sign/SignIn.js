@@ -58,7 +58,7 @@ class Signin extends React.Component {
               })
               .then(res => {
                 if (res.status === 200) {
-                  this.props.userLogin();
+                  this.props.getWorkSpace();
                 } else {
                   alert("이메일이나 패스워드 확인하세요");
                 }

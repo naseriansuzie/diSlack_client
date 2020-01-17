@@ -3,12 +3,15 @@ import { Input, Card, Button, Form } from "antd";
 import axios from "axios";
 
 class CreateWorkSpace extends React.Component {
-  state = {
-    name: "",
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+    };
+  }
 
   async createWS(e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     await this.setState({ name: e.target.value });
     const workspaceName = { name: this.state.name };
     axios
@@ -21,10 +24,12 @@ class CreateWorkSpace extends React.Component {
       )
       .then(res => {
         alert("워크스페이스가 생성되었습니다.");
-        e.target.value = "";
-        console.log(this.state);
+        this.props.getWorkSpace();
+      })
+      .catch(err => {
+        console.log("에러에용?", err);
+        alert("동일한 이름이 있습니다!");
       });
-    console.log(this.state);
   }
 
   clearInput = input => {

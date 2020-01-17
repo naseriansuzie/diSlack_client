@@ -19,12 +19,12 @@ class App extends React.Component {
       currentWorkspace: null,
       workSpaceList: [],
     };
-    this.userLogin = this.userLogin.bind(this);
+    this.getWorkSpace = this.getWorkSpace.bind(this);
     this.handleClickMyWS = this.handleClickMyWS.bind(this);
     this.updateCurrentWS = this.updateCurrentWS.bind(this);
   }
 
-  async userLogin() {
+  async getWorkSpace() {
     console.log("로그인되었습니다.");
     try {
       const res = await axios.get(
@@ -111,7 +111,10 @@ class App extends React.Component {
           <Route
             path="/signin"
             render={() => (
-              <Signin isLogin={this.state.isLogin} userLogin={this.userLogin} />
+              <Signin
+                isLogin={this.state.isLogin}
+                getWorkSpace={this.getWorkSpace}
+              />
             )}
           />
           <Route
@@ -142,7 +145,7 @@ class App extends React.Component {
                 <Row style={{ marginBottom: "20%" }}>
                   <Col span={8} />
                   <Col span={8}>
-                    <CreateWorkSpace />
+                    <CreateWorkSpace getWorkSpace={this.getWorkSpace} />
                   </Col>
                   <Col span={8} />
                 </Row>
@@ -150,11 +153,7 @@ class App extends React.Component {
             )}
           />
           <Route
-            path={
-              currentWorkspace && currentWorkspace.length !== 0
-                ? `/main/${currentWorkspace[0].code}`
-                : "/main"
-            }
+            path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
             render={() => (
               <MainPage
                 isLogin={isLogin}
