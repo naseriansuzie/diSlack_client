@@ -7,23 +7,25 @@ class CreateWorkSpace extends React.Component {
     name: "",
   };
 
-  createWS = e => {
+  async createWS(e) {
     console.log(e.target.value);
-    this.setState({ name: e.target.value });
-    // const workspaceName = { name: this.state.name };
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_DEV_URL}/workspace/create`,
-    //     workspaceName,
-    //     {
-    //       withCredentials: true, // 쿠키전달
-    //     },
-    //   )
-    //   .then(res => {
-    //     console.log(this.state);
-    //   });
+    await this.setState({ name: e.target.value });
+    const workspaceName = { name: this.state.name };
+    axios
+      .post(
+        `${process.env.REACT_APP_DEV_URL}/workspace/create`,
+        workspaceName,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        alert("워크스페이스가 생성되었습니다.");
+        e.target.value = "";
+        console.log(this.state);
+      });
     console.log(this.state);
-  };
+  }
 
   clearInput = input => {
     input.target.value = "";
