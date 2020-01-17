@@ -21,7 +21,7 @@ class App extends React.Component {
     };
     this.getWorkSpace = this.getWorkSpace.bind(this);
     this.handleClickMyWS = this.handleClickMyWS.bind(this);
-    this.updateCurrentWS = this.updateCurrentWS.bind(this);
+    this.updateWorkspace = this.updateWorkspace.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
   }
 
@@ -34,7 +34,7 @@ class App extends React.Component {
           withCredentials: true,
         },
       );
-      console.log("from server res =", res.data);
+      console.log("로그인 후 내 워크스페이스 불러오기", res.data);
       this.setState({
         isLogin: true,
         workSpaceList: res.data,
@@ -55,26 +55,35 @@ class App extends React.Component {
 
   handleClickMyWS(e) {
     const workSpaceId = e.target.id;
-    // console.log("워크스페이스아이디", workSpaceId);
-    // console.log("전체워크스페이스",this.state.workSpaceList)
     const clickedWorkspace = this.state.workSpaceList.filter(
       ws => ws.id === Number(workSpaceId),
     );
-    // console.log("선택한 워크스페이스", clickedWorkspace);
-    this.setState({ currentWorkspace: clickedWorkspace });
+    this.setState({
+      currentWorkspace: clickedWorkspace,
+    });
   }
 
-  updateCurrentWS(code) {
-    const joinedWorkspace = this.state.workSpaceList.filter(
-      ws => ws.code === code,
-    );
-    this.setState({ currentWorkspace: joinedWorkspace });
+  async updateWorkspace() {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_DEV_URL}/workspace/list/my`,
+        {
+          withCredentials: true,
+        },
+      );
+      console.log("마이 워크스페이스 업데이트", res.data);
+      this.setState({
+        workSpaceList: res.data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   render() {
     const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
-    const { handleClickMyWS, updateCurrentWS } = this;
-    console.log("현재웤스", currentWorkspace);
+    const { handleClickMyWS, updateWorkspace } = this;
+    console.log("app.js state의 현재 선택된 워크스페이스", currentWorkspace);
     return isLogin && currentWorkspace ? (
       <div>
         <Redirect to={`/main/${currentWorkspace[0].code}`} />
@@ -120,7 +129,7 @@ class App extends React.Component {
                       isLogin={isLogin}
                       userInfo={userInfo}
                       workSpaceList={workSpaceList}
-                      updateCurrentWS={updateCurrentWS}
+                      updateWorkspace={updateWorkspace}
                     />
                   </Col>
                 </Row>
@@ -162,7 +171,7 @@ class App extends React.Component {
                   withCredentials: true,
                 })
                 .then(result => {
-                  console.log(result);
+                  console.log("로그아웃 결과", result);
                   this.setState({ isLogin: false });
                 })
                 .catch(err => {
@@ -216,7 +225,7 @@ class App extends React.Component {
                       isLogin={isLogin}
                       userInfo={userInfo}
                       workSpaceList={workSpaceList}
-                      updateCurrentWS={updateCurrentWS}
+                      updateWorkspace={updateWorkspace}
                     />
                   </Col>
                 </Row>
