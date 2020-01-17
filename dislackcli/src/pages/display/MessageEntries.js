@@ -2,12 +2,13 @@ import React from "react";
 import { Avatar, Row, Col } from "antd";
 
 export default function MessageEntries(props) {
+  // console.log(("메세지엔트리": props));
   const {
     id,
-    user_id,
+    user,
     username,
     time,
-    msg,
+    message,
     replies,
     handleClickReply,
     handleClickProfile,
@@ -21,12 +22,12 @@ export default function MessageEntries(props) {
         <Col span={22}>
           <span>
             <strong>
-              <a onClick={handleClickProfile.bind(null, user_id)}>{username}</a>
+              <a onClick={handleClickProfile.bind(null, user)}>{username}</a>
             </strong>
             &nbsp;&nbsp;&nbsp;
           </span>
           <span>{time}</span>
-          <div>{msg}</div>
+          <div>{message}</div>
           {replies && replies.length ? (
             <div>
               <a onClick={handleClickReply.bind(null, id)}>
@@ -34,7 +35,7 @@ export default function MessageEntries(props) {
               </a>
             </div>
           ) : (
-            <div></div>
+            <div />
           )}
         </Col>
       </Row>

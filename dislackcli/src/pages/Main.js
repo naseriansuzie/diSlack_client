@@ -50,16 +50,30 @@ class MainPage extends React.Component {
     this.setState({ clickedMsg: [], msgs: renewMsgs });
   }
 
+
   // LifeCycle
-  componentDidMount() {
+  async componentDidMount() {
     // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
-    axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,{
+    await axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,{
       withCredentials: true, // 쿠키전달
     })
     .then(res => {
-      console.log("채널리스트 겟요청",res)
       this.setState({channels: res.data , currentDisplay:res.data[0]})
     })
+
+    await axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${this.state.currentDisplay.id}/list`,{
+      withCredentials: true, // 쿠키전달
+    })
+    .then(res => {
+      console.log("채널에 메시지 겟요청",res)
+      if( res.data.length !== 0) {
+        this.setState({msgs: res.data})
+      } else {
+        console.log("메세지가 비어있습니다.")
+      }
+    })
+
+  
   }
 
   componentDidUpdate() {
@@ -73,7 +87,7 @@ class MainPage extends React.Component {
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     console.log("로그인상태? : ", this.props.isLogin);
     const { msgs, dms, channels, currentDisplay, clickedMsg } = this.state;
     const { Footer, Content } = Layout;
@@ -139,7 +153,7 @@ class MainPage extends React.Component {
             <Col span={clickedMsg.length ? 12 : 21} style={{ height: "100%" }}>
               <Layout style={{ height: "100%" }}>
                 <Content>
-                  {msgs ? (
+                  {msgs.length ? (
                     <MessageList
                       msgs={msgs}
                       handleClickReply={handleClickReply}
@@ -158,7 +172,7 @@ class MainPage extends React.Component {
                     padding: 0,
                   }}
                 >
-                  <InputMsg props={this.props} />
+                  <InputMsg props={this.props} currentDisplay={this.state.currentDisplay}/>
                 </Footer>
               </Layout>
             </Col>

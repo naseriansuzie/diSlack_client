@@ -58,10 +58,13 @@ class Signin extends React.Component {
               })
               .then(res => {
                 if (res.status === 200) {
-                  this.props.getWorkSpace();
-                } else {
-                  alert("이메일이나 패스워드 확인하세요");
+                  this.props.updateUserInfo(res.data, this.state.email);
+                  return res;
                 }
+                alert("이메일이나 패스워드 확인하세요");
+              })
+              .then(res => {
+                this.props.getWorkSpace();
               })
               .catch(err => {
                 console.log(err);

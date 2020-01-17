@@ -15,13 +15,14 @@ class App extends React.Component {
     super();
     this.state = {
       isLogin: false,
-      userInfo: { user_id: 1, name: "hello", email: "hello@gmail.com" },
+      userInfo: null,
       currentWorkspace: null,
       workSpaceList: [],
     };
     this.getWorkSpace = this.getWorkSpace.bind(this);
     this.handleClickMyWS = this.handleClickMyWS.bind(this);
     this.updateCurrentWS = this.updateCurrentWS.bind(this);
+    this.updateUserInfo = this.updateUserInfo.bind(this);
   }
 
   async getWorkSpace() {
@@ -41,6 +42,15 @@ class App extends React.Component {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  updateUserInfo(item, email) {
+    const userObj = {
+      name: item.name,
+      user_id: item.user_id,
+      email,
+    };
+    this.setState({ userInfo: userObj });
   }
 
   handleClickMyWS(e) {
@@ -125,7 +135,7 @@ class App extends React.Component {
             )}
           />
           <Route
-            path={currentWorkspace ? `/main/tsa4hg5C` : "/"}
+            path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
             render={() => (
               <MainPage
                 isLogin={isLogin}
@@ -180,6 +190,7 @@ class App extends React.Component {
               <Signin
                 isLogin={this.state.isLogin}
                 getWorkSpace={this.getWorkSpace}
+                updateUserInfo={this.updateUserInfo}
               />
             )}
           />
