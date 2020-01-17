@@ -15,7 +15,7 @@ class MainPage extends React.Component {
       dms: [],
       currentDisplay: null,
       //[{user_id, username, createdAt, message, reply}]
-      msgs: [{id:1, user_id : 1, username: 'test1', createdAt:"2020-01-17 06:58:47", message:"안녕하세요", reply:[{id:1,user_id : 2, username: 'test2', createdAt:"2020-01-17 07:13:00", message:"반가워요"},{id:2,user_id : 1, username: 'test1', createdAt:"2020-01-17 06:58:47", message:"HELLO:)"}]}],
+      msgs: [{id:1, user_id : 1, username: 'test1', createdAt:"2020-01-17 06:58:47", message:"안녕하세요",clicked:false ,reply:[{id:1,user_id : 2, username: 'test2', createdAt:"2020-01-17 07:13:00", message:"반가워요"},{id:2,user_id : 1, username: 'test1', createdAt:"2020-01-17 06:58:47", message:"HELLO:)"}]}],
       clickedMsg: [],
     };
     this.handleClickReply = this.handleClickReply.bind(this);
