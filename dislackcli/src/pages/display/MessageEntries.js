@@ -9,7 +9,7 @@ export default function MessageEntries(props) {
     username,
     time,
     message,
-    replies,
+    reply,
     handleClickReply,
     handleClickProfile,
   } = props;
@@ -28,10 +28,10 @@ export default function MessageEntries(props) {
           </span>
           <span>{time}</span>
           <div>{message}</div>
-          {replies && replies.length ? (
+          {reply && reply.length ? (
             <div>
               <a onClick={handleClickReply.bind(null, id)}>
-                {replies.length} replies
+                {reply.length} replies
               </a>
             </div>
           ) : (
