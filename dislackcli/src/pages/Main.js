@@ -112,10 +112,10 @@ class MainPage extends React.Component {
       handleClickProfile,
       handleClickReplyClose,
     } = this;
-    let noReplyClickedMsg = [];
-    for (let msg of clickedMsg) {
-      let obj = {};
-      for (let key in msg) {
+    const noReplyClickedMsg = [];
+    for (const msg of clickedMsg) {
+      const obj = {};
+      for (const key in msg) {
         obj[key] = msg[key];
       }
       noReplyClickedMsg.push(obj);
@@ -125,7 +125,7 @@ class MainPage extends React.Component {
       return msg;
     });
     return (
-      // sticky사용을 위해 div수정 필요
+      // 로그인 뿐만
       this.props.isLogin ? (
         <div>
           <Row
@@ -257,7 +257,9 @@ class MainPage extends React.Component {
             )}
           </Row>
         </div>
-      ) : null
+      ) : (
+        <div>Loading...</div>
+      )
     );
   }
 }

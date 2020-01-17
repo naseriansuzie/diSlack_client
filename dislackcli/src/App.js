@@ -1,16 +1,15 @@
 import React from "react";
 import { Redirect, Route, Switch, Link } from "react-router-dom";
-import { Row, Col } from "antd";
+import { Row, Col, Button } from "antd";
+import axios from "axios";
 import Signin from "./pages/sign/SignIn";
 import SignUp from "./pages/sign/SignUp";
 import MainPage from "./pages/Main";
-import axios from "axios";
 import MyWorkSpace from "./pages/workspace/MyWorkSpace";
 import AllWorkSpace from "./pages/workspace/AllWorkSpace";
 import CreateWorkSpace from "./pages/workspace/createWorkSpace";
-
 import "antd/dist/antd.css";
-import axios from "axios";
+
 class App extends React.Component {
   constructor() {
     super();
@@ -20,24 +19,24 @@ class App extends React.Component {
       currentWorkspace: null,
       workSpaceList: [],
     };
-    this.userLogin = this.userLogin.bind(this);
+    this.getWorkSpace = this.getWorkSpace.bind(this);
     this.handleClickMyWS = this.handleClickMyWS.bind(this);
     this.updateCurrentWS = this.updateCurrentWS.bind(this);
   }
 
-  async userLogin() {
+  async getWorkSpace() {
     console.log("로그인되었습니다.");
     try {
       const res = await axios.get(
-        process.env.REACT_APP_DEV_URL + "/workspace/list/my",
+        `${process.env.REACT_APP_DEV_URL}/workspace/list/my`,
         {
           withCredentials: true,
         },
       );
-      console.log("from server res =", res);
+      console.log("from server res =", res.data);
       this.setState({
         isLogin: true,
-        workSpaceList: res,
+        workSpaceList: res.data,
       });
     } catch (err) {
       console.log(err);
@@ -46,9 +45,14 @@ class App extends React.Component {
 
   handleClickMyWS(e) {
     const workSpaceId = e.target.id;
+    // console.log("워크스페이스아이디", workSpaceId);
+    // console.log("전체워크스페이스",this.state.workSpaceList)
     const clickedWorkspace = this.state.workSpaceList.filter(
-      ws => ws.id === workSpaceId,
+      ws =>
+        // console.log("WS? :",ws)
+        ws.id === Number(workSpaceId),
     );
+    // console.log("선택한 워크스페이스", clickedWorkspace);
     this.setState({ currentWorkspace: clickedWorkspace });
   }
 
@@ -62,8 +66,11 @@ class App extends React.Component {
   render() {
     const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
     const { handleClickMyWS, updateCurrentWS } = this;
+    console.log("현재웤스", currentWorkspace);
     return isLogin && currentWorkspace ? (
-      <div> Main.js </div>
+      <div>
+        <Redirect to={`/main/${currentWorkspace[0].code}`} />
+      </div>
     ) : (
       <div className="App">
         최상위 컴포넌트
@@ -72,7 +79,7 @@ class App extends React.Component {
         <Link to="/workspace">워크스페이스</Link>
         <Link to="/main">main page</Link>
         {this.state.isLogin ? (
-          <button
+          <Button
             onClick={() => {
               axios
                 .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
@@ -88,7 +95,7 @@ class App extends React.Component {
             }}
           >
             로그아웃
-          </button>
+          </Button>
         ) : null}
         <Switch>
           <Route
@@ -104,7 +111,10 @@ class App extends React.Component {
           <Route
             path="/signin"
             render={() => (
-              <Signin isLogin={this.state.isLogin} userLogin={this.userLogin} />
+              <Signin
+                isLogin={this.state.isLogin}
+                getWorkSpace={this.getWorkSpace}
+              />
             )}
           />
           <Route
@@ -135,7 +145,7 @@ class App extends React.Component {
                 <Row style={{ marginBottom: "20%" }}>
                   <Col span={8} />
                   <Col span={8}>
-                    <CreateWorkSpace />
+                    <CreateWorkSpace getWorkSpace={this.getWorkSpace} />
                   </Col>
                   <Col span={8} />
                 </Row>
@@ -143,7 +153,7 @@ class App extends React.Component {
             )}
           />
           <Route
-            path="/main"
+            path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
             render={() => (
               <MainPage
                 isLogin={isLogin}
