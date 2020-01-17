@@ -3,7 +3,6 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import "./allws.css";
 import axios from "axios";
-
 class AllWorkSpace extends React.Component {
   _isMounted = false;
 
@@ -26,8 +25,15 @@ class AllWorkSpace extends React.Component {
         },
       );
       if (res.status === 200) {
-        this.props.updateCurrentWS(workSpaceCode);
+        await this.props.updateWorkspace();
       }
+      let myWorkSpaceCodes = await this.props.workSpaceList.map(ws => ws.code);
+      console.log("조인한 후 내 워크스페이스 코드들 = ", myWorkSpaceCodes);
+      let filteredList = await this.state.list.filter(
+        ws => !myWorkSpaceCodes.includes(ws.code),
+      );
+      console.log("내가 가입하지 않은 워크스페이스들 = ", filteredList);
+      this.setState({ list: filteredList });
     } catch (err) {
       console.log(err);
     }
@@ -40,10 +46,9 @@ class AllWorkSpace extends React.Component {
         withCredentials: true,
       })
       .then(res => {
-        console.log("from server res =", res);
+        console.log("마운트하면서 전체 워크스페이스리스트 =", res);
         const myList = this.props.workSpaceList.map(myWs => myWs.id);
         res.data = res.data.filter(ws => !myList.includes(ws.id));
-        console.log("filtered ws =", res.data);
         this.setState({
           list: res.data,
         });
