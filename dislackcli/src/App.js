@@ -45,14 +45,14 @@ class App extends React.Component {
 
   handleClickMyWS(e) {
     const workSpaceId = e.target.id;
-    console.log("워크스페이스아이디", workSpaceId);
-    console.log("전체워크스페이스",this.state.workSpaceList)
+    // console.log("워크스페이스아이디", workSpaceId);
+    // console.log("전체워크스페이스",this.state.workSpaceList)
     const clickedWorkspace = this.state.workSpaceList.filter(
-      ws => {
-        console.log("WS? :",ws)
-        return ws.id === Number(workSpaceId)},
+      ws =>
+        // console.log("WS? :",ws)
+        ws.id === Number(workSpaceId),
     );
-    console.log("선택한 워크스페이스", clickedWorkspace);
+    // console.log("선택한 워크스페이스", clickedWorkspace);
     this.setState({ currentWorkspace: clickedWorkspace });
   }
 
@@ -68,9 +68,10 @@ class App extends React.Component {
     const { handleClickMyWS, updateCurrentWS } = this;
     console.log("현재웤스", currentWorkspace);
     return isLogin && currentWorkspace ? (
-      <div />
+      <div>
+        <Redirect to={`/main/${currentWorkspace[0].code}`} />
+      </div>
     ) : (
-      // <div> <Redirect to='/main/코드내용'/> </div>
       <div className="App">
         최상위 컴포넌트
         {this.state.isLogin ? null : <Link to="/signin">로그인</Link>}
@@ -149,7 +150,11 @@ class App extends React.Component {
             )}
           />
           <Route
-            path="/main/onWFDurn"
+            path={
+              currentWorkspace && currentWorkspace.length !== 0
+                ? `/main/${currentWorkspace[0].code}`
+                : "/main"
+            }
             render={() => (
               <MainPage
                 isLogin={isLogin}
