@@ -144,7 +144,7 @@ class MainPage extends React.Component {
                 borderWidth: "0.5px",
               }}
             >
-              <Nav msgs={msgs} props={this.props} channels={channels} />
+              <Nav msgs={msgs} state={this.state} channels={channels} />
             </Col>
           </Row>
           <Row style={{ width: "1600px", height: "744px" }}>

@@ -6,12 +6,11 @@ const { Search } = Input;
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { visible: false };
+    this.state = { visible: false, searchMsg: null };
   }
 
   showModal = e => {
-    // console.log(e);
-
+    console.log(e);
     this.setState(() => ({
       visible: true,
       target: e,
@@ -21,20 +20,39 @@ class Nav extends React.Component {
   };
 
   handleOk = e => {
-    // console.log(e);
     this.setState(() => ({
       visible: false,
     }));
   };
 
   handleCancel = e => {
-    // console.log(e);
     this.setState(() => ({
       visible: false,
-      // target: "",
     }));
-    // console.log(this.state);
   };
+
+  // 현재 메세지들을 단어벌로 찾을 수 있게 검색하자
+  currentMsgs = item => {
+    const searchArr = [];
+    const curMsgs = this.props.msgs;
+    curMsgs.map(val1 => {
+      console.log("메세지들? : ", val1);
+      const wordMsg = val1.message.split(" ");
+      wordMsg.map(val2 => {
+        console.log("쪼갠메세지 : ", val2);
+        if (val2 === item) {
+          searchArr.push(val1);
+        }
+      });
+      console.log("찾은단어들", searchArr);
+    });
+  };
+
+  searchSet(value) {
+    this.setState(() => {
+      this.setState({ searchMsg: value });
+    });
+  }
 
   render() {
     const { channels, msgs, isLogin } = this.props;
@@ -64,31 +82,10 @@ class Nav extends React.Component {
                 }}
               />
             }
-            onSearch={
-              (value => {
-                const searchArr = [];
-                msgs.map(item => {
-                  const { msg } = item;
-                  const arrMsg = msg.split(" ");
-                  arrMsg.map(searchItem => {
-                    // console.log(item);
-                    if (searchItem === value) {
-                      // console.log("검색한단어", value);
-                      console.log("찾은단어", item);
-                      searchArr.push(item);
-                      // X표시를 누르면 다시 GET요청을 한다.
-                    }
-                  });
-                  // this.setState({ searchMsgs: searchArr });
-                });
-                // console.log(searchArr);
-                this.setState(() => ({ searchMsgs: searchArr }));
-                console.log("찾은 뒤 STATE", this.state);
-              },
-              e => {
-                this.showModal(e);
-              })
-            }
+            onSearch={async item => {
+              await this.currentMsgs(item);
+              await this.showModal(item);
+            }}
             style={{ width: 200 }}
           />
           <Modal
