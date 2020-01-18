@@ -1,10 +1,11 @@
 import React from "react";
 import { Layout, Row, Col } from "antd";
-import Nav from "./display/nav";
-import InputMsg from "./display/inputMsg";
-import "antd/dist/antd.css";
 import Side from "./sider/Sider";
+import Nav from "./display/nav";
 import MessageList from "./display/MessageList";
+import InputMsg from "./display/inputMsg";
+import Thread from "./display/Thread";
+import "antd/dist/antd.css";
 import axios from "axios";
 
 class MainPage extends React.Component {
@@ -140,6 +141,7 @@ class MainPage extends React.Component {
   render() {
     // console.log(this.state);
     console.log("로그인상태? : ", this.props.isLogin);
+    const { currentWorkspace } = this.props;
     const { msgs, dms, channels, currentDisplay, clickedMsg } = this.state;
     const { Footer, Content } = Layout;
     const {
@@ -147,6 +149,7 @@ class MainPage extends React.Component {
       handleClickProfile,
       makeNoReplyMessage,
       handleClickReplyClose,
+      handleClickMemberList,
     } = this;
 
     return (
@@ -220,71 +223,21 @@ class MainPage extends React.Component {
                 </Footer>
               </Layout>
             </Col>
-            {clickedMsg.length ? (
-              <Col
-                span={9}
-                style={{
-                  backgroundColor: "#eeeeee",
-                  height: "100%",
-                  overflow: "scroll",
-                }}
-              >
-                <Row style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
-                  <Col span={12}>
-                    <Row
-                      style={{
-                        height: "70px",
-                      }}
-                    >
-                      <div style={{ fontSize: "1.5em", fontWeight: "bold" }}>
-                        Thread
-                      </div>
-                      <div>#general</div>
-                    </Row>
-                  </Col>
-                  <Col
-                    style={{
-                      padding: "15px 15px 0 0",
-                      float: "right",
-                      fontSize: "large",
-                    }}
-                  >
-                    <a onClick={handleClickReplyClose}>X</a>
-                  </Col>
-                </Row>
-                <Row style={{ padding: "5px" }}>
-                  {clickedMsg.length ? (
-                    <MessageList
-                      msgs={makeNoReplyMessage(clickedMsg[0])}
-                      //msgs={noReplyClickedMsg}
-                      handleClickReply={handleClickReply}
-                      handleClickProfile={handleClickProfile}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </Row>
-                <Row style={{ padding: "10px" }}>
-                  Reply on this Message : {clickedMsg[0].reply.length}
-                </Row>
-                <Row style={{ padding: "5px" }}>
-                  {clickedMsg.length ? (
-                    <MessageList
-                      msgs={clickedMsg[0].reply}
-                      handleClickReply={handleClickReply}
-                      handleClickProfile={handleClickProfile}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </Row>
-                <Row>
-                  <InputMsg props={this.props} />
-                </Row>
-              </Col>
-            ) : (
-              <div />
-            )}
+            <Col>
+              <div>
+                <Thread
+                  style={clickedMsg.length ? { display: "none" } : ""}
+                  currentWorkspace={currentWorkspace}
+                  currentDisplay={currentDisplay}
+                  clickedMsg={clickedMsg}
+                  makeNoReplyMessage={makeNoReplyMessage}
+                  handleClickReply={handleClickReply}
+                  handleClickReplyClose={handleClickReplyClose}
+                  handleClickProfile={handleClickProfile}
+                  handleClickMemberList={handleClickMemberList}
+                />
+              </div>
+            </Col>
           </Row>
         </div>
       ) : (
