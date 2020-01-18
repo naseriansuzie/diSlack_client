@@ -6,9 +6,12 @@ export default function MemberList(props) {
   const { filteredMembers, handleClickProfile, handleMemberListClose } = props;
   if (filteredMembers && filteredMembers.length) {
     return (
-      <div>
+      <div
+        style={{
+          height: "100%",
+        }}
+      >
         <Col
-          span={9}
           style={{
             backgroundColor: "#eeeeee",
             height: "100%",
@@ -16,12 +19,12 @@ export default function MemberList(props) {
           }}
         >
           <Row>
-            <Col span={12}>
+            <Col span={20}>
               <div style={{ fontSize: "1.5em", fontWeight: "bold" }}>
                 Members in this Channel
               </div>
             </Col>
-            <Col span={12}>
+            <Col span={4}>
               <a
                 style={{ fontSize: "1.5em", fontWeight: "bold" }}
                 onClick={handleMemberListClose}
