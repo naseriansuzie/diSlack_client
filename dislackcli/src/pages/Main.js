@@ -1,12 +1,13 @@
 import React from "react";
+import axios from "axios";
 import { Layout, Row, Col } from "antd";
+import "antd/dist/antd.css";
 import Side from "./sider/Sider";
 import Nav from "./display/nav";
 import MessageList from "./display/MessageList";
 import InputMsg from "./display/inputMsg";
 import Thread from "./display/Thread";
-import "antd/dist/antd.css";
-import axios from "axios";
+import MemberList from "./display/MemberList";
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class MainPage extends React.Component {
     this.state = {
       channels: [],
       dms: [],
-      currentDisplay: null,
+      currentDisplay: null, //<- 객체형식
       //msgs의 res 형식: [{id, user_id, username, createdAt, message, clicked, reply}]
       msgs: [
         {
@@ -43,6 +44,11 @@ class MainPage extends React.Component {
         },
       ],
       clickedMsg: [],
+      memberList: [
+        // { id: 1, name: "test1", email: "test1@test.com" },
+        // { id: 2, name: "test2", email: "test2@test.com" },
+      ], //<- default는 빈 배열형식
+      filteredMembers: [{ id: 1, name: "test1", email: "test1@test.com" }], //<- default는 빈 배열형식
     };
     this.makeNoReplyMessage = this.makeNoReplyMessage.bind(this);
     this.handleClickReply = this.handleClickReply.bind(this);
@@ -88,13 +94,21 @@ class MainPage extends React.Component {
   }
 
   handleClickProfile(userId) {
-    console.log(userId);
-    // Profile style을 none에서 취소하고,
+    console.log("유저 프로필 클릭함", userId);
     // 클릭한 userId 정보를 Profile에 props로 내려줘야 함
   }
 
   handleClickMemberList() {
-    //멤버리스트 스테이트 업데이트
+    let currentId = this.state.currentDisplay.id;
+    let filteredMembers = this.state.memberList.filter(
+      member => member.id === currentId,
+    );
+    console.log("필터된 멤버들 =", filteredMembers);
+    this.setState({ filteredMembers: filteredMembers });
+    //state의 커렌트 디스플레이(객체)의 아이디를 가져와서
+    //state의 멤버리스트를 순회하며
+    //커렌드 디스플레이의 아이디를 가진 멤버를 필터하고
+    //멤버리스트 클릭드를 true로, 필터드 멤버스에 필터한 배열 넣으면서 셋스테이트
   }
 
   // LifeCycle
@@ -142,7 +156,15 @@ class MainPage extends React.Component {
     // console.log(this.state);
     console.log("로그인상태? : ", this.props.isLogin);
     const { currentWorkspace } = this.props;
-    const { msgs, dms, channels, currentDisplay, clickedMsg } = this.state;
+    const {
+      channels,
+      dms,
+      currentDisplay,
+      msgs,
+      clickedMsg,
+      memberList,
+      filteredMembers,
+    } = this.state;
     const { Footer, Content } = Layout;
     const {
       handleClickReply,
@@ -194,7 +216,10 @@ class MainPage extends React.Component {
             <Col span={3} style={{ height: "100%" }}>
               <Side channels={channels} dms={dms} />
             </Col>
-            <Col span={clickedMsg.length ? 12 : 21} style={{ height: "100%" }}>
+            <Col
+              span={clickedMsg.length || filteredMembers ? 12 : 21}
+              style={{ height: "100%" }}
+            >
               <Layout style={{ height: "100%" }}>
                 <Content>
                   {msgs.length ? (
@@ -224,17 +249,22 @@ class MainPage extends React.Component {
               </Layout>
             </Col>
             <Col>
+              <Thread
+                currentWorkspace={currentWorkspace}
+                currentDisplay={currentDisplay}
+                clickedMsg={clickedMsg}
+                makeNoReplyMessage={makeNoReplyMessage}
+                handleClickReply={handleClickReply}
+                handleClickReplyClose={handleClickReplyClose}
+                handleClickProfile={handleClickProfile}
+                handleClickMemberList={handleClickMemberList}
+              />
+            </Col>
+            <Col>
               <div>
-                <Thread
-                  style={clickedMsg.length ? { display: "none" } : ""}
-                  currentWorkspace={currentWorkspace}
-                  currentDisplay={currentDisplay}
-                  clickedMsg={clickedMsg}
-                  makeNoReplyMessage={makeNoReplyMessage}
-                  handleClickReply={handleClickReply}
-                  handleClickReplyClose={handleClickReplyClose}
+                <MemberList
+                  filteredMembers={filteredMembers}
                   handleClickProfile={handleClickProfile}
-                  handleClickMemberList={handleClickMemberList}
                 />
               </div>
             </Col>
