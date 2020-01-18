@@ -16,10 +16,10 @@ export default function MessageEntries(props) {
   return (
     <div id={id}>
       <Row style={{ width: "100%" }}>
-        <Col span={1}>
+        <Col span={1} style={{ padding: "5px 0 5px 5px" }}>
           <Avatar shape="square" size="large" icon="user" />
         </Col>
-        <Col span={22}>
+        <Col span={19} style={{ padding: "5px 0 5px 15px" }}>
           <span>
             <strong>
               <a onClick={handleClickProfile.bind(null, user)}>{username}</a>

@@ -252,7 +252,7 @@ class MainPage extends React.Component {
                     <a onClick={handleClickReplyClose}>X</a>
                   </Col>
                 </Row>
-                <Row style={{ padding: "10px" }}>
+                <Row style={{ padding: "5px" }}>
                   {clickedMsg.length ? (
                     <MessageList
                       msgs={makeNoReplyMessage(clickedMsg[0])}
@@ -267,7 +267,7 @@ class MainPage extends React.Component {
                 <Row style={{ padding: "10px" }}>
                   Reply on this Message : {clickedMsg[0].reply.length}
                 </Row>
-                <Row style={{ padding: "10px" }}>
+                <Row style={{ padding: "5px" }}>
                   {clickedMsg.length ? (
                     <MessageList
                       msgs={clickedMsg[0].reply}
