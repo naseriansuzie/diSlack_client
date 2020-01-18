@@ -16,9 +16,12 @@ export default function Thread(props) {
   console.log("클릭드메시지 =", clickedMsg);
   if (clickedMsg.length) {
     return (
-      <div>
+      <div
+        style={{
+          height: "100%",
+        }}
+      >
         <Col
-          span={9}
           style={{
             backgroundColor: "#eeeeee",
             height: "100%",
