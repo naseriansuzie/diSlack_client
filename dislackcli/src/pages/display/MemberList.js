@@ -1,7 +1,10 @@
 import React from "react";
-import { Row, Col } from "antd";
+import { Button, Row, Col } from "antd";
 import MemberInfo from "./MemberInfo";
 
+function invitePerson() {
+  console.log("invite api를 넣을 예정입니다");
+}
 export default function MemberList(props) {
   const { filteredMembers, handleClickProfile, handleMemberListClose } = props;
   if (filteredMembers && filteredMembers.length) {
@@ -44,19 +47,19 @@ export default function MemberList(props) {
           </Row>
           <Row>
             <Col>
-              {filteredMembers.map((member, i) => {
-                console.log("각 멤버들 정보", member);
-                return (
-                  <Row>
-                    <MemberInfo
-                      key={i}
-                      {...member}
-                      handleClickProfile={handleClickProfile}
-                    />
-                  </Row>
-                );
-              })}
+              <Row>
+                {filteredMembers.map((member, i) => (
+                  <MemberInfo
+                    key={i}
+                    {...member}
+                    handleClickProfile={handleClickProfile}
+                  />
+                ))}
+              </Row>
             </Col>
+          </Row>
+          <Row style={{ padding: "10px" }}>
+            <Button onClick={invitePerson}>Add People</Button>
           </Row>
         </Col>
       </div>
