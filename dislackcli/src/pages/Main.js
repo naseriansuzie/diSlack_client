@@ -8,6 +8,7 @@ import MessageList from "./display/MessageList";
 import InputMsg from "./display/inputMsg";
 import Thread from "./display/Thread";
 import MemberList from "./display/MemberList";
+import UserProfile from "./display/UserProfile";
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -16,35 +17,38 @@ class MainPage extends React.Component {
       channels: [],
       dms: [],
       currentDisplay: null, //<- 객체형식으로 나중에 채워짐
-      //msgs의 res 형식: [{id, user_id, username, createdAt, message, clicked, reply}]
+      //msgs의 res 형식: [{id, user:{id, name, email}, createdAt, updatedAt, message, clicked, replyCount}]
       msgs: [
         //<- 현재는 mock data, default는 빈 배열 형식
         {
           id: 1,
-          user_id: 1,
-          username: "test1",
-          createdAt: "2020-01-17 06:58:47",
           message: "안녕하세요",
+          createdAt: "2020-01-18T14:09:14.000Z",
+          updatedAt: "2020-01-18T14:09:14.000Z",
+          user: {
+            id: 1,
+            name: "test1",
+            email: "test1@test.com",
+          },
+          replyCount: 2,
           clicked: false,
-          reply: [
-            {
-              id: 1,
-              user_id: 2,
-              username: "test2",
-              createdAt: "2020-01-17 07:13:00",
-              message: "반가워요",
-            },
-            {
-              id: 2,
-              user_id: 1,
-              username: "test1",
-              createdAt: "2020-01-17 06:58:47",
-              message: "HELLO:)",
-            },
-          ],
+        },
+        {
+          id: 2,
+          message: "Hello",
+          createdAt: "2020-01-18T14:09:15.000Z",
+          updatedAt: "2020-01-18T14:09:15.000Z",
+          user: {
+            id: 1,
+            name: "test2",
+            email: "test2@test.com",
+          },
+          replyCount: 0,
+          clicked: false,
         },
       ],
       clickedMsg: [],
+      replies: [], //객체 형태 {id, reply, createdAt, user:{id, name, email}}
       memberList: [
         //<- 현재는 mock data, default는 빈 배열 형식
         { id: 1, name: "test1", email: "test1@test.com" },
@@ -55,10 +59,11 @@ class MainPage extends React.Component {
     };
     this.makeNoReplyMessage = this.makeNoReplyMessage.bind(this);
     this.handleClickReply = this.handleClickReply.bind(this);
-    this.handleClickReplyClose = this.handleClickReplyClose.bind(this);
-    this.handleClickProfile = this.handleClickProfile.bind(this);
+    this.handleReplyClose = this.handleReplyClose.bind(this);
     this.handleClickMemberList = this.handleClickMemberList.bind(this);
     this.handleMemberListClose = this.handleMemberListClose.bind(this);
+    this.handleClickProfile = this.handleClickProfile.bind(this);
+    this.handleProfileClose = this.handleProfileClose.bind(this);
   }
 
   // Methods
@@ -70,33 +75,43 @@ class MainPage extends React.Component {
     }
     newMessageArr.push(obj);
     newMessageArr.map(message => {
-      delete message.reply;
+      delete message.replyCount;
       return message;
     });
     return newMessageArr;
   }
 
   handleClickReply(msgId) {
-    this.setState({
-      msgs: this.state.msgs.map(msg => {
-        if (msg.id === msgId) {
-          msg.clicked = true;
-        }
-        return msg;
-      }),
-      filteredMembers: null,
-      clickedUser: null,
-    });
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${currentDisplay.id}/${msgId}`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res =>
+        this.setState({
+          msgs: this.state.msgs.map(msg => {
+            if (msg.id === msgId) {
+              msg.clicked = true;
+            }
+            return msg;
+          }),
+          replies: res.data,
+          filteredMembers: null,
+          clickedUser: null,
+        }),
+      );
   }
 
-  handleClickReplyClose() {
+  handleReplyClose() {
     const renewMsgs = this.state.msgs.map(msg => {
       if (msg.clicked) {
         msg.clicked = false;
       }
       return msg;
     });
-    this.setState({ clickedMsg: [], msgs: renewMsgs });
+    this.setState({ msgs: renewMsgs, clickedMsg: [], replies: [] });
   }
 
   handleClickMemberList() {
@@ -206,18 +221,19 @@ class MainPage extends React.Component {
       currentDisplay,
       msgs,
       clickedMsg,
-      memberList,
+      replies,
       filteredMembers,
       clickedUser,
     } = this.state;
     const { Footer, Content } = Layout;
     const {
-      handleClickReply,
-      handleClickProfile,
       makeNoReplyMessage,
-      handleClickReplyClose,
+      handleClickReply,
+      handleReplyClose,
       handleClickMemberList,
       handleMemberListClose,
+      handleClickProfile,
+      handleProfileClose,
     } = this;
 
     return (
@@ -307,9 +323,10 @@ class MainPage extends React.Component {
                   currentWorkspace={currentWorkspace}
                   currentDisplay={currentDisplay}
                   clickedMsg={clickedMsg}
+                  replies={replies}
                   makeNoReplyMessage={makeNoReplyMessage}
                   handleClickReply={handleClickReply}
-                  handleClickReplyClose={handleClickReplyClose}
+                  handleReplyClose={handleReplyClose}
                   handleClickProfile={handleClickProfile}
                   handleClickMemberList={handleClickMemberList}
                 />
@@ -320,7 +337,11 @@ class MainPage extends React.Component {
                   handleMemberListClose={handleMemberListClose}
                 />
               ) : clickedUser ? (
-                <Row>User 컴포넌트</Row>
+                <UserProfile
+                  clickedUser={clickedUser}
+                  handleProfileClose={handleProfileClose}
+                  // dm 생성 함수 부분도 나중에 props로 내리기
+                />
               ) : (
                 <Row></Row>
               )}

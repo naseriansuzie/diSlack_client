@@ -8,9 +8,10 @@ export default function Thread(props) {
     currentWorkspace,
     currentDisplay,
     clickedMsg,
+    replies,
     makeNoReplyMessage,
     handleClickReply,
-    handleClickReplyClose,
+    handleReplyClose,
     handleClickProfile,
   } = props;
   console.log("클릭드메시지 =", clickedMsg);
@@ -48,7 +49,7 @@ export default function Thread(props) {
                 fontSize: "large",
               }}
             >
-              <a onClick={handleClickReplyClose}>X</a>
+              <a onClick={handleReplyClose}>X</a>
             </Col>
           </Row>
           <Row style={{ padding: "5px" }}>
@@ -68,7 +69,7 @@ export default function Thread(props) {
           <Row style={{ padding: "5px" }}>
             {clickedMsg.length ? (
               <MessageList
-                msgs={clickedMsg[0].reply}
+                msgs={replies}
                 handleClickReply={handleClickReply}
                 handleClickProfile={handleClickProfile}
               />
