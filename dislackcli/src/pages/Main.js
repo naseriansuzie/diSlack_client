@@ -14,16 +14,57 @@ class MainPage extends React.Component {
       channels: [],
       dms: [],
       currentDisplay: null,
-      //[{user_id, username, createdAt, message, reply}]
-      msgs: [{id:1, user_id : 1, username: 'test1', createdAt:"2020-01-17 06:58:47", message:"안녕하세요",clicked:false ,reply:[{id:1,user_id : 2, username: 'test2', createdAt:"2020-01-17 07:13:00", message:"반가워요"},{id:2,user_id : 1, username: 'test1', createdAt:"2020-01-17 06:58:47", message:"HELLO:)"}]}],
+      //msgs의 res 형식: [{id, user_id, username, createdAt, message, clicked, reply}]
+      msgs: [
+        {
+          id: 1,
+          user_id: 1,
+          username: "test1",
+          createdAt: "2020-01-17 06:58:47",
+          message: "안녕하세요",
+          clicked: false,
+          reply: [
+            {
+              id: 1,
+              user_id: 2,
+              username: "test2",
+              createdAt: "2020-01-17 07:13:00",
+              message: "반가워요",
+            },
+            {
+              id: 2,
+              user_id: 1,
+              username: "test1",
+              createdAt: "2020-01-17 06:58:47",
+              message: "HELLO:)",
+            },
+          ],
+        },
+      ],
       clickedMsg: [],
     };
+    this.makeNoReplyMessage = this.makeNoReplyMessage.bind(this);
     this.handleClickReply = this.handleClickReply.bind(this);
-    this.handleClickProfile = this.handleClickProfile.bind(this);
     this.handleClickReplyClose = this.handleClickReplyClose.bind(this);
+    this.handleClickProfile = this.handleClickProfile.bind(this);
+    this.handleClickMemberList = this.handleClickMemberList.bind(this);
   }
 
   // Methods
+  makeNoReplyMessage(messageObj) {
+    const newMessageArr = [];
+    const obj = {};
+    for (const key in messageObj) {
+      obj[key] = messageObj[key];
+    }
+    newMessageArr.push(obj);
+    newMessageArr.map(message => {
+      delete message.reply;
+      return message;
+    });
+    return newMessageArr;
+  }
+
   handleClickReply(msgId) {
     this.setState({
       msgs: this.state.msgs.map(msg => {
@@ -33,12 +74,6 @@ class MainPage extends React.Component {
         return msg;
       }),
     });
-  }
-
-  handleClickProfile(userId) {
-    console.log(userId);
-    // Profile style을 none에서 취소하고,
-    // 클릭한 userId 정보를 Profile에 props로 내려줘야 함
   }
 
   handleClickReplyClose() {
@@ -51,30 +86,45 @@ class MainPage extends React.Component {
     this.setState({ clickedMsg: [], msgs: renewMsgs });
   }
 
+  handleClickProfile(userId) {
+    console.log(userId);
+    // Profile style을 none에서 취소하고,
+    // 클릭한 userId 정보를 Profile에 props로 내려줘야 함
+  }
+
+  handleClickMemberList() {
+    //멤버리스트 스테이트 업데이트
+  }
 
   // LifeCycle
   async componentDidMount() {
     // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
-    await axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,{
-      withCredentials: true, // 쿠키전달
-    })
-    .then(res => {
-      this.setState({channels: res.data , currentDisplay:res.data[0]})
-    })
+    await axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        this.setState({ channels: res.data, currentDisplay: res.data[0] });
+      });
 
-    await axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${this.state.currentDisplay.id}/list`,{
-      withCredentials: true, // 쿠키전달
-    })
-    .then(res => {
-      console.log("채널에 메시지 겟요청",res)
-      if( res.data.length !== 0) {
-        this.setState({msgs: res.data})
-      } else {
-        console.log("메세지가 비어있습니다.")
-      }
-    })
-
-  
+    await axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${this.state.currentDisplay.id}/list`,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        console.log("채널에 메시지 겟요청", res);
+        if (res.data.length !== 0) {
+          this.setState({ msgs: res.data });
+        } else {
+          console.log("메세지가 비어있습니다.");
+        }
+      });
   }
 
   componentDidUpdate() {
@@ -95,20 +145,10 @@ class MainPage extends React.Component {
     const {
       handleClickReply,
       handleClickProfile,
+      makeNoReplyMessage,
       handleClickReplyClose,
     } = this;
-    const noReplyClickedMsg = [];
-    for (const msg of clickedMsg) {
-      const obj = {};
-      for (const key in msg) {
-        obj[key] = msg[key];
-      }
-      noReplyClickedMsg.push(obj);
-    }
-    noReplyClickedMsg.map(msg => {
-      delete msg.replies;
-      return msg;
-    });
+
     return (
       // 로그인 뿐만 채널 or 디엠 null
       this.props.isLogin &&
@@ -173,7 +213,10 @@ class MainPage extends React.Component {
                     padding: 0,
                   }}
                 >
-                  <InputMsg props={this.props} currentDisplay={this.state.currentDisplay}/>
+                  <InputMsg
+                    props={this.props}
+                    currentDisplay={this.state.currentDisplay}
+                  />
                 </Footer>
               </Layout>
             </Col>
@@ -212,7 +255,8 @@ class MainPage extends React.Component {
                 <Row style={{ padding: "10px" }}>
                   {clickedMsg.length ? (
                     <MessageList
-                      msgs={noReplyClickedMsg}
+                      msgs={makeNoReplyMessage(clickedMsg[0])}
+                      //msgs={noReplyClickedMsg}
                       handleClickReply={handleClickReply}
                       handleClickProfile={handleClickProfile}
                     />
@@ -221,7 +265,7 @@ class MainPage extends React.Component {
                   )}
                 </Row>
                 <Row style={{ padding: "10px" }}>
-                  Reply : {clickedMsg[0].reply.length}
+                  Reply on this Message : {clickedMsg[0].reply.length}
                 </Row>
                 <Row style={{ padding: "10px" }}>
                   {clickedMsg.length ? (
@@ -244,6 +288,7 @@ class MainPage extends React.Component {
           </Row>
         </div>
       ) : (
+        // loading state
         <div>Loading...</div>
       )
     );
