@@ -54,8 +54,8 @@ class MainPage extends React.Component {
         { id: 1, name: "test1", email: "test1@test.com" },
         { id: 2, name: "test2", email: "test2@test.com" },
       ],
-      filteredMembers: null,
-      clickedUser: null,
+      filteredMembers: null, //배열 안에 객체 형식
+      clickedUser: null, //객체 형식
     };
     this.makeNoReplyMessage = this.makeNoReplyMessage.bind(this);
     this.handleClickReply = this.handleClickReply.bind(this);
@@ -84,7 +84,7 @@ class MainPage extends React.Component {
   handleClickReply(msgId) {
     axios
       .get(
-        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${currentDisplay.id}/${msgId}`,
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/${msgId}`,
         {
           withCredentials: true,
         },
