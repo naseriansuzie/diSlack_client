@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Icon, Input, Modal } from "antd";
+import { Row, Col, Icon, Input, Modal, Button } from "antd";
 
 const { Search } = Input;
 
@@ -37,7 +37,7 @@ class Nav extends React.Component {
   };
 
   render() {
-    const { channels, msgs, isLogin } = this.props;
+    const { channels, msgs, isLogin, handleClickMemberList } = this.props;
     // const { userInfo } = this.props.props;
     // console.log("NAV_PROPS : ", this.props);
     // console.log(msgs);
@@ -51,6 +51,7 @@ class Nav extends React.Component {
             // 로그인 되어 있으면 #2ecc71 || #bdc3c7
             style={{ fontSize: "20px", marginLeft: "1%", color: "#2ecc71" }}
           />
+          <Button onClick={handleClickMemberList}>member</Button>
         </Col>
         <Col span={8} />
         <Col span={8}>
