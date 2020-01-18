@@ -81,7 +81,7 @@ class AllWorkSpace extends React.Component {
                     fontSize: "2em",
                   }}
                 >
-                  All Workspace
+                  Other Workspace
                 </Row>
                 <Row style={{ padding: "10px" }}>
                   Choose a Workspace you want to join
@@ -110,7 +110,19 @@ class AllWorkSpace extends React.Component {
           </div>
         </Col>
       ) : (
-        <div>Loading</div>
+        <div>
+          {" "}
+          <Row
+            style={{
+              padding: "10px",
+              fontWeight: "bold",
+              fontSize: "2em",
+            }}
+          >
+            Other Workspace
+          </Row>
+          <Row style={{ padding: "10px" }}>There is no other workspace.</Row>
+        </div>
       )
     ) : (
       <div>
