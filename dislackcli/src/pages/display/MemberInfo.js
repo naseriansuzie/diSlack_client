@@ -6,7 +6,7 @@ export default function MemberInfo(props) {
   return (
     <div id={`member${id}`} onClick={handleClickProfile}>
       <Col span={2}>
-        <Avatar shape="square" size="small" icon="user" />
+        <Avatar src="https://cdn0.iconfinder.com/data/icons/free-social-media-set/24/discord-512.png" />
       </Col>
       <Col>
         <Row>
