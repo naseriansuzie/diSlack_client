@@ -3,7 +3,7 @@ import { Row, Col } from "antd";
 import MemberInfo from "./MemberInfo";
 
 export default function MemberList(props) {
-  const { filteredMembers, handleClickProfile } = props;
+  const { filteredMembers, handleClickProfile, handleMemberListClose } = props;
   if (filteredMembers && filteredMembers.length) {
     return (
       <div>
@@ -15,18 +15,42 @@ export default function MemberList(props) {
             overflow: "scroll",
           }}
         >
-          <Row>Members in this Channel</Row>
-          <Row>Member : {filteredMembers.length}</Row>
+          <Row>
+            <Col span={12}>
+              <div style={{ fontSize: "1.5em", fontWeight: "bold" }}>
+                Members in this Channel
+              </div>
+            </Col>
+            <Col span={12}>
+              <a
+                style={{ fontSize: "1.5em", fontWeight: "bold" }}
+                onClick={handleMemberListClose}
+              >
+                X
+              </a>
+            </Col>
+          </Row>
+          <Row
+            style={{
+              fontSize: "1em",
+              fontWeight: "bold",
+              padding: "10px 0 10px 0",
+            }}
+          >
+            Member : {filteredMembers.length}
+          </Row>
           <Row>
             <Col>
               {filteredMembers.map((member, i) => {
                 console.log("각 멤버들 정보", member);
                 return (
-                  <MemberInfo
-                    key={i}
-                    {...member}
-                    handleClickProfile={handleClickProfile}
-                  />
+                  <Row>
+                    <MemberInfo
+                      key={i}
+                      {...member}
+                      handleClickProfile={handleClickProfile}
+                    />
+                  </Row>
                 );
               })}
             </Col>

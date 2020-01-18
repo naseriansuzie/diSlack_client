@@ -45,8 +45,8 @@ class MainPage extends React.Component {
       ],
       clickedMsg: [],
       memberList: [
-        // { id: 1, name: "test1", email: "test1@test.com" },
-        // { id: 2, name: "test2", email: "test2@test.com" },
+        { id: 1, name: "test1", email: "test1@test.com" },
+        { id: 2, name: "test2", email: "test2@test.com" },
       ], //<- default는 빈 배열형식
       filteredMembers: [{ id: 1, name: "test1", email: "test1@test.com" }], //<- default는 빈 배열형식
     };
@@ -55,6 +55,7 @@ class MainPage extends React.Component {
     this.handleClickReplyClose = this.handleClickReplyClose.bind(this);
     this.handleClickProfile = this.handleClickProfile.bind(this);
     this.handleClickMemberList = this.handleClickMemberList.bind(this);
+    this.handleMemberListClose = this.handleMemberListClose.bind(this);
   }
 
   // Methods
@@ -109,6 +110,10 @@ class MainPage extends React.Component {
     //state의 멤버리스트를 순회하며
     //커렌드 디스플레이의 아이디를 가진 멤버를 필터하고
     //멤버리스트 클릭드를 true로, 필터드 멤버스에 필터한 배열 넣으면서 셋스테이트
+  }
+
+  handleMemberListClose() {
+    this.setState({ filteredMembers: null });
   }
 
   // LifeCycle
@@ -172,6 +177,7 @@ class MainPage extends React.Component {
       makeNoReplyMessage,
       handleClickReplyClose,
       handleClickMemberList,
+      handleMemberListClose,
     } = this;
 
     return (
@@ -248,7 +254,7 @@ class MainPage extends React.Component {
                 </Footer>
               </Layout>
             </Col>
-            <Col>
+            <Col style={{ height: "100%" }}>
               <Thread
                 currentWorkspace={currentWorkspace}
                 currentDisplay={currentDisplay}
@@ -261,12 +267,11 @@ class MainPage extends React.Component {
               />
             </Col>
             <Col>
-              <div>
-                <MemberList
-                  filteredMembers={filteredMembers}
-                  handleClickProfile={handleClickProfile}
-                />
-              </div>
+              <MemberList
+                filteredMembers={filteredMembers}
+                handleClickProfile={handleClickProfile}
+                handleMemberListClose={handleMemberListClose}
+              />
             </Col>
           </Row>
         </div>
