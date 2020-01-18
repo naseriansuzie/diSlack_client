@@ -2,10 +2,9 @@ import React from "react";
 import { Avatar, Row, Col } from "antd";
 
 export default function MessageEntries(props) {
-  // console.log(("메세지엔트리": props));
   const {
     id,
-    user,
+    user_id,
     username,
     time,
     message,
@@ -22,7 +21,7 @@ export default function MessageEntries(props) {
         <Col span={19} style={{ padding: "5px 0 5px 15px" }}>
           <span>
             <strong>
-              <a onClick={handleClickProfile.bind(null, user)}>{username}</a>
+              <a onClick={handleClickProfile.bind(null, user_id)}>{username}</a>
             </strong>
             &nbsp;&nbsp;&nbsp;
           </span>
