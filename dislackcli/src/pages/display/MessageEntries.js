@@ -16,7 +16,7 @@ export default function MessageEntries(props) {
     <div id={id}>
       <Row style={{ width: "100%" }}>
         <Col span={1} style={{ padding: "5px 0 5px 5px" }}>
-          <Avatar shape="square" size="large" icon="user" />
+          <Avatar src="https://cdn0.iconfinder.com/data/icons/free-social-media-set/24/discord-512.png" />
         </Col>
         <Col span={19} style={{ padding: "5px 0 5px 15px" }}>
           <span>
