@@ -114,6 +114,7 @@ class MainPage extends React.Component {
     this.setState({ msgs: renewMsgs, clickedMsg: [], replies: [] });
   }
 
+
   handleClickMemberList() {
     let currentId = this.state.currentDisplay.id;
     let filteredMembers = this.state.memberList.filter(
@@ -274,6 +275,7 @@ class MainPage extends React.Component {
               <Nav
                 msgs={msgs}
                 props={this.props}
+          state={this.state}
                 channels={channels}
                 handleClickMemberList={handleClickMemberList}
               />
