@@ -36,8 +36,7 @@ class MainPage extends React.Component {
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
     this.getCN = this.getCN.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
-    this.clickedChannel = this.clickedChannel.bind(this)
-
+    this.clickedChannel = this.clickedChannel.bind(this);
   }
 
   // Methods
@@ -54,7 +53,7 @@ class MainPage extends React.Component {
     });
     return newMessageArr;
   }
-  
+
   clickedMsgUpdate() {
     const clicked = this.state.msgs.filter(msg => msg.clicked);
     if (clicked.length && this.state.clickedMsg[0] !== clicked[0]) {
@@ -66,36 +65,35 @@ class MainPage extends React.Component {
 
   async clickedChannel(id) {
     console.log("채널이클릭되었습니다 : ", id);
-    let allCN = this.state.channels
+    let allCN = this.state.channels;
     let findCN = allCN.filter(val => {
-      if(val.id === id) {
-        return val
-      }
-    })
-    await this.setState({currentDisplay: findCN[0] , msgs:[]})
-
-    await axios
-    // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
-    .get(
-      `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
-      {
-        withCredentials: true, // 쿠키전달
-      },
-    )
-    .then(res => {
-      console.log("채널에 메시지 겟요청", res);
-      if (res.data.length !== 0) {
-        this.setState({ msgs: res.data });
-      } else {
-        console.log("메세지가 비어있습니다.");
+      if (val.id === id) {
+        return val;
       }
     });
-    
-  };
+    await this.setState({ currentDisplay: findCN[0], msgs: [] });
 
-  setCurrentDisPlay = (e) => {
-    console.log(e)
+    await axios
+      // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        console.log("채널에 메시지 겟요청", res);
+        if (res.data.length !== 0) {
+          this.setState({ msgs: res.data });
+        } else {
+          console.log("메세지가 비어있습니다.");
+        }
+      });
   }
+
+  setCurrentDisPlay = e => {
+    console.log(e);
+  };
 
   handleClickReply(msgId) {
     axios
@@ -119,9 +117,8 @@ class MainPage extends React.Component {
         }),
       )
       .catch(err => {
-        console.log("새로고침에러4")
-        console.log(err)
-
+        console.log("새로고침에러4");
+        console.log(err);
       });
   }
 
@@ -137,10 +134,9 @@ class MainPage extends React.Component {
 
   handleClickMemberList() {
     this.handleReplyClose();
-    // 코드/currentDisplay.id/user/list 이런식으로 하는 api get 해와서
-    // 아래 setstate 추가 -> filteredMembers: res.data
+    // 현재는 모든 채널이 public이라서 workspace member === channel member라고 함
     this.setState({
-      filteredMembers: [this.state.currentDisplay],
+      filteredMembers: this.state.memberList,
       clickedUser: null,
     });
   }
@@ -180,26 +176,8 @@ class MainPage extends React.Component {
   }
 
   // 워크스페이스 아이디로 채널불러오는 api요청
-  getCN =()=> {
-     axios
-        .get(
-          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
-          {
-            withCredentials: true, // 쿠키전달
-          },
-        )
-        .then(res => {
-          console.log("채널받아오는 API",res)
-          this.setState({ channels: res.data, currentDisplay: res.data[0] });
-        });
-  }
-
-  // LifeCycle
-  async componentDidMount() {
-    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
-    // try {
-    try {
-      await axios
+  getCN = () => {
+    axios
       .get(
         `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
         {
@@ -207,9 +185,27 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        console.log("채널받아오는 API",res)
+        console.log("채널받아오는 API", res);
         this.setState({ channels: res.data, currentDisplay: res.data[0] });
       });
+  };
+
+  // LifeCycle
+  async componentDidMount() {
+    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
+    // try {
+    try {
+      await axios
+        .get(
+          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
+          {
+            withCredentials: true, // 쿠키전달
+          },
+        )
+        .then(res => {
+          console.log("채널받아오는 API", res);
+          this.setState({ channels: res.data, currentDisplay: res.data[0] });
+        });
 
       await axios
         // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
@@ -241,20 +237,20 @@ class MainPage extends React.Component {
           this.setState({ memberList: res.data });
         });
     } catch (err) {
-      console.log("새로고침에러5")
+      console.log("새로고침에러5");
       console.log(err);
       axios
-      .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
-        withCredentials: true,
-      })
-      .then(result => {
-        console.log("로그아웃 결과", result);
-        this.setState({ isLogin: false });
-      })
-      .catch(err => {
-        console.log("새로고침에러3");
-        console.log(err);
-      });
+        .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
+          withCredentials: true,
+        })
+        .then(result => {
+          console.log("로그아웃 결과", result);
+          this.setState({ isLogin: false });
+        })
+        .catch(err => {
+          console.log("새로고침에러3");
+          console.log(err);
+        });
     }
   }
 
@@ -339,7 +335,12 @@ class MainPage extends React.Component {
           </Row>
           <Row style={{ width: "1600px", height: "744px" }}>
             <Col span={3} style={{ height: "100%" }}>
-              <Side channels={channels} dms={dms} currentWorkspace={currentWorkspace} clickedChannel={this.clickedChannel} />
+              <Side
+                channels={channels}
+                dms={dms}
+                currentWorkspace={currentWorkspace}
+                clickedChannel={this.clickedChannel}
+              />
             </Col>
             <Col
               span={
