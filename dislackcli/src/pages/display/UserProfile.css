@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap");
+
+.User-container {
+  height: 100%;
+}
+
+.User-scroll {
+  height: 100%;
+  overflow: scroll;
+}
+
+.User-back-color {
+  background-color: #f8f8f8;
+}
+
+.User-center {
+  text-align: center;
+}
+
+.User-header-col {
+  font-size: 1.5em;
+}
+
+.User-title {
+  color: #1d1c1d;
+  font-weight: bold;
+}
+.User-X {
+  color: #5e5e5e;
+}
+
+.User-img-size {
+  max-width: 100%;
+  height: auto;
+}
+
+.User-btn-display {
+  display: flex;
+  justify-content: center;
+}
+
+.User-btn {
+  width: 90%;
+  height: 40px;
+  font-weight: bold;
+}
+
+.User-text {
+  color: #1d1c1d;
+}
+
+.User-pad {
+  padding: 8px 24px 8px 24px;
+}
+
+.User-list-item {
+  color: #606060;
+  padding: 8px 24px 8px 24px;
+}
