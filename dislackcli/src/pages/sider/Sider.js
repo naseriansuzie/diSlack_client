@@ -11,8 +11,9 @@ class Side extends React.Component {
     this.state = {
       current: "1",
       visibleCN: false,
-      visibleDN: false,
-      newName: "",
+      visibleDM: false,
+      newNameCN: "",
+      newNameDM: "",
     };
     this.handleOkCN = this.handleOkCN.bind(this);
     this.handleStateCN = this.handleStateCN.bind(this);
@@ -46,10 +47,9 @@ class Side extends React.Component {
     this.setState({
       visibleCN: false,
     });
-    console.log("채널생성이름", this.state.newName);
+    console.log("채널생성이름", this.state.newNameCN);
     const newCN = {
-      name: this.state.newName,
-      type: "public",
+      name: this.state.newNameCN,
     };
     axios
       .post(
@@ -67,6 +67,31 @@ class Side extends React.Component {
       });
   };
 
+  // DM생성 OK
+  handleOkDM = e => {
+    this.setState({
+      visibleDM: false,
+    });
+    console.log("DM생성이름", this.state.newNameDM);
+    // const newDM = {
+    //   friend_id: friend_id
+    // };
+    // axios
+    //   .post(
+    //     `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/create`,
+    //     newDM,
+    //     {
+    //       withCredentials: true, // 쿠키전달
+    //     },
+    //   )
+    //   .then(res => {
+    //     console.log("채널생성보냄!", res);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+  };
+
   handleCancel = e => {
     console.log(e);
     this.setState({
@@ -81,13 +106,11 @@ class Side extends React.Component {
     });
   };
 
-  clickedChannel = e => {
-    console.log("채널이클릭되었습니다 : ", e);
-  };
+
 
   render() {
     // console.log("SIDER_PROPS", this.props);
-    const { channels, dms } = this.props;
+    const { channels, dms, clickedChannel } = this.props;
     const { current } = this.state;
     return (
       <div style={{ height: "100%" }}>
@@ -124,7 +147,7 @@ class Side extends React.Component {
                 height: "30px",
               }}
               onClick={e => {
-                this.clickedChannel(e);
+                clickedChannel(item.id);
               }}
             >
               <Icon type="container" style={{ marginRight: "3%" }} />

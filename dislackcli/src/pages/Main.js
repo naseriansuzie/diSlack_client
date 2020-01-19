@@ -39,7 +39,9 @@ class MainPage extends React.Component {
     this.handleProfileClose = this.handleProfileClose.bind(this);
     this.handleCreateReply = this.handleCreateReply.bind(this);
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
-    this.getCN = this.getCN.bind(this)
+    this.getCN = this.getCN.bind(this);
+    this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
+    this.clickedChannel = this.clickedChannel.bind(this)
   }
 
   // Methods
@@ -65,6 +67,40 @@ class MainPage extends React.Component {
       });
     }
   }
+
+  async clickedChannel(id) {
+    console.log("채널이클릭되었습니다 : ", id);
+    let allCN = this.state.channels
+    let findCN = allCN.filter(val => {
+      if(val.id === id) {
+        return val
+      }
+    })
+    await this.setState({currentDisplay: findCN[0] , msgs:[]})
+
+    await axios
+    // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
+    .get(
+      `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
+      {
+        withCredentials: true, // 쿠키전달
+      },
+    )
+    .then(res => {
+      console.log("채널에 메시지 겟요청", res);
+      if (res.data.length !== 0) {
+        this.setState({ msgs: res.data });
+      } else {
+        console.log("메세지가 비어있습니다.");
+      }
+    });
+    
+  };
+
+  setCurrentDisPlay = (e) => {
+    console.log(e)
+  }
+
   handleClickReply(msgId) {
     axios
       .get(
@@ -312,7 +348,7 @@ class MainPage extends React.Component {
           </Row>
           <Row style={{ width: "1600px", height: "744px" }}>
             <Col span={3} style={{ height: "100%" }}>
-              <Side channels={channels} dms={dms} currentWorkspace={currentWorkspace} />
+              <Side channels={channels} dms={dms} currentWorkspace={currentWorkspace} clickedChannel={this.clickedChannel} />
             </Col>
             <Col
               span={
