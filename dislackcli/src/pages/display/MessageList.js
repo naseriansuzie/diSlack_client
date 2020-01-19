@@ -17,7 +17,7 @@ export default function MessageList(props) {
     msg.time = dateTime[1].split(":");
     const hour = Number(msg.time[0]) + 9;
     msg.time.splice(0, 1, hour);
-    msg.time.join(":");
+    msg.time = msg.time.join(":");
     return msg;
   });
   console.log("메세지리스트 : ", msgs);

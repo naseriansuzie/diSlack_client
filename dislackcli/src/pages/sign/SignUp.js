@@ -25,6 +25,7 @@ class SignUp extends React.Component {
           })
           .then(res => {
             if (res.status === 201) {
+              alert("회원가입에 성공했습니다. 로그인 페이지로 이동합니다!");
               this.setState({ isSignUp: true });
             } else {
               alert("이미 가입한 회원입니다.");
@@ -109,7 +110,9 @@ class SignUp extends React.Component {
     ) : (
       <div>
         <Row>
-          <Col span={24}>header</Col>
+          <Col span={24} style={{ color: "white" }}>
+            header
+          </Col>
         </Row>
         <Row>
           <Col span={4} />
@@ -195,7 +198,9 @@ class SignUp extends React.Component {
           <Col span={4} />
         </Row>
         <Row>
-          <Col span={24}>footer</Col>
+          <Col span={24} style={{ color: "white" }}>
+            footer
+          </Col>
         </Row>
       </div>
     );
