@@ -5,7 +5,7 @@ export default function MessageList(props) {
   // "2020-01-17 13:59:40"
   // "2020-01-17T04:59:40.000Z"
 
-  const { handleClickReply, handleClickProfile } = props;
+  const { handleClickReply, handleClickProfile, handleCreateReply } = props;
   let { msgs } = props;
   msgs = msgs.map(msg => {
     const dateTime = msg.createdAt
@@ -33,6 +33,7 @@ export default function MessageList(props) {
                 {...msg}
                 handleClickReply={handleClickReply}
                 handleClickProfile={handleClickProfile}
+                handleCreateReply={handleCreateReply}
               />
             );
           })

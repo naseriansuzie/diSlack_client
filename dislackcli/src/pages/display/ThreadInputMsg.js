@@ -2,12 +2,12 @@ import React from "react";
 import { Input, Form } from "antd";
 import axios from "axios";
 
-class InputMsg extends React.Component {
+class ThreadInputMsg extends React.Component {
   constructor(props) {
     super(props);
-    // console.log("INPUT_PROPS", props);
+    console.log("INPUT_PROPS", props);
     this.state = {
-      message: "",
+      reply: "",
     };
     this.deleteInput = this.deleteInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -20,12 +20,13 @@ class InputMsg extends React.Component {
   };
 
   async handleChange(e) {
-    await this.setState({ message: e.target.value });
-    const msg = this.state;
+    await this.setState({ reply: e.target.value });
+    const reply = this.state;
+    ///:code/channelmessage/:id(channel)/:id(message)
     axios
       .post(
-        `${process.env.REACT_APP_DEV_URL}/${this.props.props.currentWorkspace[0].code}/channelmessage/${this.props.currentDisplay.id}`,
-        msg,
+        `${process.env.REACT_APP_DEV_URL}/${this.props.props.currentWorkspace[0].code}/channelmessage/${this.props.currentDisplay.id}/${this.props.props.clickedMsg[0].id}`,
+        reply,
         {
           withCredentials: true, // 쿠키전달
         },
@@ -66,4 +67,4 @@ class InputMsg extends React.Component {
   }
 }
 
-export default InputMsg;
+export default ThreadInputMsg;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "antd";
-import InputMsg from "./inputMsg";
+import ThreadInputMsg from "./ThreadInputMsg";
 import MessageList from "./MessageList";
 
 export default function Thread(props) {
@@ -63,9 +63,13 @@ export default function Thread(props) {
               <div></div>
             )}
           </Row>
+
           <Row style={{ padding: "10px" }}>
-            Reply on this Message : {clickedMsg[0].reply.length}
+            {clickedMsg[0].replyCount
+              ? `Reply on this Message - ${clickedMsg[0].replyCount}`
+              : ""}
           </Row>
+
           <Row style={{ padding: "5px" }}>
             {clickedMsg.length ? (
               <MessageList
@@ -78,7 +82,7 @@ export default function Thread(props) {
             )}
           </Row>
           <Row>
-            <InputMsg props={props} currentDisplay={currentDisplay} />
+            <ThreadInputMsg props={props} currentDisplay={currentDisplay} />
           </Row>
         </Col>
       </div>
