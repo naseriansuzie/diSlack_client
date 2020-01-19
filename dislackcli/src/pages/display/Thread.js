@@ -39,7 +39,7 @@ export default function Thread(props) {
                 <div style={{ fontSize: "1.5em", fontWeight: "bold" }}>
                   Thread
                 </div>
-                <div>#general</div>
+                <div>#{currentDisplay.name}</div>
               </Row>
             </Col>
             <Col

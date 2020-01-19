@@ -6,7 +6,7 @@ export default function MessageList(props) {
   // "2020-01-17T04:59:40.000Z"
 
   const { handleClickReply, handleClickProfile } = props;
-  let { msgs } = props;
+  let { msgs, thread } = props;
   msgs = msgs.map(msg => {
     const dateTime = msg.createdAt
       .split("T")
@@ -28,6 +28,7 @@ export default function MessageList(props) {
           msgs.map((msg, i) => {
             return (
               <MessageEntries
+                thread={thread}
                 key={i}
                 {...msg}
                 handleClickReply={handleClickReply}

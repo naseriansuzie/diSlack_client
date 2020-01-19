@@ -30,7 +30,7 @@ export default function MessageEntries(props) {
           </span>
           <span>{time}</span>
           &nbsp;&nbsp;&nbsp;
-          {message && thread !== undefined ? (
+          {message && thread !== true ? (
             <span>
               <Button onClick={handleClickReply.bind(null, id)}>
                 댓글 달기

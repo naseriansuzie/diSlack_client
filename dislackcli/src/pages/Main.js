@@ -84,14 +84,10 @@ class MainPage extends React.Component {
 
   handleClickMemberList() {
     this.handleReplyClose();
-    let currentId = this.state.currentDisplay.id;
-    let filteredMembers = this.state.memberList.filter(
-      member => member.id === currentId,
-    );
-    console.log("필터된 멤버들 =", filteredMembers);
+    // 코드/currentDisplay.id/user/list 이런식으로 하는 api get 해와서
+    // 아래 setstate 추가 -> filteredMembers: res.data
     this.setState({
-      filteredMembers: filteredMembers,
-      //lickedMsg: [],
+      filteredMembers: [this.state.currentDisplay],
       clickedUser: null,
     });
   }
