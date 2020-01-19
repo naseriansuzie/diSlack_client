@@ -1,10 +1,11 @@
 import React from "react";
 import { Input, Form } from "antd";
+import axios from "axios";
 
 class InputMsg extends React.Component {
   constructor(props) {
     super(props);
-    console.log("INPUT_PROPS", props);
+    // console.log("INPUT_PROPS", props);
     this.state = {
       message: "",
     };
@@ -14,21 +15,25 @@ class InputMsg extends React.Component {
   }
 
   deleteInput = e => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     e.target.value = "";
   };
 
-  handleChange = e => {
-    const { userInfo } = this.props.props;
-    this.setState({
-      user_id: userInfo.user_id,
-      name: userInfo.name,
-      email: userInfo.email,
-      message: e.target.value,
-    });
-    // state를 객체로 만들어 서버에 POST한다.
-    // console.log("핸들체인지E", e.target.value);
-  };
+  async handleChange(e) {
+    await this.setState({ message: e.target.value });
+    const msg = this.state;
+    axios
+      .post(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.props.currentWorkspace[0].code}/${this.props.currentDisplay.id}`,
+        msg,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        // console.log(res); app.js의 네임을 쓴다
+      });
+  }
 
   enterClick = e => {
     if (e.key === "Enter") {
@@ -42,9 +47,7 @@ class InputMsg extends React.Component {
   };
 
   render() {
-    // const { userInfo } = this.props.props;
-    // console.log(userInfo);
-
+    // console.log("인풋메시지_프롭스", this.props);
     return (
       <div style={{ margin: "1%" }}>
         <Form style={{ height: "50px" }}>
