@@ -2,7 +2,7 @@ import ReactDOM from "react-router-dom";
 import React from "react";
 import { Button, Modal, Form, Input, Radio } from "antd";
 
-const PlusChannel = Form.create({ name: "form_in_modal" })(
+const PlusDM = Form.create({ name: "form_in_modal" })(
   // eslint-disable-next-line
   class extends React.Component {
     constructor(props) {
@@ -52,4 +52,4 @@ const PlusChannel = Form.create({ name: "form_in_modal" })(
   },
 );
 
-export default PlusChannel;
+export default PlusDM;
