@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Row, Col } from "antd";
+import { Avatar, Row, Col, Button } from "antd";
 
 export default function MessageEntries(props) {
   const {
@@ -11,6 +11,7 @@ export default function MessageEntries(props) {
     replyCount,
     handleClickReply,
     handleClickProfile,
+    handleCreateReply,
   } = props;
   return (
     <div id={id}>
@@ -28,6 +29,10 @@ export default function MessageEntries(props) {
             &nbsp;&nbsp;&nbsp;
           </span>
           <span>{time}</span>
+          &nbsp;&nbsp;&nbsp;
+          <span>
+            <Button onClick={handleClickReply.bind(null, id)}>댓글 달기</Button>
+          </span>
           <div>{message ? message : reply}</div>
           {replyCount && replyCount > 0 ? (
             <div>

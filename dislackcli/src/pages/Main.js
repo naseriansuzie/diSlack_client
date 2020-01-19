@@ -20,42 +20,15 @@ class MainPage extends React.Component {
       //msgs의 res 형식: [{id, user:{id, name, email}, createdAt, updatedAt, message, clicked, replyCount}]
       msgs: [
         //<- 현재는 mock data, default는 빈 배열 형식
-        {
-          id: 1,
-          message: "안녕하세요",
-          createdAt: "2020-01-18T14:09:14.000Z",
-          updatedAt: "2020-01-18T14:09:14.000Z",
-          user: {
-            id: 1,
-            name: "test1",
-            email: "test1@test.com",
-          },
-          replyCount: 2,
-          clicked: false,
-        },
-        {
-          id: 2,
-          message: "Hello",
-          createdAt: "2020-01-18T14:09:15.000Z",
-          updatedAt: "2020-01-18T14:09:15.000Z",
-          user: {
-            id: 1,
-            name: "test2",
-            email: "test2@test.com",
-          },
-          replyCount: 0,
-          clicked: false,
-        },
       ],
       clickedMsg: [],
       replies: [], //객체 형태 {id, reply, createdAt, user:{id, name, email}}
       memberList: [
         //<- 현재는 mock data, default는 빈 배열 형식
-        { id: 1, name: "test1", email: "test1@test.com" },
-        { id: 2, name: "test2", email: "test2@test.com" },
       ],
       filteredMembers: null, //배열 안에 객체 형식
       clickedUser: null, //객체 형식
+      createdReply: false,
     };
     this.makeNoReplyMessage = this.makeNoReplyMessage.bind(this);
     this.handleClickReply = this.handleClickReply.bind(this);
@@ -64,6 +37,8 @@ class MainPage extends React.Component {
     this.handleMemberListClose = this.handleMemberListClose.bind(this);
     this.handleClickProfile = this.handleClickProfile.bind(this);
     this.handleProfileClose = this.handleProfileClose.bind(this);
+    this.handleCreateReply = this.handleCreateReply.bind(this);
+    this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
   }
 
   // Methods
@@ -81,10 +56,18 @@ class MainPage extends React.Component {
     return newMessageArr;
   }
 
+  clickedMsgUpdate() {
+    const clicked = this.state.msgs.filter(msg => msg.clicked);
+    if (clicked.length && this.state.clickedMsg[0] !== clicked[0]) {
+      this.setState({
+        clickedMsg: clicked,
+      });
+    }
+  }
   handleClickReply(msgId) {
     axios
       .get(
-        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/${msgId}`,
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/${msgId}/list`,
         {
           withCredentials: true,
         },
@@ -97,11 +80,12 @@ class MainPage extends React.Component {
             }
             return msg;
           }),
-          replies: res.data,
+          //replies: res.data,
           filteredMembers: null,
           clickedUser: null,
         }),
-      );
+      )
+      .catch(err => console.log(err));
   }
 
   handleReplyClose() {
@@ -113,7 +97,6 @@ class MainPage extends React.Component {
     });
     this.setState({ msgs: renewMsgs, clickedMsg: [], replies: [] });
   }
-
 
   handleClickMemberList() {
     let currentId = this.state.currentDisplay.id;
@@ -154,6 +137,13 @@ class MainPage extends React.Component {
     this.setState({ clickedUser: null });
   }
 
+  handleCreateReply() {
+    this.setState({
+      createdReply: true,
+      clickedUser: null,
+      filteredMembers: null,
+    });
+  }
   // LifeCycle
   async componentDidMount() {
     // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
@@ -169,10 +159,11 @@ class MainPage extends React.Component {
         .then(res => {
           this.setState({ channels: res.data, currentDisplay: res.data[0] });
         });
-      /* api 새로 나오면 적용
+
       await axios
+        // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
         .get(
-          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${this.state.currentDisplay.id}/list`,
+          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
           {
             withCredentials: true, // 쿠키전달
           },
@@ -184,8 +175,9 @@ class MainPage extends React.Component {
           } else {
             console.log("메세지가 비어있습니다.");
           }
-        })
-        */
+        });
+
+      // 멤버리스트 받아오는 api 추가
 
       await axios
         .get(
@@ -225,6 +217,7 @@ class MainPage extends React.Component {
       replies,
       filteredMembers,
       clickedUser,
+      createdReply,
     } = this.state;
     const { Footer, Content } = Layout;
     const {
@@ -235,6 +228,7 @@ class MainPage extends React.Component {
       handleMemberListClose,
       handleClickProfile,
       handleProfileClose,
+      handleCreateReply,
     } = this;
 
     return (
@@ -275,7 +269,7 @@ class MainPage extends React.Component {
               <Nav
                 msgs={msgs}
                 props={this.props}
-          state={this.state}
+                state={this.state}
                 channels={channels}
                 handleClickMemberList={handleClickMemberList}
               />
@@ -298,6 +292,7 @@ class MainPage extends React.Component {
                       msgs={msgs}
                       handleClickReply={handleClickReply}
                       handleClickProfile={handleClickProfile}
+                      handleCreateReply={handleCreateReply}
                     />
                   ) : (
                     <div>아직 메시지가 없습니다.</div>
@@ -320,7 +315,7 @@ class MainPage extends React.Component {
               </Layout>
             </Col>
             <Col span={6} style={{ height: "100%" }}>
-              {clickedMsg.length ? (
+              {clickedMsg.length || createdReply ? (
                 <Thread
                   currentWorkspace={currentWorkspace}
                   currentDisplay={currentDisplay}
