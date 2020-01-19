@@ -1,5 +1,6 @@
 import React from "react";
-import { Menu, Icon } from "antd";
+import { Menu, Icon, Modal, Button } from "antd";
+import PlusChannel from "./PlusChannel";
 import "antd/dist/antd.css";
 
 class Side extends React.Component {
@@ -7,11 +8,36 @@ class Side extends React.Component {
     super(props);
     this.state = {
       current: "1",
+      visible: false,
     };
+    this.handleOk = this.handleOk.bind(this);
   }
 
+  // 모달 메소드 (showModal, handleOk, handleCancel)
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  // 채널생성 OK
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+    console.log("채널생성버튼", e);
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
   handleClick = e => {
-    console.log("click ", e);
+    console.log("채널click :", e);
     this.setState({
       current: e.key,
     });
@@ -39,7 +65,16 @@ class Side extends React.Component {
           selectedKeys={[current]}
           mode="inline"
         >
-          <div style={{ marginTop: "5%", marginBottom: "7%" }}>Chanenl</div>
+          <div style={{ marginTop: "5%", marginBottom: "7%" }}>
+            Chanenl{" "}
+            <Icon
+              type="plus-circle"
+              style={{ marginLeft: "3%" }}
+              onClick={e => {
+                this.showModal(e);
+              }}
+            />
+          </div>
 
           {channels.map((item, i) => (
             <Menu.Item
@@ -77,6 +112,18 @@ class Side extends React.Component {
             </Menu.Item>
           ))}
         </Menu>
+
+        {/* 채널생성 모달 */}
+        <Modal
+          title="Create Channel"
+          visible={this.state.visible}
+          onOk={() => {
+            this.handleOk();
+          }}
+          onCancel={this.handleCancel}
+        >
+          <PlusChannel handleOk={this.handleOk} />
+        </Modal>
       </div>
     );
   }
