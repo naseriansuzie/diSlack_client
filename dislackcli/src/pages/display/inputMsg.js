@@ -24,7 +24,7 @@ class InputMsg extends React.Component {
     const msg = this.state;
     axios
       .post(
-        `${process.env.REACT_APP_DEV_URL}/${this.props.props.currentWorkspace[0].code}/${this.props.currentDisplay.id}`,
+        `${process.env.REACT_APP_DEV_URL}/${this.props.props.currentWorkspace[0].code}/channelmessage/${this.props.currentDisplay.id}`,
         msg,
         {
           withCredentials: true, // 쿠키전달
