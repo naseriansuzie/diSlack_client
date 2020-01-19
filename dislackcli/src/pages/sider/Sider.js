@@ -1,42 +1,50 @@
 import React from "react";
+import axios from "axios";
 import { Menu, Icon, Modal, Button } from "antd";
+import PlusDM from "./PlusDM";
 import PlusChannel from "./PlusChannel";
 import "antd/dist/antd.css";
-import axios from "axios";
 
 class Side extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       current: "1",
-      visible: false,
+      visibleCN: false,
+      visibleDN: false,
       newName: "",
     };
-    this.handleOk = this.handleOk.bind(this);
-    this.handleState = this.handleState.bind(this);
+    this.handleOkCN = this.handleOkCN.bind(this);
+    this.handleStateCN = this.handleStateCN.bind(this);
   }
 
   // lifeCycle
   componentDidMount() {}
 
   // 채널명을 적어서 서버에 보내자
-  handleState = item => {
+  handleStateCN = item => {
     this.setState(() => {
       this.setState({ newName: item });
     });
   };
 
   // 모달 메소드 (showModal, handleOk, handleCancel)
-  showModal = () => {
+  showModalCN = () => {
     this.setState({
-      visible: true,
+      visibleCN: true,
+    });
+  };
+
+  showModalDM = () => {
+    this.setState({
+      visibleDM: true,
     });
   };
 
   // 채널생성 OK
-  handleOk = e => {
+  handleOkCN = e => {
     this.setState({
-      visible: false,
+      visibleCN: false,
     });
     console.log("채널생성이름", this.state.newName);
     const newCN = {
@@ -101,7 +109,7 @@ class Side extends React.Component {
               type="plus-circle"
               style={{ marginLeft: "3%" }}
               onClick={e => {
-                this.showModal(e);
+                this.showModalCN(e);
               }}
             />
           </div>
@@ -123,7 +131,17 @@ class Side extends React.Component {
               {item.name}
             </Menu.Item>
           ))}
-          <div style={{ marginTop: "10%", marginBottom: "7%" }}>Dm</div>
+          <div style={{ marginTop: "10%", marginBottom: "7%" }}>
+            Dm{" "}
+            <Icon
+              type="plus-circle"
+              style={{ marginLeft: "3%" }}
+              onClick={e => {
+                this.showModalDM(e);
+              }}
+            />
+          </div>
+
           {dms.map((item, i) => (
             <Menu.Item
               key={i}
@@ -146,15 +164,30 @@ class Side extends React.Component {
         {/* 채널생성 모달 */}
         <Modal
           title="Create Channel"
-          visible={this.state.visible}
+          visible={this.state.visibleCN}
           onOk={() => {
-            this.handleOk();
+            this.handleOkCN();
           }}
           onCancel={this.handleCancel}
         >
           <PlusChannel
-            handleOk={this.handleOk}
-            handleState={this.handleState}
+            handleOkCN={this.handleOkCN}
+            handleState={this.handleStateCN}
+          />
+        </Modal>
+
+        {/* DM 생성 모달 */}
+        <Modal
+          title="Create DM"
+          visible={this.state.visibleDM}
+          onOk={() => {
+            this.handleOkDM();
+          }}
+          onCancel={this.handleCancel}
+        >
+          <PlusDM
+            handleOkDM={this.handleOkDM}
+            handleState={this.handleStateDM}
           />
         </Modal>
       </div>
