@@ -3,6 +3,7 @@ import { Avatar, Row, Col, Button } from "antd";
 
 export default function MessageEntries(props) {
   const {
+    thread,
     id,
     user,
     time,
@@ -11,7 +12,6 @@ export default function MessageEntries(props) {
     replyCount,
     handleClickReply,
     handleClickProfile,
-    handleCreateReply,
   } = props;
   return (
     <div id={id}>
@@ -30,9 +30,15 @@ export default function MessageEntries(props) {
           </span>
           <span>{time}</span>
           &nbsp;&nbsp;&nbsp;
-          <span>
-            <Button onClick={handleClickReply.bind(null, id)}>댓글 달기</Button>
-          </span>
+          {message && thread !== undefined ? (
+            <span>
+              <Button onClick={handleClickReply.bind(null, id)}>
+                댓글 달기
+              </Button>
+            </span>
+          ) : (
+            <span></span>
+          )}
           <div>{message ? message : reply}</div>
           {replyCount && replyCount > 0 ? (
             <div>

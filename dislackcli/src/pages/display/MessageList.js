@@ -5,7 +5,7 @@ export default function MessageList(props) {
   // "2020-01-17 13:59:40"
   // "2020-01-17T04:59:40.000Z"
 
-  const { handleClickReply, handleClickProfile, handleCreateReply } = props;
+  const { handleClickReply, handleClickProfile } = props;
   let { msgs } = props;
   msgs = msgs.map(msg => {
     const dateTime = msg.createdAt
@@ -26,14 +26,12 @@ export default function MessageList(props) {
       <div>
         {msgs ? (
           msgs.map((msg, i) => {
-            console.log("메세지맵핑", msg);
             return (
               <MessageEntries
                 key={i}
                 {...msg}
                 handleClickReply={handleClickReply}
                 handleClickProfile={handleClickProfile}
-                handleCreateReply={handleCreateReply}
               />
             );
           })
