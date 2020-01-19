@@ -9,6 +9,7 @@ import MyWorkSpace from "./pages/workspace/MyWorkSpace";
 import AllWorkSpace from "./pages/workspace/AllWorkSpace";
 import CreateWorkSpace from "./pages/workspace/createWorkSpace";
 import "antd/dist/antd.css";
+import Home from "./components/Home";
 
 class App extends React.Component {
   constructor() {
@@ -95,7 +96,7 @@ class App extends React.Component {
               if (isLogin) {
                 return <Redirect to="/workspace" />;
               }
-              return <Redirect to="/" />;
+              return <Home />;
             }}
           />
           <Route
@@ -158,99 +159,53 @@ class App extends React.Component {
       </div>
     ) : (
       <div className="App">
-        최상위 컴포넌트
-        {this.state.isLogin ? null : <Link to="/signin">로그인</Link>}
-        {this.state.isLogin ? null : <Link to="/signup">회원가입</Link>}
-        <Link to="/workspace">워크스페이스</Link>
-        <Link to="/main">main page</Link>
-        {this.state.isLogin ? (
-          <Button
-            onClick={() => {
-              axios
-                .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
-                  withCredentials: true,
-                })
-                .then(result => {
-                  console.log("로그아웃 결과", result);
-                  this.setState({ isLogin: false });
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
-          >
-            로그아웃
-          </Button>
-        ) : null}
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => {
-              if (isLogin) {
-                return <Redirect to="/workspace" />;
-              }
-              return <Redirect to="/" />;
-            }}
-          />
-          <Route
-            path="/signin"
-            render={() => (
-              <Signin
-                isLogin={this.state.isLogin}
-                getWorkSpace={this.getWorkSpace}
-                updateUserInfo={this.updateUserInfo}
-              />
-            )}
-          />
-          <Route
-            path="/signup"
-            render={() => <SignUp isLogin={this.state.isLogin} />}
-          />
-          <Route
-            path="/workspace"
-            render={() => (
-              <div>
-                <Row>
-                  <Col span={12}>
-                    <MyWorkSpace
-                      isLogin={isLogin}
-                      userInfo={userInfo}
-                      workSpaceList={workSpaceList}
-                      handleClickMyWS={handleClickMyWS}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <AllWorkSpace
-                      isLogin={isLogin}
-                      userInfo={userInfo}
-                      workSpaceList={workSpaceList}
-                      updateWorkspace={updateWorkspace}
-                    />
-                  </Col>
-                </Row>
-                <Row style={{ marginBottom: "20%" }}>
-                  <Col span={8} />
-                  <Col span={8}>
-                    <CreateWorkSpace getWorkSpace={this.getWorkSpace} />
-                  </Col>
-                  <Col span={8} />
-                </Row>
-              </div>
-            )}
-          />
-          <Route
-            path={currentWorkspace ? `/main/tsa4hg5C` : "/"}
-            render={() => (
-              <MainPage
-                isLogin={isLogin}
-                userInfo={userInfo}
-                workSpaceList={workSpaceList}
-                currentWorkspace={currentWorkspace}
-              />
-            )}
-          />
-        </Switch>
+        <Route exact path="/" component={Home} />
+        <Route
+          path="/signin"
+          render={() => (
+            <Signin
+              isLogin={this.state.isLogin}
+              getWorkSpace={this.getWorkSpace}
+              updateUserInfo={this.updateUserInfo}
+            />
+          )}
+        />
+        <Route
+          path="/signup"
+          render={() => <SignUp isLogin={this.state.isLogin} />}
+        />
+        <Route
+          path="/workspace"
+          render={() => (
+            <div>
+              <Row>
+                <Col span={12}>
+                  <MyWorkSpace
+                    isLogin={isLogin}
+                    userInfo={userInfo}
+                    workSpaceList={workSpaceList}
+                    handleClickMyWS={handleClickMyWS}
+                  />
+                </Col>
+                <Col span={12}>
+                  <AllWorkSpace
+                    isLogin={isLogin}
+                    userInfo={userInfo}
+                    workSpaceList={workSpaceList}
+                    updateWorkspace={updateWorkspace}
+                  />
+                </Col>
+              </Row>
+              <Row style={{ marginBottom: "20%" }}>
+                <Col span={8} />
+                <Col span={8}>
+                  <CreateWorkSpace getWorkSpace={this.getWorkSpace} />
+                </Col>
+                <Col span={8} />
+              </Row>
+            </div>
+          )}
+        />
       </div>
     );
   }
