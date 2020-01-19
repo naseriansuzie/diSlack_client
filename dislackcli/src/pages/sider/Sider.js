@@ -2,6 +2,7 @@ import React from "react";
 import { Menu, Icon, Modal, Button } from "antd";
 import PlusChannel from "./PlusChannel";
 import "antd/dist/antd.css";
+import axios from "axios";
 
 class Side extends React.Component {
   constructor(props) {
@@ -9,9 +10,21 @@ class Side extends React.Component {
     this.state = {
       current: "1",
       visible: false,
+      newName: "",
     };
     this.handleOk = this.handleOk.bind(this);
+    this.handleState = this.handleState.bind(this);
   }
+
+  // lifeCycle
+  componentDidMount() {}
+
+  // 채널명을 적어서 서버에 보내자
+  handleState = item => {
+    this.setState(() => {
+      this.setState({ newName: item });
+    });
+  };
 
   // 모달 메소드 (showModal, handleOk, handleCancel)
   showModal = () => {
@@ -22,11 +35,28 @@ class Side extends React.Component {
 
   // 채널생성 OK
   handleOk = e => {
-    console.log(e);
     this.setState({
       visible: false,
     });
-    console.log("채널생성버튼", e);
+    console.log("채널생성이름", this.state.newName);
+    const newCN = {
+      name: this.state.newName,
+      type: "public",
+    };
+    axios
+      .post(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/create`,
+        newCN,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        console.log("채널생성보냄!", res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   handleCancel = e => {
@@ -122,7 +152,10 @@ class Side extends React.Component {
           }}
           onCancel={this.handleCancel}
         >
-          <PlusChannel handleOk={this.handleOk} />
+          <PlusChannel
+            handleOk={this.handleOk}
+            handleState={this.handleState}
+          />
         </Modal>
       </div>
     );

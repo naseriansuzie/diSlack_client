@@ -12,15 +12,8 @@ const PlusChannel = Form.create({ name: "form_in_modal" })(
       };
     }
 
-    // 채널명을 적어서 서버에 보내자
-    handleState = item => {
-      this.setState(() => {
-        this.setState({ name: item });
-      });
-    };
-
     render() {
-      const { visible, onCancel, onCreate, form } = this.props;
+      const { visible, onCancel, onCreate, form, handleState } = this.props;
       const { getFieldDecorator } = form;
       return (
         <Form layout="vertical">
@@ -35,7 +28,7 @@ const PlusChannel = Form.create({ name: "form_in_modal" })(
             })(
               <Input
                 onChange={e => {
-                  this.handleState(e.target.value);
+                  handleState(e.target.value);
                 }}
               />,
             )}

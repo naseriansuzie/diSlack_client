@@ -39,6 +39,7 @@ class MainPage extends React.Component {
     this.handleProfileClose = this.handleProfileClose.bind(this);
     this.handleCreateReply = this.handleCreateReply.bind(this);
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
+    this.getCN = this.getCN.bind(this)
   }
 
   // Methods
@@ -80,12 +81,16 @@ class MainPage extends React.Component {
             }
             return msg;
           }),
-          //replies: res.data,
+          replies: res.data,
           filteredMembers: null,
           clickedUser: null,
         }),
       )
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log("새로고침에러4")
+        console.log(err)
+
+      });
   }
 
   handleReplyClose() {
@@ -144,12 +149,10 @@ class MainPage extends React.Component {
       filteredMembers: null,
     });
   }
-  // LifeCycle
-  async componentDidMount() {
-    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
-    // try {
-    try {
-      await axios
+
+  // 워크스페이스 아이디로 채널불러오는 api요청
+  getCN =()=> {
+     axios
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
           {
@@ -157,8 +160,27 @@ class MainPage extends React.Component {
           },
         )
         .then(res => {
+          console.log("채널받아오는 API",res)
           this.setState({ channels: res.data, currentDisplay: res.data[0] });
         });
+  }
+
+  // LifeCycle
+  async componentDidMount() {
+    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
+    // try {
+    try {
+      await axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        console.log("채널받아오는 API",res)
+        this.setState({ channels: res.data, currentDisplay: res.data[0] });
+      });
 
       await axios
         // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
@@ -191,7 +213,20 @@ class MainPage extends React.Component {
           this.setState({ memberList: res.data });
         });
     } catch (err) {
+      console.log("새로고침에러5")
       console.log(err);
+      axios
+      .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
+        withCredentials: true,
+      })
+      .then(result => {
+        console.log("로그아웃 결과", result);
+        this.setState({ isLogin: false });
+      })
+      .catch(err => {
+        console.log("새로고침에러3");
+        console.log(err);
+      });
     }
   }
 
@@ -277,7 +312,7 @@ class MainPage extends React.Component {
           </Row>
           <Row style={{ width: "1600px", height: "744px" }}>
             <Col span={3} style={{ height: "100%" }}>
-              <Side channels={channels} dms={dms} />
+              <Side channels={channels} dms={dms} currentWorkspace={currentWorkspace} />
             </Col>
             <Col
               span={
