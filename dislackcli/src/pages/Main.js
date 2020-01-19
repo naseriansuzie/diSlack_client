@@ -14,8 +14,50 @@ class MainPage extends React.Component {
       channels: [],
       dms: [],
       currentDisplay: null,
-      //[{user_id, username, createdAt, message, reply}]
-      msgs: [{id:1, user_id : 1, username: 'test1', createdAt:"2020-01-17 06:58:47", message:"안녕하세요",clicked:false ,reply:[{id:1,user_id : 2, username: 'test2', createdAt:"2020-01-17 07:13:00", message:"반가워요"},{id:2,user_id : 1, username: 'test1', createdAt:"2020-01-17 06:58:47", message:"HELLO:)"}]}],
+      msgs: [
+        {
+          id: 1,
+          user_id: 1,
+          username: "test1",
+          createdAt: "2020-01-17 06:58:47",
+          message: "안녕하세요",
+          clicked: false,
+          reply: [
+            {
+              id: 1,
+              user_id: 2,
+              username: "test2",
+              createdAt: "2020-01-17 07:13:00",
+              message: "반가워요",
+            },
+            {
+              id: 2,
+              user_id: 1,
+              username: "test1",
+              createdAt: "2020-01-17 06:58:47",
+              message: "HELLO:)",
+            },
+          ],
+        },
+        {
+          id: 2,
+          user_id: 2,
+          username: "test2",
+          createdAt: "2020-01-17 06:58:47",
+          message: "hello :)",
+          clicked: false,
+          reply: [],
+        },
+        {
+          id: 3,
+          user_id: 3,
+          username: "test3",
+          createdAt: "2020-01-17 06:58:47",
+          message: "안녕하세요 hello :)",
+          clicked: false,
+          reply: [],
+        },
+      ],
       clickedMsg: [],
     };
     this.handleClickReply = this.handleClickReply.bind(this);
@@ -51,30 +93,35 @@ class MainPage extends React.Component {
     this.setState({ clickedMsg: [], msgs: renewMsgs });
   }
 
-
   // LifeCycle
   async componentDidMount() {
     // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
-    await axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,{
-      withCredentials: true, // 쿠키전달
-    })
-    .then(res => {
-      this.setState({channels: res.data , currentDisplay:res.data[0]})
-    })
+    await axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        this.setState({ channels: res.data, currentDisplay: res.data[0] });
+      });
 
-    await axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${this.state.currentDisplay.id}/list`,{
-      withCredentials: true, // 쿠키전달
-    })
-    .then(res => {
-      console.log("채널에 메시지 겟요청",res)
-      if( res.data.length !== 0) {
-        this.setState({msgs: res.data})
-      } else {
-        console.log("메세지가 비어있습니다.")
-      }
-    })
-
-  
+    await axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${this.state.currentDisplay.id}/list`,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        console.log("채널에 메시지 겟요청", res);
+        if (res.data.length !== 0) {
+          this.setState({ msgs: res.data });
+        } else {
+          console.log("메세지가 비어있습니다.");
+        }
+      });
   }
 
   componentDidUpdate() {
@@ -144,7 +191,7 @@ class MainPage extends React.Component {
                 borderWidth: "0.5px",
               }}
             >
-              <Nav msgs={msgs} props={this.props} channels={channels} />
+              <Nav msgs={msgs} state={this.state} channels={channels} />
             </Col>
           </Row>
           <Row style={{ width: "1600px", height: "744px" }}>
@@ -173,7 +220,10 @@ class MainPage extends React.Component {
                     padding: 0,
                   }}
                 >
-                  <InputMsg props={this.props} currentDisplay={this.state.currentDisplay}/>
+                  <InputMsg
+                    props={this.props}
+                    currentDisplay={this.state.currentDisplay}
+                  />
                 </Footer>
               </Layout>
             </Col>
