@@ -20,23 +20,21 @@ export default function MessageList(props) {
     msg.time = msg.time.join(":");
     return msg;
   });
-  console.log("메세지리스트 : ", msgs);
+  // console.log("메세지리스트 : ", msgs);
   return (
     <div>
       <div>
         {msgs ? (
-          msgs.map((msg, i) => {
-            console.log("메세지맵핑", msg);
-            return (
-              <MessageEntries
-                key={i}
-                {...msg}
-                handleClickReply={handleClickReply}
-                handleClickProfile={handleClickProfile}
-                handleCreateReply={handleCreateReply}
-              />
-            );
-          })
+          msgs.map((msg, i) => (
+            // console.log("메세지맵핑", msg);
+            <MessageEntries
+              key={i}
+              {...msg}
+              handleClickReply={handleClickReply}
+              handleClickProfile={handleClickProfile}
+              handleCreateReply={handleCreateReply}
+            />
+          ))
         ) : (
           <h1>No Content</h1>
         )}

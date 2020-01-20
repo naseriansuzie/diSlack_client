@@ -310,6 +310,7 @@ class MainPage extends React.Component {
         <div className="main-container">
           <Row
             style={{
+              height:"50px",
               zIndex: 3,
             }}
           >
@@ -318,8 +319,6 @@ class MainPage extends React.Component {
               style={{
                 height: "100%",
                 backgroundColor: "#400d3f",
-                // borderStyle: "solid",
-                // borderWidth: "0.5px",
               }}
             >
               Side_Header
@@ -330,7 +329,7 @@ class MainPage extends React.Component {
                 height: "100%",
                 backgroundColor: "white",
                 borderColor: "#bdc3c7",
-                borderStyle: "solid",
+                borderBottom: "solid",
                 borderWidth: "0.5px",
                 position:"sticky" ,top: 0 
               }}
