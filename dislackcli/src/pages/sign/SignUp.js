@@ -28,7 +28,6 @@ class SignUp extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // console.log("Received values of form: ", values);
         // ec2 엔드포인트 나오면 URL 업데이트
         axios
           .post(`${process.env.REACT_APP_DEV_URL}/user/signup`, values, {
@@ -42,9 +41,7 @@ class SignUp extends React.Component {
               alert("이미 가입한 회원입니다.");
             }
           })
-          .catch(err => {
-            console.log(err);
-          });
+          .catch(err => {});
       }
     });
   };
@@ -86,38 +83,15 @@ class SignUp extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
 
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
-      },
-    };
-
     if (this.state.isSignUp) {
       return (
         <div>
-          <Redirect to="/signin" />
+          <Redirect to="/" />
         </div>
       );
     }
     return this.props.isLogin ? (
-      <Redirect to="/workspace" />
+      <Redirect to="/" />
     ) : (
       <>
         <div className="signin-header">

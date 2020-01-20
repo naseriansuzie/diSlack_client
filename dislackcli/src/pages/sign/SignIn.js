@@ -20,21 +20,18 @@ class Signin extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
       }
     });
   };
 
   handleInputValue = key => e => {
     this.setState({ [key]: e.target.value });
-    console.log(this.state);
   };
 
   render() {
-    // console.log(this.props.form);
     const { getFieldDecorator } = this.props.form;
     return this.props.isLogin ? (
-      <Redirect to="/workspace" />
+      <Redirect to="/" />
     ) : (
       <>
         <div className="signin-header">
@@ -78,6 +75,8 @@ class Signin extends React.Component {
                   .then(res => {
                     if (res.status === 200) {
                       this.props.updateUserInfo(res.data, this.state.email);
+                      localStorage.setItem("isLogin", true);
+                      localStorage.setItem("userInfo", res.data);
                       return res;
                     }
                     alert("이메일이나 패스워드 확인하세요");
@@ -85,9 +84,7 @@ class Signin extends React.Component {
                   .then(res => {
                     this.props.getWorkSpace();
                   })
-                  .catch(err => {
-                    console.log(err);
-                  });
+                  .catch(err => {});
               }}
             >
               <Form.Item>
@@ -97,7 +94,7 @@ class Signin extends React.Component {
                   ],
                 })(
                   <Input
-                    className="signin-main-1-3-input-1"
+                    className="signin-main-1-3-input-1-1"
                     prefix={<Icon type="user" />}
                     onChange={this.handleInputValue("email")}
                     placeholder="you@example.com"
