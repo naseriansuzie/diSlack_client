@@ -9,6 +9,7 @@ import Thread from "./display/Thread";
 import MemberList from "./display/MemberList";
 import UserProfile from "./display/UserProfile";
 import SiderHeader from "./sider/SiderHeader"
+import socketio from "socket.io-client";
 import "./Main.css";
 // import "antd/dist/antd.css";
 
@@ -39,6 +40,7 @@ class MainPage extends React.Component {
     this.getCN = this.getCN.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
+
   }
 
   // Methods
@@ -75,6 +77,16 @@ class MainPage extends React.Component {
     });
     await this.setState({ currentDisplay: findCN[0], msgs: [] });
 
+    // 채널이 바뀌기 때문에 연결한 웹소켓을 해제
+    this.socket.disconnect();
+    this.socket = socketio.connect("http://localhost:4000/chat");
+    this.socket.on("connect", data => {
+      this.socket.emit("joinchannel", this.state.currentDisplay.id);
+    });
+    this.socket.on("message", data => {
+      const message = JSON.parse(data);
+      this.setState({ msgs: this.state.msgs.concat(message) });
+    });
     await axios
       // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
       .get(
@@ -208,6 +220,15 @@ class MainPage extends React.Component {
         .then(res => {
           console.log("채널받아오는 API", res);
           this.setState({ channels: res.data, currentDisplay: res.data[0] });
+
+          this.socket = socketio.connect("http://localhost:4000/chat");
+          this.socket.on("connect", data => {
+            this.socket.emit("joinchannel", this.state.currentDisplay.id);
+          });
+          this.socket.on("message", data => {
+            const message = JSON.parse(data);
+            this.setState({ msgs: this.state.msgs.concat(message) });
+          });
         });
 
       await axios

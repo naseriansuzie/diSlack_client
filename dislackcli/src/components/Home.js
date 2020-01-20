@@ -2,28 +2,42 @@ import React from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
-import ".././App.css"
+import ".././App.css";
+import Axios from "axios";
 
-const Home = () => {
+const Home = props => {
   return (
     <>
       <div className="app-topBar">
-          <h1 className="app-slackTitle">slack</h1>
-          <div className="app-topMenu">
-            
-              <Link to="/signup" className="app-topMenuOptions">
-                Sign up
-              </Link>
-            
-            
-              <Link to="/signin" className="app-topMenuOptions">
-                Sign in
-              </Link>
-            
-            <Link to="/workspace" className="app-workspace">
-              WORKSPACE
-            </Link>
-          </div>
+        <h1 className="app-slackTitle">slack</h1>
+        <div className="app-topMenu">
+          <Link to="/signup" className="app-topMenuOptions">
+            Sign up
+          </Link>
+
+          <Link to="/signin" className="app-topMenuOptions">
+            Sign in
+          </Link>
+
+          <Link to="/workspace" className="app-workspace">
+            WORKSPACE
+          </Link>
+          <Button
+            onClick={() => {
+              localStorage.setItem("isLogin", null);
+              localStorage.setItem("userInfo", null);
+              Axios.post(
+                `${process.env.REACT_APP_DEV_URL}/user/signout`,
+                null,
+                {
+                  withCredentials: true,
+                },
+              ).then(res => props.handleLogout());
+            }}
+          >
+            Sign out
+          </Button>
+        </div>
       </div>
 
       <div className="home-main">

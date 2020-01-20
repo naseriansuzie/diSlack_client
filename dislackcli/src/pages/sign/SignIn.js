@@ -41,8 +41,12 @@ class Signin extends React.Component {
             </Link>
           </div>
           <div className="signin-header-2">
-            <Link to="/workspace">Find your workspace</Link>
-            <Link to="/signin">Sign in</Link>
+            <Link className="signin-header-workspace" to="/workspace">
+              Find your workspace
+            </Link>
+            <Link className="signin-header-signin" to="/signin">
+              Sign in
+            </Link>
           </div>
         </div>
 
@@ -69,18 +73,21 @@ class Signin extends React.Component {
                     `${process.env.REACT_APP_DEV_URL}/user/signin`,
                     userInfo,
                     {
-                      withCredentials: true, // 쿠키전달
+                      withCredentials: true,
                     },
                   )
                   .then(res => {
                     if (res.status === 200) {
-                      this.props.updateUserInfo(res.data, this.state.email);
+                      localStorage.setItem("isLogin", true);
+                      localStorage.setItem(
+                        "userInfo",
+                        JSON.stringify(res.data),
+                      );
+                      this.props.handleLogin();
+                      //this.props.updateUserInfo(res.data, this.state.email);
                       return res;
                     }
                     alert("이메일이나 패스워드 확인하세요");
-                  })
-                  .then(res => {
-                    this.props.getWorkSpace();
                   })
                   .catch(err => {});
               }}

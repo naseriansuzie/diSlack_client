@@ -27,13 +27,14 @@ class AllWorkSpace extends React.Component {
       if (res.status === 200) {
         await this.props.updateWorkspace();
       }
-      let myWorkSpaceCodes = await this.props.workSpaceList.map(ws => ws.code);
-      console.log("조인한 후 내 워크스페이스 코드들 = ", myWorkSpaceCodes);
-      let filteredList = await this.state.list.filter(
-        ws => !myWorkSpaceCodes.includes(ws.code),
-      );
-      console.log("내가 가입하지 않은 워크스페이스들 = ", filteredList);
-      this.setState({ list: filteredList });
+      // 구조 상 문제 때문에 안됨..?
+      // let myWorkSpaceCodes = await this.props.workSpaceList.map(ws => ws.code);
+      // console.log("조인한 후 내 워크스페이스 코드들 = ", myWorkSpaceCodes);
+      // let filteredList = await this.state.list.filter(
+      //   ws => !myWorkSpaceCodes.includes(ws.code),
+      // );
+      // console.log("내가 가입하지 않은 워크스페이스들 = ", filteredList);
+      // this.setState({ list: filteredList });
     } catch (err) {
       console.log(err);
     }
@@ -47,8 +48,11 @@ class AllWorkSpace extends React.Component {
       })
       .then(res => {
         console.log("마운트하면서 전체 워크스페이스리스트 =", res);
+        console.log(this.props.workSpaceList);
         const myList = this.props.workSpaceList.map(myWs => myWs.id);
+        console.log("myList =", myList);
         res.data = res.data.filter(ws => !myList.includes(ws.id));
+        console.log("res.data =", res.data);
         this.setState({
           list: res.data,
         });
