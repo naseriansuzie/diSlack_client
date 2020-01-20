@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import { Layout, Row, Col } from "antd";
-import "antd/dist/antd.css";
 import Side from "./sider/Sider";
 import Nav from "./display/nav";
 import MessageList from "./display/MessageList";
@@ -9,6 +8,8 @@ import InputMsg from "./display/inputMsg";
 import Thread from "./display/Thread";
 import MemberList from "./display/MemberList";
 import UserProfile from "./display/UserProfile";
+import './Main.css'
+// import "antd/dist/antd.css";
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -306,13 +307,9 @@ class MainPage extends React.Component {
       // 로그인 뿐만 채널 or 디엠 null
       this.props.isLogin &&
         (this.state.channels.length || this.state.dms.length) ? (
-        <div>
+        <div className="main-container">
           <Row
             style={{
-              width: "1600px",
-              height: "70px",
-              position: "sticky",
-              top: 0,
               zIndex: 3,
             }}
           >
@@ -320,7 +317,7 @@ class MainPage extends React.Component {
               span={3}
               style={{
                 height: "100%",
-                backgroundColor: "#38ada9",
+                backgroundColor: "#400d3f",
                 // borderStyle: "solid",
                 // borderWidth: "0.5px",
               }}
@@ -331,10 +328,11 @@ class MainPage extends React.Component {
               span={21}
               style={{
                 height: "100%",
-                backgroundColor: "#ecf0f1",
+                backgroundColor: "white",
                 borderColor: "#bdc3c7",
                 borderStyle: "solid",
                 borderWidth: "0.5px",
+                position:"sticky" ,top: 0 
               }}
             >
               <Nav
@@ -346,7 +344,7 @@ class MainPage extends React.Component {
               />
             </Col>
           </Row>
-          <Row style={{ width: "1600px", height: "744px" }}>
+          <Row style={{ height:"940px" , overflow:"hidden" }}>
             <Col span={3} style={{ height: "100%" }}>
               <Side channels={channels} dms={dms} currentWorkspace={currentWorkspace} clickedChannel={this.clickedChannel} />
             </Col>
@@ -356,8 +354,8 @@ class MainPage extends React.Component {
               }
               style={{ height: "100%" }}
             >
-              <Layout style={{ height: "100%" }}>
-                <Content>
+              <Layout className="main-layout" style={{ height: "100%" }}>
+                <Content className="main-layout-content" style={{overflow:"scroll"}}>
                   {msgs.length ? (
                     <MessageList
                       msgs={msgs}
