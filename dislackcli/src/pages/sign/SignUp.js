@@ -93,7 +93,6 @@ class SignUp extends React.Component {
     return this.props.isLogin ? (
       <Redirect to="/" />
     ) : (
-
       <>
         <div className="signin-header">
           <div className="signin-header-1">
@@ -102,12 +101,20 @@ class SignUp extends React.Component {
             </Link>
           </div>
           <div className="signin-header-2">
-            <Link to="/workspace">Find your workspace</Link>
-            <Link to="/signin">Sign in</Link>
+            <Link className="signin-header-workspace" to="/workspace">
+              Find your workspace
+            </Link>
+            <Link className="signin-header-signin" to="/signin">
+              Sign in
+            </Link>
           </div>
         </div>
         <div className="signin-main">
           <Card className="signin-main-1">
+            <div className="signin-main-1-1">
+              <div className="signin-main-1-1-1">Sign up to Crong</div>
+              <div className="signin-main-1-1-2">slack cloning with crong</div>
+            </div>
             <Form className="signup-main-1-1" onSubmit={this.handleSubmit}>
               <Form.Item label="이메일 주소" className="signin-main-1-1-input">
                 {getFieldDecorator("email", {
