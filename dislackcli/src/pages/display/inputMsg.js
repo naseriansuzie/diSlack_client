@@ -22,6 +22,7 @@ class InputMsg extends React.Component {
   async handleChange(e) {
     await this.setState({ message: e.target.value });
     const msg = this.state;
+    // 변수하나를 해서 type이 있으면 ch , 없으면 dm 으로 해서 주소도 변수로 한다. -> 쓰레드 인풋 메세지에도 해야 한다.
     axios
       .post(
         `${process.env.REACT_APP_DEV_URL}/${this.props.props.currentWorkspace[0].code}/channelmessage/${this.props.currentDisplay.id}`,

@@ -41,6 +41,7 @@ class App extends React.Component {
         workSpaceList: res.data,
       });
     } catch (err) {
+      console.log("새로고침에러1");
       console.log(err);
     }
   }
@@ -77,6 +78,7 @@ class App extends React.Component {
         workSpaceList: res.data,
       });
     } catch (err) {
+      console.log("새로고침에러2");
       console.log(err);
     }
   }

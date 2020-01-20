@@ -39,7 +39,7 @@ export default function Thread(props) {
                 <div style={{ fontSize: "1.5em", fontWeight: "bold" }}>
                   Thread
                 </div>
-                <div>#general</div>
+                <div>#{currentDisplay.name}</div>
               </Row>
             </Col>
             <Col
@@ -55,6 +55,7 @@ export default function Thread(props) {
           <Row style={{ padding: "5px" }}>
             {clickedMsg.length ? (
               <MessageList
+                thread={true}
                 msgs={makeNoReplyMessage(clickedMsg[0])}
                 handleClickReply={handleClickReply}
                 handleClickProfile={handleClickProfile}
