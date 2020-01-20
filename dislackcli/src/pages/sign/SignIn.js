@@ -41,8 +41,12 @@ class Signin extends React.Component {
             </Link>
           </div>
           <div className="signin-header-2">
-            <Link to="/workspace">Find your workspace</Link>
-            <Link to="/signin">Sign in</Link>
+            <Link className="signin-header-workspace" to="/workspace">
+              Find your workspace
+            </Link>
+            <Link className="signin-header-signin" to="/signin">
+              Sign in
+            </Link>
           </div>
         </div>
 

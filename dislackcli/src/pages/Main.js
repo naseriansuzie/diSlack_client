@@ -8,6 +8,7 @@ import InputMsg from "./display/inputMsg";
 import Thread from "./display/Thread";
 import MemberList from "./display/MemberList";
 import UserProfile from "./display/UserProfile";
+import socketio from "socket.io-client";
 import "./Main.css";
 // import "antd/dist/antd.css";
 
@@ -37,7 +38,10 @@ class MainPage extends React.Component {
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
     this.getCN = this.getCN.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
-    this.clickedChannel = this.clickedChannel.bind(this)
+    this.clickedChannel = this.clickedChannel.bind(this);
+
+    // 웹소켓 연결
+    // this.socket = socketio.connect("http://localhost:4000/chat");
   }
 
   // Methods
@@ -74,6 +78,16 @@ class MainPage extends React.Component {
     });
     await this.setState({ currentDisplay: findCN[0], msgs: [] });
 
+    // 채널이 바뀌기 때문에 연결한 웹소켓을 해제
+    this.socket.disconnect();
+    this.socket = socketio.connect("http://localhost:4000/chat");
+    this.socket.on("connect", data => {
+      this.socket.emit("joinchannel", this.state.currentDisplay.id);
+    });
+    this.socket.on("message", data => {
+      const message = JSON.parse(data);
+      this.setState({ msgs: this.state.msgs.concat(message) });
+    });
     await axios
       // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
       .get(
@@ -207,6 +221,15 @@ class MainPage extends React.Component {
         .then(res => {
           console.log("채널받아오는 API", res);
           this.setState({ channels: res.data, currentDisplay: res.data[0] });
+
+          this.socket = socketio.connect("http://localhost:4000/chat");
+          this.socket.on("connect", data => {
+            this.socket.emit("joinchannel", this.state.currentDisplay.id);
+          });
+          this.socket.on("message", data => {
+            const message = JSON.parse(data);
+            this.setState({ msgs: this.state.msgs.concat(message) });
+          });
         });
 
       await axios
@@ -295,7 +318,7 @@ class MainPage extends React.Component {
       // 로그인 뿐만 채널 or 디엠 null
       this.props.isLogin &&
         (this.state.channels.length || this.state.dms.length) ? (
-        <div className="main-container"  style={{ overflow: "hidden" }}>
+        <div className="main-container" style={{ overflow: "hidden" }}>
           <Row
             style={{
               height: "50px",
