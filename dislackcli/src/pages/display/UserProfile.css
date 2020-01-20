@@ -1,34 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap");
-
-.User-container {
-  height: 100%;
-}
-
-.User-scroll {
-  height: 100%;
-  overflow: scroll;
-}
-
-.User-back-color {
-  background-color: #f8f8f8;
-}
-
-.User-center {
-  text-align: center;
-}
-
-.User-header-col {
-  font-size: 1.5em;
-}
-
-.User-title {
-  color: #1d1c1d;
-  font-weight: bold;
-}
-.User-X {
-  color: #5e5e5e;
-}
-
 .User-img-size {
   max-width: 100%;
   height: auto;

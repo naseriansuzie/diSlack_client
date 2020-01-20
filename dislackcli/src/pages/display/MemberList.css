@@ -1,0 +1,26 @@
+.Member-list-align {
+  padding-left: 10px;
+}
+
+.Member-disp {
+  padding: 5px 0 0 0;
+  border-bottom: 0;
+}
+
+.Member-btn {
+  width: 100%;
+  height: 40px;
+  font-weight: bold;
+}
+
+.Member-cnt-font {
+  font-size: 1.2em;
+}
+
+.Member-img-pad {
+  padding: 0 5px 0 0;
+}
+
+.Member-zero-border {
+  border: 0;
+}

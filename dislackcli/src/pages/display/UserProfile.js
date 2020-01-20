@@ -1,28 +1,29 @@
 import React from "react";
 import { List, Button, Row, Col } from "antd";
+import "./ThreadCommon.css";
 import "./UserProfile.css";
 
 export default function UserProfile(props) {
   const { clickedUser, handleProfileClose } = props;
   if (clickedUser) {
     return (
-      <div className="User-container">
-        <Col className="User-scroll">
+      <div className="Thread-container">
+        <Col className="Thread-scroll">
           <List
             size="large"
             bordered
             dataSource={[clickedUser]}
             renderItem={clickedUser => (
               <div>
-                <List.Item className="User-back-color">
-                  <Col span={20} className="User-center">
-                    <div className="User-header-col User-title">
+                <List.Item className="Thread-back-color">
+                  <Col span={20} className="Thread-title-pad">
+                    <div className="Thread-header-col Thread-title">
                       Check out Your Colleague
                     </div>
                   </Col>
-                  <Col span={4} className="User-center">
+                  <Col span={4} className="Thread-center">
                     <a
-                      className="User-header-col User-X"
+                      className="Thread-header-col Thread-X"
                       onClick={handleProfileClose}
                     >
                       X
