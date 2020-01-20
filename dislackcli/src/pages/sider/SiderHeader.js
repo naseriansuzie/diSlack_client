@@ -14,10 +14,10 @@ class SiderHeader extends React.Component {
   };
 
   render() {
-    console.log("싸이더혜떠", this.props, this.state);
-    console.log("현재워크스페이스 ", this.props);
+    // console.log("싸이더혜떠", this.props, this.state);
+    // console.log("현재워크스페이스 ", this.props);
     const { currentWorkspace, userInfo } = this.props.props;
-    console.log(currentWorkspace, userInfo);
+    // console.log(currentWorkspace, userInfo);
     return (
       <div className="SiderHeader-container">
         <div>
