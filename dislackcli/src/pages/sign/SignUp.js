@@ -35,13 +35,15 @@ class SignUp extends React.Component {
           })
           .then(res => {
             if (res.status === 201) {
-              alert("회원가입에 성공했습니다. 로그인 페이지로 이동합니다!");
+              alert("회원가입에 성공했습니다!");
               this.setState({ isSignUp: true });
-            } else {
-              alert("이미 가입한 회원입니다.");
             }
           })
-          .catch(err => {});
+          .catch(err => {
+            if (err.response.status === 409) {
+              alert("이미 가입한 회원입니다! 로그인해주세요 :)");
+            }
+          });
       }
     });
   };
