@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Icon, Input, Modal, Button } from "antd";
+import { Row, Col, Icon, Input, Modal, Button, Divider } from "antd";
 import { relative } from "path";
 import ModalRender from "./ModalRender";
 
@@ -59,34 +59,50 @@ class Nav extends React.Component {
   }
 
   render() {
-    const { channels, msgs, isLogin, handleClickMemberList } = this.props;
-    // const { userInfo } = this.props.props;
-    // console.log("NAV_PROPS : ", this.props);
-    // console.log(msgs);
+    const {
+      channels,
+      msgs,
+      isLogin,
+      handleClickMemberList,
+      state,
+    } = this.props;
+
+    console.log("NAV_PROPS : ", this.props);
+    console.log(state);
     return (
-      <Row>
+      <Row gutter={[8, 8]} className="nav-Row">
         <Col span={8}>
-          <strong style={{ fontSize: "30px" }}>{channels[0].name}</strong>
-          <Icon
-            type="aliwangwang"
-            theme="filled"
-            // 로그인 되어 있으면 #2ecc71 || #bdc3c7
-            style={{ fontSize: "20px", marginLeft: "1%", color: "#2ecc71" }}
-          />
-          <Button onClick={handleClickMemberList}>member</Button>
+          <strong style={{ fontSize: "20px", margin: "2%" }}>
+            # {state.currentDisplay.name}
+          </strong>
+          <div>
+            <Icon
+              type="aliwangwang"
+              theme="filled"
+              // 로그인 되어 있으면 #2ecc71 || #bdc3c7
+              style={{ marginLeft: "3%", marginRight: "1%", color: "#2ecc71" }}
+            />
+            <Icon type="line" rotate={90} />
+            <Icon type="star" style={{ marginLeft: "1%", marginRight: "1%" }} />
+            <Icon type="line" rotate={90} />
+            <Icon
+              type="user"
+              onClick={handleClickMemberList}
+              style={{ marginLeft: "1%", marginRight: "1%" }}
+            />
+            <Icon type="line" rotate={90} />
+            <Icon
+              type="pushpin"
+              style={{ marginLeft: "1%", marginRight: "1%" }}
+            />
+          </div>
         </Col>
-        <Col span={8} />
-        <Col span={8}>
+        <Col span={6} />
+        <Col span={10} style={{ marginTop: "10px" }}>
+          <Icon type="info-circle" />
+          <Icon type="setting" style={{ marginLeft: "1%" }} />
           <Search
             placeholder="Input Search Text"
-            prefix={
-              <Icon
-                type="close-circle"
-                onClick={() => {
-                  console.log("DELETE");
-                }}
-              />
-            }
             onSearch={async item => {
               const ms = this.state.modalMsgs;
               await this.currentMsgs(item, async res => {
@@ -94,8 +110,11 @@ class Nav extends React.Component {
                 await this.showModal(item, ms);
               });
             }}
-            style={{ width: 200 }}
+            style={{ width: "300px", marginLeft: "1%" }}
           />
+          <Icon type="play-circle" style={{ marginLeft: "1%" }} />
+          <Icon type="star" style={{ marginLeft: "1%" }} />
+
           <Modal
             title={
               this.state.target ? (
@@ -120,8 +139,6 @@ class Nav extends React.Component {
               <div />
             )}
           </Modal>
-
-          <Icon type="setting" />
         </Col>
       </Row>
     );

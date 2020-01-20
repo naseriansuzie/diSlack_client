@@ -1,10 +1,21 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import "antd/dist/antd.css";
-import { Form, Input, Tooltip, Icon, Checkbox, Button, Row, Col } from "antd";
+import {
+  Form,
+  Input,
+  Tooltip,
+  Icon,
+  Checkbox,
+  Button,
+  Row,
+  Col,
+  Card,
+} from "antd";
 import axios from "axios";
 import dotenv from "dotenv";
-
+import "./Signup.css";
+import { Link } from "react-router-dom";
 dotenv.config();
 
 class SignUp extends React.Component {
@@ -17,7 +28,6 @@ class SignUp extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // console.log("Received values of form: ", values);
         // ec2 엔드포인트 나오면 URL 업데이트
         axios
           .post(`${process.env.REACT_APP_DEV_URL}/user/signup`, values, {
@@ -31,9 +41,7 @@ class SignUp extends React.Component {
               alert("이미 가입한 회원입니다.");
             }
           })
-          .catch(err => {
-            console.log(err);
-          });
+          .catch(err => {});
       }
     });
   };
@@ -75,50 +83,33 @@ class SignUp extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
 
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
-      },
-    };
-
     if (this.state.isSignUp) {
       return (
         <div>
-          <Redirect to="/signin" />
+          <Redirect to="/" />
         </div>
       );
     }
     return this.props.isLogin ? (
-      <Redirect to="/workspace" />
+      <Redirect to="/" />
     ) : (
-      <div>
-        {/* <Row>
-          <Col span={24} style={{ color: "white" }}>
-            header
-          </Col>
-        </Row> */}
-        <Row>
-          <Col span={4} />
-          <Col span={12} value={120}>
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-              <Form.Item label="이메일 주소">
+
+      <>
+        <div className="signin-header">
+          <div className="signin-header-1">
+            <Link className="signin-header-1-1" to="/">
+              Crong
+            </Link>
+          </div>
+          <div className="signin-header-2">
+            <Link to="/workspace">Find your workspace</Link>
+            <Link to="/signin">Sign in</Link>
+          </div>
+        </div>
+        <div className="signin-main">
+          <Card className="signin-main-1">
+            <Form className="signup-main-1-1" onSubmit={this.handleSubmit}>
+              <Form.Item label="이메일 주소" className="signin-main-1-1-input">
                 {getFieldDecorator("email", {
                   rules: [
                     {
@@ -131,9 +122,13 @@ class SignUp extends React.Component {
                       message: "이메일 주소를 기입해주세요!",
                     },
                   ],
-                })(<Input />)}
+                })(<Input className="signin-main-1-1-input-1" />)}
               </Form.Item>
-              <Form.Item label="비밀번호" hasFeedback>
+              <Form.Item
+                className="signin-main-1-2-input"
+                label="비밀번호"
+                hasFeedback
+              >
                 {getFieldDecorator("password", {
                   rules: [
                     {
@@ -144,9 +139,13 @@ class SignUp extends React.Component {
                       validator: this.validateToNextPassword,
                     },
                   ],
-                })(<Input.Password />)}
+                })(<Input.Password className="signin-main-1-2-input-1" />)}
               </Form.Item>
-              <Form.Item label="비밀번호 재입력" hasFeedback>
+              <Form.Item
+                className="signin-main-1-3-input"
+                label="비밀번호 재입력"
+                hasFeedback
+              >
                 {getFieldDecorator("confirm", {
                   rules: [
                     {
@@ -157,9 +156,15 @@ class SignUp extends React.Component {
                       validator: this.compareToFirstPassword,
                     },
                   ],
-                })(<Input.Password onBlur={this.handleConfirmBlur} />)}
+                })(
+                  <Input.Password
+                    className="signin-main-1-3-input-1"
+                    onBlur={this.handleConfirmBlur}
+                  />,
+                )}
               </Form.Item>
               <Form.Item
+                className="signin-main-1-4-input"
                 label={
                   <span>
                     이름&nbsp;
@@ -177,9 +182,9 @@ class SignUp extends React.Component {
                       whitespace: true,
                     },
                   ],
-                })(<Input />)}
+                })(<Input className="signin-main-1-4-input-1" />)}
               </Form.Item>
-              <Form.Item {...tailFormItemLayout}>
+              {/* <Form.Item {...tailFormItemLayout}>
                 {getFieldDecorator("agreement", {
                   valuePropName: "checked",
                 })(
@@ -187,22 +192,55 @@ class SignUp extends React.Component {
                     서비스 회원가입을 위한 이메일 주소 제출을 동의합니다.
                   </Checkbox>,
                 )}
-              </Form.Item>
-              <Form.Item {...tailFormItemLayout}>
+              </Form.Item> */}
+              <Form.Item className="signin-main-1-5-input">
                 <Button type="primary" htmlType="submit">
-                  가입하기
+                  Sign up
                 </Button>
               </Form.Item>
             </Form>
-          </Col>
-          <Col span={4} />
-        </Row>
-        <Row>
-          <Col span={24} style={{ color: "white" }}>
-            footer
-          </Col>
-        </Row>
-      </div>
+          </Card>
+        </div>
+        <div className="signin-aside">
+          <div className="signin-aside-1">
+            <div className="signin-aside-1-1">USING SLACK</div>
+            <div className="signin-aside-1-2">Product</div>
+            <div className="signin-aside-1-3">Enterprise</div>
+            <div className="signin-aside-1-4">Pricing</div>
+            <div className="signin-aside-1-5">Support</div>
+            <div className="signin-aside-1-6">Slack Guides</div>
+            <div className="signin-aside-1-7">App Directory</div>
+            <div className="signin-aside-1-8">API</div>
+          </div>
+          <div className="signin-aside-2">
+            <div className="signin-aside-2-1">SLACK</div>
+            <div className="signin-aside-2-2">Jobs</div>
+            <div className="signin-aside-2-3">Customers</div>
+            <div className="signin-aside-2-4">Developers</div>
+            <div className="signin-aside-2-5">Events</div>
+            <div className="signin-aside-2-6">Blog</div>
+          </div>
+          <div className="signin-aside-3">
+            <div className="signin-aside-3-1">LEGAL</div>
+            <div className="signin-aside-3-2">Privacy</div>
+            <div className="signin-aside-3-3">Security</div>
+            <div className="signin-aside-3-4">Terms of Service</div>
+            <div className="signin-aside-3-5">Policies</div>
+          </div>
+          <div className="signin-aside-4">
+            <div className="signin-aside-4-1">HANDY LINKS</div>
+            <div className="signin-aside-4-2">Download desktop app</div>
+            <div className="signin-aside-4-3">Download mobile app</div>
+            <div className="signin-aside-4-4">Brand Guidelines</div>
+            <div className="signin-aside-4-5">Slack at Work</div>
+            <div className="signin-aside-4-6">Status</div>
+          </div>
+        </div>
+        <div className="signin-footer">
+          <div>ㅁ</div>
+          <div>Contact Us</div>
+        </div>
+      </>
     );
   }
 }

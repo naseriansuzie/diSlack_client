@@ -1,0 +1,28 @@
+.User-img-size {
+  max-width: 100%;
+  height: auto;
+}
+
+.User-btn-display {
+  display: flex;
+  justify-content: center;
+}
+
+.User-btn {
+  width: 90%;
+  height: 40px;
+  font-weight: bold;
+}
+
+.User-text {
+  color: #1d1c1d;
+}
+
+.User-pad {
+  padding: 8px 24px 8px 24px;
+}
+
+.User-list-item {
+  color: #606060;
+  padding: 8px 24px 8px 24px;
+}

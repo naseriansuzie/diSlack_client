@@ -1,0 +1,31 @@
+.Thread-pad {
+  padding: 10px;
+}
+.Thread-sm-pad {
+  padding: 5px;
+}
+.Thread-title-pad {
+  padding: 5px 0 10px 0;
+}
+.Thread-lar-pad {
+  padding: 20px;
+}
+.Thread-header {
+  height: 60px;
+}
+.Thread-font-col {
+  color: black;
+}
+
+.Thread-hr {
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid #e2e2e2;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+.Thread-hr span {
+  background: #fff;
+  padding: 0 10px;
+}

@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap");
+
+/* Thread 공통 */
+.Thread-container {
+  height: 100%;
+}
+.Thread-wid {
+  width: 100%;
+}
+.Thread-scroll {
+  height: 100%;
+  overflow-y: auto;
+}
+.Thread-back-color {
+  background-color: #f8f8f8;
+}
+.Thread-center {
+  text-align: center;
+}
+.Thread-header-col {
+  font-size: 1.5em;
+}
+.Thread-title {
+  color: #1d1c1d;
+  font-weight: bold;
+}
+.Thread-X {
+  color: #5e5e5e;
+}
+
+.Thread-list-none {
+  list-style: none;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.Thread-title-pad {
+  padding-left: 10px;
+}
