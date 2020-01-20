@@ -1,0 +1,16 @@
+.Sider-item {
+  font-size: 15px;
+}
+
+.Sider-Title {
+  margin-left: 1%;
+  font-size: 20px;
+}
+
+.Sider-icon-plus {
+  font-size: 20px;
+  display: float;
+  float: right;
+  margin-right: 10%;
+  padding: 0;
+}
