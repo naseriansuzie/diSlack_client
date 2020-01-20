@@ -71,18 +71,11 @@ class Nav extends React.Component {
     console.log(state);
     return (
       <Row gutter={[8, 8]} className="nav-Row">
-        <Col span={8}>
+        <Col span={8} style={{ marginTop: "7px" }}>
           <strong style={{ fontSize: "20px", margin: "2%" }}>
             # {state.currentDisplay.name}
           </strong>
           <div>
-            <Icon
-              type="aliwangwang"
-              theme="filled"
-              // 로그인 되어 있으면 #2ecc71 || #bdc3c7
-              style={{ marginLeft: "3%", marginRight: "1%", color: "#2ecc71" }}
-            />
-            <Icon type="line" rotate={90} />
             <Icon type="star" style={{ marginLeft: "1%", marginRight: "1%" }} />
             <Icon type="line" rotate={90} />
             <Icon
@@ -98,7 +91,7 @@ class Nav extends React.Component {
           </div>
         </Col>
         <Col span={6} />
-        <Col span={10} style={{ marginTop: "10px" }}>
+        <Col span={10} style={{ marginTop: "16px" }}>
           <Icon type="info-circle" />
           <Icon type="setting" style={{ marginLeft: "1%" }} />
           <Search

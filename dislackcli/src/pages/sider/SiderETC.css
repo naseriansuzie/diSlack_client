@@ -1,0 +1,19 @@
+.SiderETC {
+  bottom: 0px;
+}
+.SiderETC-container {
+  margin-top: 100%;
+}
+
+.SiderETC-Bottom {
+  font-size: 16px;
+  margin-left: 3%;
+}
+
+.SiderETC-Bottom-title {
+  margin-bottom: 10%;
+}
+
+.SiderETC-Bottom-item {
+  font-size: 12px;
+}

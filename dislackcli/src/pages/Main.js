@@ -8,6 +8,7 @@ import InputMsg from "./display/inputMsg";
 import Thread from "./display/Thread";
 import MemberList from "./display/MemberList";
 import UserProfile from "./display/UserProfile";
+import SiderHeader from "./sider/SiderHeader"
 import socketio from "socket.io-client";
 import "./Main.css";
 // import "antd/dist/antd.css";
@@ -40,8 +41,6 @@ class MainPage extends React.Component {
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
 
-    // 웹소켓 연결
-    // this.socket = socketio.connect("http://localhost:4000/chat");
   }
 
   // Methods
@@ -321,7 +320,7 @@ class MainPage extends React.Component {
         <div className="main-container" style={{ overflow: "hidden" }}>
           <Row
             style={{
-              height: "50px",
+              height: "70px",
               zIndex: 3,
             }}
           >
@@ -332,7 +331,7 @@ class MainPage extends React.Component {
                 backgroundColor: "#400d3f",
               }}
             >
-              Side_Header
+              <SiderHeader props={this.props} state={this.state} />
             </Col>
             <Col
               span={21}
@@ -389,7 +388,7 @@ class MainPage extends React.Component {
                   style={{
                     backgroundColor: "#ecf0f1",
                     position: "sticky",
-                    bottom: 0,
+                    bottom: "20px",
                     width: "100%",
                     padding: 0,
                   }}

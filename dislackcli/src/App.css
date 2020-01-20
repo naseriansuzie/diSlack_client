@@ -3,11 +3,13 @@
 .App {
   padding: 0;
 }
-
+.MainPage {
+  overflow: hidden;
+}
 .ant-menu {
   width: 100%;
 }
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1024px) {
 }
 
 /* * {
