@@ -319,10 +319,7 @@ class MainPage extends React.Component {
         (this.state.channels.length || this.state.dms.length) ? (
         <div className="main-container" style={{ overflow: "hidden" }}>
           <Row
-            style={{
-              height: "70px",
-              zIndex: 3,
-            }}
+          className="Main-Side"
           >
             <Col
               span={3}
@@ -354,7 +351,7 @@ class MainPage extends React.Component {
               />
             </Col>
           </Row>
-          <Row style={{ height: "940px", overflow: "hidden" }}>
+          <Row style={{ height: "850px", overflow: "hidden" }}>
             <Col span={3} style={{ height: "100%" }}>
               <Side
                 channels={channels}
