@@ -1,5 +1,5 @@
 import React from "react";
-import { Popover, Icon } from "antd";
+import { Popover, Icon, Input } from "antd";
 import "./SiderHeader.css";
 
 class SiderHeader extends React.Component {
@@ -28,9 +28,10 @@ class SiderHeader extends React.Component {
             content="content"
             trigger="click"
           >
-            {currentWorkspace[0].name} <Icon type="down" />
+            {currentWorkspace[0].name}{" "}
+            <Icon className="SiderHeader-Icon-down" type="down" />
           </Popover>
-          <Icon type="bell" />
+          <Icon className="SiderHeader-Icon" type="bell" />
         </div>
         <div className="SiderHeader-bottom">
           <Icon
