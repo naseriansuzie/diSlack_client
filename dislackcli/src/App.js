@@ -173,24 +173,7 @@ class App extends React.Component {
       </div>
     ) : (
       <div className="App">
-     <div className="app-topBar">
-          <h1 className="app-slackTitle">slack</h1>
-          <div className="app-topMenu">
-            {this.state.isLogin ? null : (
-              <Link to="/signup" className="app-topMenuOptions">
-                Sign up
-              </Link>
-            )}
-            {this.state.isLogin ? null : (
-              <Link to="/signin" className="app-topMenuOptions">
-                Sign in
-              </Link>
-            )}
-            <Link to="/workspace" className="app-workspace">
-              WORKSPACE
-            </Link>
-          </div>
-        </div>
+        
 
         <Route exact path="/" component={Home} />
         <Route

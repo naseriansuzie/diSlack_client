@@ -75,8 +75,6 @@ class Signin extends React.Component {
                   .then(res => {
                     if (res.status === 200) {
                       this.props.updateUserInfo(res.data, this.state.email);
-                      localStorage.setItem("isLogin", true);
-                      localStorage.setItem("userInfo", res.data);
                       return res;
                     }
                     alert("이메일이나 패스워드 확인하세요");
