@@ -1,5 +1,64 @@
+
+@import url("https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap");
+
+.App {
+  padding: 0;
+}
+
+.ant-menu {
+  width: 100%;
+
 @media only screen and (max-width: 768px) {
   body {
     overflow: hidden;
   }
+}
+
+/* * {
+  outline: 1px solid red;
+  box-sizing: content-box;
+  font-family: "Lato", sans-serif;
+} */
+
+.app-topBar {
+  display: flex;
+  align-items: center;
+  height: 70px;
+  border-bottom: 1px solid #d6d6d6;
+  /* background-color: pink; */
+}
+
+.app-slackTitle {
+  font-weight: 700;
+  margin: auto 15rem;
+}
+
+.app-topMenu {
+  margin-left: auto;
+  margin-right: 15rem;
+  font-size: 16px;
+}
+
+.app-topMenuOptions {
+  color: black;
+  padding: 1rem;
+}
+
+.app-topMenuOptions:hover {
+  color: #611f69;
+}
+
+.app-workspace {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: white;
+  background-color: #521b57;
+  padding: 0.8rem;
+  border-radius: 0.3rem;
+}
+
+.app-workspace:hover {
+  background-color: #4a154a;
+  color: white;
 }

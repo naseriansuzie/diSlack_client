@@ -93,6 +93,7 @@ class SignUp extends React.Component {
     return this.props.isLogin ? (
       <Redirect to="/" />
     ) : (
+
       <>
         <div className="signin-header">
           <div className="signin-header-1">

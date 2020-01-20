@@ -1,4 +1,5 @@
 import React from "react";
+import "./App.css";
 import { Redirect, Route, Switch, Link } from "react-router-dom";
 import { Row, Col, Button } from "antd";
 import axios from "axios";
@@ -118,6 +119,17 @@ class App extends React.Component {
             path="/workspace"
             render={() => (
               <div>
+                <div className="appWs-header">
+                  <div className="appWs-header-1">
+                    <Link className="appWs-header-1-1" to="/">
+                      Crong
+                    </Link>
+                  </div>
+                  <div className="appWs-header-2">
+                    <Link to="/workspace">Find your workspace</Link>
+                    <Link to="/signin">Sign in</Link>
+                  </div>
+                </div>
                 <Row>
                   <Col span={12}>
                     <MyWorkSpace
@@ -161,6 +173,25 @@ class App extends React.Component {
       </div>
     ) : (
       <div className="App">
+     <div className="app-topBar">
+          <h1 className="app-slackTitle">slack</h1>
+          <div className="app-topMenu">
+            {this.state.isLogin ? null : (
+              <Link to="/signup" className="app-topMenuOptions">
+                Sign up
+              </Link>
+            )}
+            {this.state.isLogin ? null : (
+              <Link to="/signin" className="app-topMenuOptions">
+                Sign in
+              </Link>
+            )}
+            <Link to="/workspace" className="app-workspace">
+              WORKSPACE
+            </Link>
+          </div>
+        </div>
+
         <Route exact path="/" component={Home} />
         <Route
           path="/signin"
