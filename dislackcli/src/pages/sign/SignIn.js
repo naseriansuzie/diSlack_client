@@ -2,7 +2,9 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import { Form, Icon, Input, Button, Checkbox, Card } from "antd";
+import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
+import "./Signin.css";
 
 class Signin extends React.Component {
   constructor(props) {
@@ -18,110 +20,155 @@ class Signin extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
       }
     });
   };
 
   handleInputValue = key => e => {
     this.setState({ [key]: e.target.value });
-    console.log(this.state);
   };
 
   render() {
-    // console.log(this.props.form);
     const { getFieldDecorator } = this.props.form;
     return this.props.isLogin ? (
-      <Redirect to="/workspace" />
+      <Redirect to="/" />
     ) : (
-      <Card
-        style={{
-          borderRadius: 10,
-          marginTop: "10%",
-          marginLeft: "20%",
-          width: 600,
-          backgroundColor: "#bdc3c7",
-        }}
-      >
-        <Form
-          className="login_form"
-          onSubmit={e => {
-            e.preventDefault();
-            const userInfo = {
-              email: this.state.email,
-              password: this.state.password,
-            };
+      <>
+        <div className="signin-header">
+          <div className="signin-header-1">
+            <Link className="signin-header-1-1" to="/">
+              Crong
+            </Link>
+          </div>
+          <div className="signin-header-2">
+            <Link to="/workspace">Find your workspace</Link>
+            <Link to="/signin">Sign in</Link>
+          </div>
+        </div>
 
-            axios
-              .post(`${process.env.REACT_APP_DEV_URL}/user/signin`, userInfo, {
-                withCredentials: true, // 쿠키전달
-              })
-              .then(res => {
-                if (res.status === 200) {
-                  this.props.updateUserInfo(res.data, this.state.email);
-                  return res;
-                }
-                alert("이메일이나 패스워드 확인하세요");
-              })
-              .then(res => {
-                this.props.getWorkSpace();
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          }}
-        >
-          <Form.Item>
-            {getFieldDecorator("username", {
-              rules: [
-                { required: true, message: "Please input your username!" },
-              ],
-            })(
-              <Input
-                style={{ height: 50 }}
-                prefix={
-                  <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
-                }
-                onChange={this.handleInputValue("email")}
-                placeholder="Username"
-              />,
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator("password", {
-              rules: [
-                { required: true, message: "Please input your Password!" },
-              ],
-            })(
-              <Input
-                style={{ height: 50 }}
-                prefix={
-                  <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                }
-                type="password"
-                placeholder="Password"
-                onChange={this.handleInputValue("password")}
-              />,
-            )}
-          </Form.Item>
-          <Form.Item>
-            <Button
-              style={{
-                float: "right",
-                height: 60,
-                width: "100%",
-                fontSize: 20,
+        <div className="signin-main">
+          <Card className="signin-main-1">
+            <div className="signin-main-1-1">
+              <div className="signin-main-1-1-1">Sign in to Crong</div>
+              <div className="signin-main-1-1-2">slack cloning with crong</div>
+            </div>
+            <div className="signin-main-1-2">
+              Enter your <b>email address</b> and <b>password</b>.
+            </div>
+            <Form
+              className="signin-main-1-3"
+              onSubmit={e => {
+                e.preventDefault();
+                const userInfo = {
+                  email: this.state.email,
+                  password: this.state.password,
+                };
+
+                axios
+                  .post(
+                    `${process.env.REACT_APP_DEV_URL}/user/signin`,
+                    userInfo,
+                    {
+                      withCredentials: true, // 쿠키전달
+                    },
+                  )
+                  .then(res => {
+                    if (res.status === 200) {
+                      this.props.updateUserInfo(res.data, this.state.email);
+                      localStorage.setItem("isLogin", true);
+                      localStorage.setItem("userInfo", res.data);
+                      return res;
+                    }
+                    alert("이메일이나 패스워드 확인하세요");
+                  })
+                  .then(res => {
+                    this.props.getWorkSpace();
+                  })
+                  .catch(err => {});
               }}
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
             >
-              Log in
-            </Button>
-            <a href="/signup">register now!</a>
-          </Form.Item>
-        </Form>
-      </Card>
+              <Form.Item>
+                {getFieldDecorator("username", {
+                  rules: [
+                    { required: true, message: "Please input your username!" },
+                  ],
+                })(
+                  <Input
+                    className="signin-main-1-3-input-1-1"
+                    prefix={<Icon type="user" />}
+                    onChange={this.handleInputValue("email")}
+                    placeholder="you@example.com"
+                  />,
+                )}
+              </Form.Item>
+              <Form.Item>
+                {getFieldDecorator("password", {
+                  rules: [
+                    { required: true, message: "Please input your Password!" },
+                  ],
+                })(
+                  <Input
+                    className="signin-main-1-3-input-2"
+                    prefix={<Icon type="lock" />}
+                    type="password"
+                    placeholder="Password"
+                    onChange={this.handleInputValue("password")}
+                  />,
+                )}
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="signin-main-1-3-btn-1"
+                >
+                  Sigin in
+                </Button>
+                <Link to="/signup">register now!</Link>
+              </Form.Item>
+            </Form>
+          </Card>
+        </div>
+        <div className="signin-aside">
+          <div className="signin-aside-1">
+            <div className="signin-aside-1-1">USING SLACK</div>
+            <div className="signin-aside-1-2">Product</div>
+            <div className="signin-aside-1-3">Enterprise</div>
+            <div className="signin-aside-1-4">Pricing</div>
+            <div className="signin-aside-1-5">Support</div>
+            <div className="signin-aside-1-6">Slack Guides</div>
+            <div className="signin-aside-1-7">App Directory</div>
+            <div className="signin-aside-1-8">API</div>
+          </div>
+          <div className="signin-aside-2">
+            <div className="signin-aside-2-1">SLACK</div>
+            <div className="signin-aside-2-2">Jobs</div>
+            <div className="signin-aside-2-3">Customers</div>
+            <div className="signin-aside-2-4">Developers</div>
+            <div className="signin-aside-2-5">Events</div>
+            <div className="signin-aside-2-6">Blog</div>
+          </div>
+          <div className="signin-aside-3">
+            <div className="signin-aside-3-1">LEGAL</div>
+            <div className="signin-aside-3-2">Privacy</div>
+            <div className="signin-aside-3-3">Security</div>
+            <div className="signin-aside-3-4">Terms of Service</div>
+            <div className="signin-aside-3-5">Policies</div>
+          </div>
+          <div className="signin-aside-4">
+            <div className="signin-aside-4-1">HANDY LINKS</div>
+            <div className="signin-aside-4-2">Download desktop app</div>
+            <div className="signin-aside-4-3">Download mobile app</div>
+            <div className="signin-aside-4-4">Brand Guidelines</div>
+            <div className="signin-aside-4-5">Slack at Work</div>
+            <div className="signin-aside-4-6">Status</div>
+          </div>
+        </div>
+        <div className="signin-footer">
+          <div>ㅁ</div>
+          <div>Contact Us</div>
+        </div>
+      </>
     );
   }
 }
