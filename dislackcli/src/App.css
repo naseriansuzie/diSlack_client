@@ -1,7 +1,5 @@
-.App {
-  padding: 0;
-}
-
-.ant-menu {
-  width: 100%;
+@media only screen and (max-width: 768px) {
+  body {
+    overflow: hidden;
+  }
 }
