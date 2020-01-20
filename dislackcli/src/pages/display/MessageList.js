@@ -2,10 +2,7 @@ import React from "react";
 import MessageEntries from "./MessageEntries";
 
 export default function MessageList(props) {
-  // "2020-01-17 13:59:40"
-  // "2020-01-17T04:59:40.000Z"
-
-  const { handleClickReply, handleClickProfile } = props;
+  const { handleClickReply, handleClickProfile, handleCreateReply } = props;
   let { msgs, thread } = props;
   msgs = msgs.map(msg => {
     const dateTime = msg.createdAt
@@ -20,7 +17,7 @@ export default function MessageList(props) {
     msg.time = msg.time.join(":");
     return msg;
   });
-  console.log("메세지리스트 : ", msgs);
+
   return (
     <div>
       <div>

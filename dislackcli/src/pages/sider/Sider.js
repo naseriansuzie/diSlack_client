@@ -106,8 +106,6 @@ class Side extends React.Component {
     });
   };
 
-
-
   render() {
     // console.log("SIDER_PROPS", this.props);
     const { channels, dms, clickedChannel } = this.props;
@@ -119,7 +117,7 @@ class Side extends React.Component {
           style={{
             width: "100%",
             height: "100%",
-            backgroundColor: "#38ada9",
+            backgroundColor: "#400d3f",
             color: "white",
           }}
           defaultOpenKeys={["sub1"]}
@@ -141,7 +139,7 @@ class Side extends React.Component {
             <Menu.Item
               key={i}
               style={{
-                backgroundColor: "#38ada9",
+                backgroundColor: "#400d3f",
                 color: "#ecf0f1",
                 margin: "0",
                 height: "30px",
