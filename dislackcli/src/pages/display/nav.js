@@ -37,20 +37,22 @@ class Nav extends React.Component {
 
   // 현재 메세지들을 단어벌로 찾을 수 있게 검색하자
   currentMsgs = (item, cb) => {
-    const searchArr = [];
     const curMsgs = this.props.msgs;
-    curMsgs.map(val1 => {
-      // console.log("메세지들? : ", val1);
-      const wordMsg = val1.message.split(" ");
-      wordMsg.map(val2 => {
-        // console.log("쪼갠메세지 : ", val2);
-        if (val2 === item) {
-          searchArr.push(val1);
+    const searchArr = curMsgs.filter(val1 => {
+      console.log("메세지들? : ", val1);
+      const itemArr = item.split("");
+      const val1Arr = val1.message.split("");
+      console.log("메세지분리", val1Arr);
+      console.log("찾을것", itemArr);
+      for (let i = 0; i < val1Arr.length; i++) {
+        for (let j = 0; j < itemArr.length; j++) {
+          if (val1Arr[i] === itemArr[j] && val1[i + 1] === itemArr[j + 1]) {
+            return val1;
+          }
         }
-      });
-      // console.log("찾은단어들", searchArr);
-      cb(searchArr);
+      }
     });
+    cb(searchArr);
   };
 
   searchSet(value) {
@@ -67,8 +69,8 @@ class Nav extends React.Component {
       state,
     } = this.props;
 
-    console.log("NAV_PROPS : ", this.props);
-    console.log(state);
+    // console.log("NAV_PROPS : ", this.props);
+    // console.log(state);
     return (
       <Row gutter={[8, 8]} className="nav-Row">
         <Col span={8} style={{ marginTop: "7px" }}>
@@ -124,10 +126,10 @@ class Nav extends React.Component {
             width={1400}
           >
             {this.state.modalMsgs ? (
-              this.state.modalMsgs.map(item => {
-                console.log("모달_매핑 ? ", item);
-                return <ModalRender renderMsg={item} key={Math.random()} />;
-              })
+              this.state.modalMsgs.map(item => (
+                // console.log("모달_매핑 ? ", item);
+                <ModalRender renderMsg={item} key={Math.random()} />
+              ))
             ) : (
               <div />
             )}

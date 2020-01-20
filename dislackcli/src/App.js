@@ -107,7 +107,7 @@ class App extends React.Component {
   render() {
     const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
     const { handleClickMyWS, updateWorkspace } = this;
-    console.log("app.js state의 현재 선택된 워크스페이스", currentWorkspace);
+    // console.log("app.js state의 현재 선택된 워크스페이스", currentWorkspace);
     return isLogin && currentWorkspace ? (
       <div>
         <Redirect to={`/main/${currentWorkspace[0].code}`} />

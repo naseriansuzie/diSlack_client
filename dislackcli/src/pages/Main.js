@@ -96,11 +96,11 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        console.log("채널에 메시지 겟요청", res);
+        // console.log("채널에 메시지 겟요청", res);
         if (res.data.length !== 0) {
           this.setState({ msgs: res.data });
         } else {
-          console.log("메세지가 비어있습니다.");
+          // console.log("메세지가 비어있습니다.");
         }
       });
   }
@@ -200,7 +200,7 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        console.log("채널받아오는 API", res);
+        // console.log("채널받아오는 API", res);
         this.setState({ channels: res.data, currentDisplay: res.data[0] });
       });
   };
@@ -218,7 +218,7 @@ class MainPage extends React.Component {
           },
         )
         .then(res => {
-          console.log("채널받아오는 API", res);
+          // console.log("채널받아오는 API", res);
           this.setState({ channels: res.data, currentDisplay: res.data[0] });
 
           this.socket = socketio.connect("http://localhost:4000/chat");
@@ -240,11 +240,11 @@ class MainPage extends React.Component {
           },
         )
         .then(res => {
-          console.log("채널에 메시지 겟요청", res);
+          // console.log("채널에 메시지 겟요청", res);
           if (res.data.length !== 0) {
             this.setState({ msgs: res.data });
           } else {
-            console.log("메세지가 비어있습니다.");
+            // console.log("메세지가 비어있습니다.");
           }
         });
 
@@ -257,7 +257,7 @@ class MainPage extends React.Component {
           },
         )
         .then(res => {
-          console.log("참여 중인 유저들 =", res.data);
+          // console.log("참여 중인 유저들 =", res.data);
           this.setState({ memberList: res.data });
         });
     } catch (err) {
@@ -268,7 +268,7 @@ class MainPage extends React.Component {
           withCredentials: true,
         })
         .then(result => {
-          console.log("로그아웃 결과", result);
+          // console.log("로그아웃 결과", result);
           this.setState({ isLogin: false });
         })
         .catch(err => {
@@ -289,7 +289,7 @@ class MainPage extends React.Component {
   }
 
   render() {
-    console.log("로그인상태? : ", this.props.isLogin);
+    // console.log("로그인상태? : ", this.props.isLogin);
     const { currentWorkspace } = this.props;
     const {
       channels,
@@ -319,10 +319,7 @@ class MainPage extends React.Component {
         (this.state.channels.length || this.state.dms.length) ? (
         <div className="main-container" style={{ overflow: "hidden" }}>
           <Row
-            style={{
-              height: "70px",
-              zIndex: 3,
-            }}
+          className="Main-Side"
           >
             <Col
               span={3}
@@ -354,7 +351,7 @@ class MainPage extends React.Component {
               />
             </Col>
           </Row>
-          <Row style={{ height: "940px", overflow: "hidden" }}>
+          <Row style={{ height: "850px", overflow: "hidden" }}>
             <Col span={3} style={{ height: "100%" }}>
               <Side
                 channels={channels}
