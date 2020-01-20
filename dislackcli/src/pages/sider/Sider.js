@@ -116,20 +116,16 @@ class Side extends React.Component {
     return (
       <div style={{ height: "100%" }}>
         <Menu
+          className="Sider-Menu"
           onClick={this.handleClick}
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: "#400d3f",
-            color: "white",
-          }}
+          style={{}}
           defaultOpenKeys={["sub1"]}
           selectedKeys={[current]}
           mode="inline"
         >
           <div
             className="Sider-Title"
-            style={{ marginTop: "5%", marginBottom: "20%" }}
+            style={{ marginTop: "20%", marginBottom: "20%" }}
           >
             <Icon
               type="message"

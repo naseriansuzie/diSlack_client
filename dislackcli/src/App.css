@@ -1,62 +1,59 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap");
 
-.App {
-  padding: 0;
-}
-.MainPage {
-  overflow: hidden;
-}
-.ant-menu {
-  width: 100%;
-}
-@media only screen and (max-width: 1024px) {
-}
+@media only screen and (max-width: 1024px) and(max-height: 970px) {
+  .App {
+    padding: 0;
+  }
+  .MainPage {
+    overflow: hidden;
+  }
+  .ant-menu {
+    width: 100%;
+  }
+  .app-topBar {
+    display: flex;
+    align-items: center;
+    height: 70px;
+    border-bottom: 1px solid #d6d6d6;
+  }
 
-/* * {
-  outline: 1px solid red;
-  box-sizing: content-box;
-  font-family: "Lato", sans-serif;
-} */
+  .app-slackTitle {
+    font-weight: 700;
+    margin: auto 15rem;
+  }
 
-.app-topBar {
-  display: flex;
-  align-items: center;
-  height: 70px;
-  border-bottom: 1px solid #d6d6d6;
-  /* background-color: pink; */
-}
+  .app-topMenu {
+    margin-left: auto;
+    margin-right: 15rem;
+    font-size: 16px;
+  }
 
-.app-slackTitle {
-  font-weight: 700;
-  margin: auto 15rem;
-}
+  .app-topMenuOptions {
+    color: black;
+    padding: 1rem;
+  }
 
-.app-topMenu {
-  margin-left: auto;
-  margin-right: 15rem;
-  font-size: 16px;
-}
+  .app-topMenuOptions:hover {
+    color: #611f69;
+  }
 
-.app-topMenuOptions {
-  color: black;
-  padding: 1rem;
-}
+  .app-workspace {
+    margin: 0;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: white;
+    background-color: #521b57;
+    padding: 0.8rem;
+    border-radius: 0.3rem;
+  }
 
-.app-topMenuOptions:hover {
-  color: #611f69;
-}
+  .app-workspace:hover {
+    background-color: #4a154a;
+    color: white;
+  }
 
-.app-workspace {
-  margin: 0;
-  font-size: 14px;
-  letter-spacing: 1px;
-  color: white;
-  background-color: #521b57;
-  padding: 0.8rem;
-  border-radius: 0.3rem;
-}
-
-.app-workspace:hover {
-  background-color: #4a154a;
-  color: white;
+  .SiderHeader-Icon {
+    margin-left: 5%;
+    font-size: 5px;
+  }
 }
