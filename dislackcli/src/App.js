@@ -13,11 +13,11 @@ import "antd/dist/antd.css";
 import Home from "./components/Home";
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      isLogin: false,
-      userInfo: null,
+      isLogin: this.props.isLogin,
+      userInfo: this.props.userInfo,
       currentWorkspace: null,
       workSpaceList: [],
     };
@@ -84,6 +84,26 @@ class App extends React.Component {
     }
   }
 
+  //lifeCycle
+  async componentDidMount() {
+    if (this.state.isLogin) {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_DEV_URL}/workspace/list/my`,
+          {
+            withCredentials: true,
+          },
+        );
+        console.log("로그인 후 내 워크스페이스 불러오기", res.data);
+        this.setState({
+          workSpaceList: res.data,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
   render() {
     const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
     const { handleClickMyWS, updateWorkspace } = this;
@@ -107,6 +127,12 @@ class App extends React.Component {
             render={() => (
               <Signin
                 isLogin={this.state.isLogin}
+                handleLogin={() => {
+                  this.setState({
+                    isLogin: true,
+                    userInfo: JSON.parse(localStorage.getItem("userInfo")),
+                  });
+                }}
                 getWorkSpace={this.getWorkSpace}
               />
             )}
@@ -173,9 +199,17 @@ class App extends React.Component {
       </div>
     ) : (
       <div className="App">
-        
-
-        <Route exact path="/" component={Home} />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <Home
+              handleLogout={() => {
+                this.setState({ isLogin: false, userInfo: null });
+              }}
+            />
+          )}
+        />
         <Route
           path="/signin"
           render={() => (
@@ -183,6 +217,12 @@ class App extends React.Component {
               isLogin={this.state.isLogin}
               getWorkSpace={this.getWorkSpace}
               updateUserInfo={this.updateUserInfo}
+              handleLogin={() => {
+                this.setState({
+                  isLogin: true,
+                  userInfo: JSON.parse(localStorage.getItem("userInfo")),
+                });
+              }}
             />
           )}
         />

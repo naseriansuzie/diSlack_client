@@ -5,7 +5,10 @@ import App from "./App";
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <App
+      isLogin={JSON.parse(localStorage.getItem("isLogin"))}
+      userInfo={JSON.parse(localStorage.getItem("userInfo"))}
+    />
   </BrowserRouter>,
   document.getElementById("root"),
 );
