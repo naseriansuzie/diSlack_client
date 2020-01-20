@@ -3,7 +3,9 @@ import axios from "axios";
 import { Menu, Icon, Modal, Button } from "antd";
 import PlusDM from "./PlusDM";
 import PlusChannel from "./PlusChannel";
+import SiderETC from "./SiderETC";
 import "antd/dist/antd.css";
+import "./Sider.css";
 
 class Side extends React.Component {
   constructor(props) {
@@ -95,7 +97,8 @@ class Side extends React.Component {
   handleCancel = e => {
     console.log(e);
     this.setState({
-      visible: false,
+      visibleCN: false,
+      visibleDM: false,
     });
   };
 
@@ -124,11 +127,29 @@ class Side extends React.Component {
           selectedKeys={[current]}
           mode="inline"
         >
-          <div style={{ marginTop: "5%", marginBottom: "7%" }}>
-            Chanenl{" "}
+          <div
+            className="Sider-Title"
+            style={{ marginTop: "5%", marginBottom: "20%" }}
+          >
             <Icon
+              type="message"
+              style={{ fontSize: "16px", marginLeft: "3%", marginRight: "3%" }}
+              onClick={e => {
+                this.showModalCN(e);
+              }}
+            />
+            Thread{" "}
+          </div>
+
+          <div
+            className="Sider-Title"
+            style={{ marginTop: "5%", marginLeft: "3%", marginBottom: "7%" }}
+          >
+            Channel{" "}
+            <Icon
+              className="Sider-icon-plus"
               type="plus-circle"
-              style={{ marginLeft: "3%" }}
+              style={{ fontSize: "15px", marginLeft: "3%" }}
               onClick={e => {
                 this.showModalCN(e);
               }}
@@ -137,6 +158,7 @@ class Side extends React.Component {
 
           {channels.map((item, i) => (
             <Menu.Item
+              className="Sider-item"
               key={i}
               style={{
                 backgroundColor: "#400d3f",
@@ -152,11 +174,15 @@ class Side extends React.Component {
               {item.name}
             </Menu.Item>
           ))}
-          <div style={{ marginTop: "10%", marginBottom: "7%" }}>
+          <div
+            className="Sider-Title"
+            style={{ marginTop: "10%", marginBottom: "7%", marginLeft: "3%" }}
+          >
             Dm{" "}
             <Icon
+              className="Sider-icon-plus"
               type="plus-circle"
-              style={{ marginLeft: "3%" }}
+              style={{ marginLeft: "3%", fontSize: "15px" }}
               onClick={e => {
                 this.showModalDM(e);
               }}
@@ -165,6 +191,7 @@ class Side extends React.Component {
 
           {dms.map((item, i) => (
             <Menu.Item
+              className="Sider-item"
               key={i}
               style={{
                 backgroundColor: "#38ada9",
@@ -180,6 +207,7 @@ class Side extends React.Component {
               {item.name}
             </Menu.Item>
           ))}
+          <SiderETC />
         </Menu>
 
         {/* 채널생성 모달 */}
@@ -189,7 +217,9 @@ class Side extends React.Component {
           onOk={() => {
             this.handleOkCN();
           }}
-          onCancel={this.handleCancel}
+          onCancel={() => {
+            this.handleCancel();
+          }}
         >
           <PlusChannel
             handleOkCN={this.handleOkCN}
@@ -204,7 +234,9 @@ class Side extends React.Component {
           onOk={() => {
             this.handleOkDM();
           }}
-          onCancel={this.handleCancel}
+          onCancel={() => {
+            this.handleCancel();
+          }}
         >
           <PlusDM
             handleOkDM={this.handleOkDM}
