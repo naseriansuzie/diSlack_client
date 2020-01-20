@@ -2,15 +2,28 @@ import React from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
+import ".././App.css"
 
 const Home = () => {
   return (
     <>
-      <div className="home-header">
-        <Link to="/">Crong</Link>
-        <Link to="/signin">로그인</Link>
-        <Link to="/signup">회원가입</Link>
-        <Link to="/workspace">워크스페이스</Link>
+      <div className="app-topBar">
+          <h1 className="app-slackTitle">slack</h1>
+          <div className="app-topMenu">
+            
+              <Link to="/signup" className="app-topMenuOptions">
+                Sign up
+              </Link>
+            
+            
+              <Link to="/signin" className="app-topMenuOptions">
+                Sign in
+              </Link>
+            
+            <Link to="/workspace" className="app-workspace">
+              WORKSPACE
+            </Link>
+          </div>
       </div>
 
       <div className="home-main">
