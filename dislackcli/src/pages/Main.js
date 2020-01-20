@@ -96,6 +96,7 @@ class MainPage extends React.Component {
   };
 
   handleClickReply(msgId) {
+    this.handleReplyClose();
     axios
       .get(
         `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/${msgId}/list`,
