@@ -27,7 +27,7 @@ class Side extends React.Component {
   // 채널명을 적어서 서버에 보내자
   handleStateCN = item => {
     this.setState(() => {
-      this.setState({ newName: item });
+      this.setState({ newNameCN: item });
     });
   };
 

@@ -8,6 +8,7 @@ import InputMsg from "./display/inputMsg";
 import Thread from "./display/Thread";
 import MemberList from "./display/MemberList";
 import UserProfile from "./display/UserProfile";
+import SiderHeader from "./sider/SiderHeader"
 import "./Main.css";
 // import "antd/dist/antd.css";
 
@@ -37,7 +38,7 @@ class MainPage extends React.Component {
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
     this.getCN = this.getCN.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
-    this.clickedChannel = this.clickedChannel.bind(this)
+    this.clickedChannel = this.clickedChannel.bind(this);
   }
 
   // Methods
@@ -295,10 +296,10 @@ class MainPage extends React.Component {
       // 로그인 뿐만 채널 or 디엠 null
       this.props.isLogin &&
         (this.state.channels.length || this.state.dms.length) ? (
-        <div className="main-container"  style={{ overflow: "hidden" }}>
+        <div className="main-container" style={{ overflow: "hidden" }}>
           <Row
             style={{
-              height: "50px",
+              height: "70px",
               zIndex: 3,
             }}
           >
@@ -309,7 +310,7 @@ class MainPage extends React.Component {
                 backgroundColor: "#400d3f",
               }}
             >
-              Side_Header
+              <SiderHeader props={this.props} state={this.state} />
             </Col>
             <Col
               span={21}
@@ -366,7 +367,7 @@ class MainPage extends React.Component {
                   style={{
                     backgroundColor: "#ecf0f1",
                     position: "sticky",
-                    bottom: 0,
+                    bottom: "20px",
                     width: "100%",
                     padding: 0,
                   }}

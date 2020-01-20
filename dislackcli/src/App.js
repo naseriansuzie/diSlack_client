@@ -162,6 +162,7 @@ class App extends React.Component {
             path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
             render={() => (
               <MainPage
+                className="MainPage"
                 isLogin={isLogin}
                 userInfo={userInfo}
                 workSpaceList={workSpaceList}
@@ -173,8 +174,6 @@ class App extends React.Component {
       </div>
     ) : (
       <div className="App">
-        
-
         <Route exact path="/" component={Home} />
         <Route
           path="/signin"
