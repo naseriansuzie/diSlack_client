@@ -4,6 +4,7 @@ import "./MessageEntries.css";
 
 export default function MessageEntries(props) {
   const {
+    thread,
     id,
     user,
     time,
@@ -12,7 +13,6 @@ export default function MessageEntries(props) {
     replyCount,
     handleClickReply,
     handleClickProfile,
-    handleCreateReply,
   } = props;
   const reCount =
     replyCount && replyCount > 0 ? (
