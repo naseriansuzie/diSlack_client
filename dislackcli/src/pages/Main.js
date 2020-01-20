@@ -54,7 +54,7 @@ class MainPage extends React.Component {
     });
     return newMessageArr;
   }
-  
+
   clickedMsgUpdate() {
     const clicked = this.state.msgs.filter(msg => msg.clicked);
     if (clicked.length && this.state.clickedMsg[0] !== clicked[0]) {
@@ -97,6 +97,7 @@ class MainPage extends React.Component {
   };
 
   handleClickReply(msgId) {
+    this.handleReplyClose();
     axios
       .get(
         `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/${msgId}/list`,
@@ -135,10 +136,9 @@ class MainPage extends React.Component {
 
   handleClickMemberList() {
     this.handleReplyClose();
-    // 코드/currentDisplay.id/user/list 이런식으로 하는 api get 해와서
-    // 아래 setstate 추가 -> filteredMembers: res.data
+    // 현재는 모든 채널이 public이라서 workspace member === channel member라고 함
     this.setState({
-      filteredMembers: [this.state.currentDisplay],
+      filteredMembers: this.state.memberList,
       clickedUser: null,
     });
   }
