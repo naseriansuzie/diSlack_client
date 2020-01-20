@@ -109,11 +109,11 @@ class SignUp extends React.Component {
       <Redirect to="/workspace" />
     ) : (
       <div>
-        <Row>
+        {/* <Row>
           <Col span={24} style={{ color: "white" }}>
             header
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col span={4} />
           <Col span={12} value={120}>

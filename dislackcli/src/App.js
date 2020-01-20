@@ -1,4 +1,5 @@
 import React from "react";
+import "./App.css";
 import { Redirect, Route, Switch, Link } from "react-router-dom";
 import { Row, Col, Button } from "antd";
 import axios from "axios";
@@ -117,6 +118,17 @@ class App extends React.Component {
             path="/workspace"
             render={() => (
               <div>
+                <div className="appWs-header">
+                  <div className="appWs-header-1">
+                    <Link className="appWs-header-1-1" to="/">
+                      Crong
+                    </Link>
+                  </div>
+                  <div className="appWs-header-2">
+                    <Link to="/workspace">Find your workspace</Link>
+                    <Link to="/signin">Sign in</Link>
+                  </div>
+                </div>
                 <Row>
                   <Col span={12}>
                     <MyWorkSpace
@@ -160,11 +172,24 @@ class App extends React.Component {
       </div>
     ) : (
       <div className="App">
-        최상위 컴포넌트
-        {this.state.isLogin ? null : <Link to="/signin">로그인</Link>}
-        {this.state.isLogin ? null : <Link to="/signup">회원가입</Link>}
-        <Link to="/workspace">워크스페이스</Link>
-        <Link to="/main">main page</Link>
+        <div className="app-topBar">
+          <h1 className="app-slackTitle">slack</h1>
+          <div className="app-topMenu">
+            {this.state.isLogin ? null : (
+              <Link to="/signup" className="app-topMenuOptions">
+                Sign up
+              </Link>
+            )}
+            {this.state.isLogin ? null : (
+              <Link to="/signin" className="app-topMenuOptions">
+                Sign in
+              </Link>
+            )}
+            <Link to="/workspace" className="app-workspace">
+              WORKSPACE
+            </Link>
+          </div>
+        </div>
         {this.state.isLogin ? (
           <Button
             onClick={() => {
