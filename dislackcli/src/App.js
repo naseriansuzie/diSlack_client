@@ -200,7 +200,6 @@ class App extends React.Component {
       </div>
     ) : (
       <div className="App">
-
         <Route
           exact
           path="/"
@@ -208,6 +207,7 @@ class App extends React.Component {
             <Home
               handleLogout={() => {
                 this.setState({ isLogin: false, userInfo: null });
+                alert("로그아웃 되었습니다!");
               }}
             />
           )}
