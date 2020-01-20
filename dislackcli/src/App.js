@@ -173,8 +173,6 @@ class App extends React.Component {
       </div>
     ) : (
       <div className="App">
-        
-
         <Route exact path="/" component={Home} />
         <Route
           path="/signin"
