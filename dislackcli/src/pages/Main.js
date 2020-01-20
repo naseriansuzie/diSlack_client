@@ -8,7 +8,7 @@ import InputMsg from "./display/inputMsg";
 import Thread from "./display/Thread";
 import MemberList from "./display/MemberList";
 import UserProfile from "./display/UserProfile";
-import './Main.css'
+import "./Main.css";
 // import "antd/dist/antd.css";
 
 class MainPage extends React.Component {
@@ -42,7 +42,7 @@ class MainPage extends React.Component {
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
     this.getCN = this.getCN.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
-    this.clickedChannel = this.clickedChannel.bind(this)
+    this.clickedChannel = this.clickedChannel.bind(this);
   }
 
   // Methods
@@ -71,36 +71,35 @@ class MainPage extends React.Component {
 
   async clickedChannel(id) {
     console.log("채널이클릭되었습니다 : ", id);
-    let allCN = this.state.channels
+    let allCN = this.state.channels;
     let findCN = allCN.filter(val => {
-      if(val.id === id) {
-        return val
-      }
-    })
-    await this.setState({currentDisplay: findCN[0] , msgs:[]})
-
-    await axios
-    // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
-    .get(
-      `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
-      {
-        withCredentials: true, // 쿠키전달
-      },
-    )
-    .then(res => {
-      console.log("채널에 메시지 겟요청", res);
-      if (res.data.length !== 0) {
-        this.setState({ msgs: res.data });
-      } else {
-        console.log("메세지가 비어있습니다.");
+      if (val.id === id) {
+        return val;
       }
     });
-    
-  };
+    await this.setState({ currentDisplay: findCN[0], msgs: [] });
 
-  setCurrentDisPlay = (e) => {
-    console.log(e)
+    await axios
+      // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        console.log("채널에 메시지 겟요청", res);
+        if (res.data.length !== 0) {
+          this.setState({ msgs: res.data });
+        } else {
+          console.log("메세지가 비어있습니다.");
+        }
+      });
   }
+
+  setCurrentDisPlay = e => {
+    console.log(e);
+  };
 
   handleClickReply(msgId) {
     axios
@@ -124,9 +123,8 @@ class MainPage extends React.Component {
         }),
       )
       .catch(err => {
-        console.log("새로고침에러4")
-        console.log(err)
-
+        console.log("새로고침에러4");
+        console.log(err);
       });
   }
 
@@ -188,26 +186,8 @@ class MainPage extends React.Component {
   }
 
   // 워크스페이스 아이디로 채널불러오는 api요청
-  getCN =()=> {
-     axios
-        .get(
-          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
-          {
-            withCredentials: true, // 쿠키전달
-          },
-        )
-        .then(res => {
-          console.log("채널받아오는 API",res)
-          this.setState({ channels: res.data, currentDisplay: res.data[0] });
-        });
-  }
-
-  // LifeCycle
-  async componentDidMount() {
-    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
-    // try {
-    try {
-      await axios
+  getCN = () => {
+    axios
       .get(
         `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
         {
@@ -215,9 +195,27 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        console.log("채널받아오는 API",res)
+        console.log("채널받아오는 API", res);
         this.setState({ channels: res.data, currentDisplay: res.data[0] });
       });
+  };
+
+  // LifeCycle
+  async componentDidMount() {
+    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
+    // try {
+    try {
+      await axios
+        .get(
+          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
+          {
+            withCredentials: true, // 쿠키전달
+          },
+        )
+        .then(res => {
+          console.log("채널받아오는 API", res);
+          this.setState({ channels: res.data, currentDisplay: res.data[0] });
+        });
 
       await axios
         // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
@@ -250,20 +248,20 @@ class MainPage extends React.Component {
           this.setState({ memberList: res.data });
         });
     } catch (err) {
-      console.log("새로고침에러5")
+      console.log("새로고침에러5");
       console.log(err);
       axios
-      .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
-        withCredentials: true,
-      })
-      .then(result => {
-        console.log("로그아웃 결과", result);
-        this.setState({ isLogin: false });
-      })
-      .catch(err => {
-        console.log("새로고침에러3");
-        console.log(err);
-      });
+        .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
+          withCredentials: true,
+        })
+        .then(result => {
+          console.log("로그아웃 결과", result);
+          this.setState({ isLogin: false });
+        })
+        .catch(err => {
+          console.log("새로고침에러3");
+          console.log(err);
+        });
     }
   }
 
@@ -307,10 +305,10 @@ class MainPage extends React.Component {
       // 로그인 뿐만 채널 or 디엠 null
       this.props.isLogin &&
         (this.state.channels.length || this.state.dms.length) ? (
-        <div className="main-container">
+        <div className="main-container"  style={{ overflow: "hidden" }}>
           <Row
             style={{
-              height:"50px",
+              height: "50px",
               zIndex: 3,
             }}
           >
@@ -331,7 +329,8 @@ class MainPage extends React.Component {
                 borderColor: "#bdc3c7",
                 borderBottom: "solid",
                 borderWidth: "0.5px",
-                position:"sticky" ,top: 0 
+                position: "sticky",
+                top: 0,
               }}
             >
               <Nav
@@ -343,9 +342,14 @@ class MainPage extends React.Component {
               />
             </Col>
           </Row>
-          <Row style={{ height:"940px" , overflow:"hidden" }}>
+          <Row style={{ height: "940px", overflow: "hidden" }}>
             <Col span={3} style={{ height: "100%" }}>
-              <Side channels={channels} dms={dms} currentWorkspace={currentWorkspace} clickedChannel={this.clickedChannel} />
+              <Side
+                channels={channels}
+                dms={dms}
+                currentWorkspace={currentWorkspace}
+                clickedChannel={this.clickedChannel}
+              />
             </Col>
             <Col
               span={
@@ -354,7 +358,10 @@ class MainPage extends React.Component {
               style={{ height: "100%" }}
             >
               <Layout className="main-layout" style={{ height: "100%" }}>
-                <Content className="main-layout-content" style={{overflow:"scroll"}}>
+                <Content
+                  className="main-layout-content"
+                  style={{ overflow: "scroll" }}
+                >
                   {msgs.length ? (
                     <MessageList
                       msgs={msgs}
