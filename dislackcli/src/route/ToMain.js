@@ -20,7 +20,7 @@ export default function Tomain(props) {
     handleLogin,
     handleLogout,
     getWorkSpace,
-    updateCurrentWorkspace
+    updateCurrentWorkspace,
   } = props;
   return (
     <div>

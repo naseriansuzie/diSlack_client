@@ -38,9 +38,11 @@ class MainPage extends React.Component {
     this.handleCreateReply = this.handleCreateReply.bind(this);
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
     this.getCN = this.getCN.bind(this);
+    this.getDM = this.getDM.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
     this.setChannelDM = this.setChannelDM.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
+    this.clickedDM = this.clickedDM.bind(this);
   }
 
   // Methods
@@ -110,6 +112,7 @@ class MainPage extends React.Component {
   };
 
   setChannelDM(type, data) {
+    console.log("셋체널");
     if (type === "channel") {
       this.setState({ channels: [...this.state.channels, data] });
     } else this.setState({ dms: [...this.state.dms, data] });
@@ -211,6 +214,52 @@ class MainPage extends React.Component {
       });
   };
 
+  // DM방 불러오기
+  getDM = () => {
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        console.log("방불러오기", res);
+        this.setState({ dms: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  // DM방 선택
+  async clickedDM(id) {
+    console.log("DM이클릭되었습니다 : ", id);
+    let allDM = this.state.dms;
+    let findDM = allDM.filter(val => {
+      if (val.id === id) {
+        return val;
+      }
+    });
+    console.log("선택한 DM", findDM);
+    await this.setState({ currentDisplay: findDM[0], msgs: [] });
+    // DM방 선택 시 대화 불러오기 /:code/directmessage/:id(room)/list
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/directmessage/${id}/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        console.log("메시지 겟요청", res);
+        if (res.data.length !== 0) {
+          this.setState({ msgs: res.data });
+        } else {
+          // console.log("메세지가 비어있습니다.");
+        }
+      });
+  }
   // LifeCycle
   async componentDidMount() {
     // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
@@ -238,16 +287,19 @@ class MainPage extends React.Component {
           });
         });
 
+      const address = this.state.currentDisplay.name
+        ? "channelmessage"
+        : "directmessage";
       await axios
         // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
         .get(
-          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
+          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${address}/${this.state.currentDisplay.id}/list`,
           {
             withCredentials: true, // 쿠키전달
           },
         )
         .then(res => {
-          // console.log("채널에 메시지 겟요청", res);
+          console.log("메시지 겟요청", res);
           if (res.data.length !== 0) {
             this.setState({ msgs: res.data });
           } else {
@@ -267,6 +319,7 @@ class MainPage extends React.Component {
           // console.log("참여 중인 유저들 =", res.data);
           this.setState({ memberList: res.data });
         });
+      this.getDM();
     } catch (err) {
       console.log(err);
     }
@@ -284,7 +337,7 @@ class MainPage extends React.Component {
 
   render() {
     // console.log("로그인상태? : ", this.props.isLogin);
-    const { currentWorkspace } = this.props;
+    const { currentWorkspace, userInfo } = this.props;
     const {
       channels,
       dms,
@@ -349,9 +402,11 @@ class MainPage extends React.Component {
               <Side
                 channels={channels}
                 dms={dms}
+                userInfo={userInfo}
                 currentWorkspace={currentWorkspace}
                 clickedChannel={this.clickedChannel}
                 setChannelDM={setChannelDM}
+                clickedDM={this.clickedDM}
               />
             </Col>
             <Col
