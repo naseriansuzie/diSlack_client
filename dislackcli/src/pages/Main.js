@@ -41,6 +41,7 @@ class MainPage extends React.Component {
     this.getCN = this.getCN.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
+    this.clickedDM = this.clickedDM.bind(this)
   }
 
   // Methods
@@ -205,11 +206,53 @@ class MainPage extends React.Component {
       });
   };
 
+  // DM방 불러오기
+  getDM = () => {
+    axios
+    .get(
+      `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/list`,
+      {
+        withCredentials: true,
+      },
+    )
+    .then(res => {
+      console.log("방불러오기",res)
+      this.setState({dms : res.data})
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
+  // DM방 선택
+  async clickedDM(id) {
+    console.log("DM이클릭되었습니다 : ", id);
+    let allDM = this.state.dms;
+    let findDM = allDM.filter(val => {
+      if (val.id === id) {
+        return val;
+      }
+    });
+    console.log("선택한 DM",findDM)
+    await this.setState({ currentDisplay: findDM[0], msgs: [] });
+
+    // DM방 선택 시 대화 불러오기 /:code/directmessage/:id(room)/list
+    axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/directmessage/${id}/list`, {
+      withCredentials: true,
+    })
+    .then(res => {
+      console.log("메시지 겟요청", res);
+      if (res.data.length !== 0) {
+        this.setState({ msgs: res.data });
+      } else {
+        // console.log("메세지가 비어있습니다.");
+      }
+    })
+  }
 
   // LifeCycle
-  componentDidMount() {
-    console.log("컴포넌트디드마운ㅌ트")
+  async componentDidMount() {
+    console.log("컴포넌트디드마운트")
     try {
       // 1. 새로고침시 currentWorkSpace 불러오기
       let code = this.props.history.location.pathname.split('/main/')[1]
@@ -219,7 +262,7 @@ class MainPage extends React.Component {
       this.props.updateCurrentWorkspace(result)
 
 
-      axios
+      await axios
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
           {
@@ -241,16 +284,20 @@ class MainPage extends React.Component {
           });
         });
 
-      axios
+
+        const address = this.state.currentDisplay.name
+        ? "channelmessage"
+        : "directmessage";
+      await axios
         // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
         .get(
-          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
+          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${address}/${this.state.currentDisplay.id}/list`,
           {
             withCredentials: true, // 쿠키전달
           },
         )
         .then(res => {
-          // console.log("채널에 메시지 겟요청", res);
+          console.log("메시지 겟요청", res);
           if (res.data.length !== 0) {
             this.setState({ msgs: res.data });
           } else {
@@ -259,7 +306,7 @@ class MainPage extends React.Component {
         });
 
       // 멤버리스트 받아오는 api 추가
-      axios
+      await axios
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/user/list`,
           {
@@ -270,6 +317,8 @@ class MainPage extends React.Component {
           // console.log("참여 중인 유저들 =", res.data);
           this.setState({ memberList: res.data });
         });
+
+        this.getDM()
     } catch (err) {
       console.log(err);
     }
@@ -289,7 +338,7 @@ class MainPage extends React.Component {
 
   render() {
     // console.log("로그인상태? : ", this.props.isLogin);
-    const { currentWorkspace } = this.props;
+    const { currentWorkspace,userInfo } = this.props;
     const {
       channels,
       dms,
@@ -317,7 +366,7 @@ class MainPage extends React.Component {
       this.props.isLogin &&
         (this.state.channels.length || this.state.dms.length) ? (
         <div className="main-container" style={{ overflow: "hidden" }}>
-          {/* <Row className="Main-Side">
+          <Row className="Main-Side">
             <Col
               span={3}
               style={{
@@ -340,6 +389,7 @@ class MainPage extends React.Component {
               }}
             >
               <Nav
+              currentDisplay={currentDisplay}
                 msgs={msgs}
                 props={this.props}
                 state={this.state}
@@ -347,7 +397,7 @@ class MainPage extends React.Component {
                 handleClickMemberList={handleClickMemberList}
               />
             </Col>
-          </Row> */}
+          </Row>
 
           <Row style={{ height: "850px", overflow: "hidden" }}>
             <Col span={3} style={{ height: "100%" }}>
@@ -356,6 +406,8 @@ class MainPage extends React.Component {
                 dms={dms}
                 currentWorkspace={currentWorkspace}
                 clickedChannel={this.clickedChannel}
+                clickedDM={this.clickedDM}
+                userInfo={userInfo}
               />
             </Col>
             <Col

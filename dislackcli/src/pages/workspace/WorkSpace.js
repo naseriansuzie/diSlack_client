@@ -42,7 +42,7 @@ class WorkSpace extends React.Component {
       workSpaceList,
     } = this.props;
 
-    return workSpaceList.length ? (
+    return (
       <div>
         <Row>
           <Col span={12}>
@@ -71,8 +71,6 @@ class WorkSpace extends React.Component {
           <Col span={8} />
         </Row>
       </div>
-    ) : (
-      <div>WorkSpace is Loading..</div>
     );
   }
 }

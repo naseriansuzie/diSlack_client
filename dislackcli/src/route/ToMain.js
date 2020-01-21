@@ -26,9 +26,7 @@ export default function Tomain(props) {
     <div>
       <Redirect
         to={
-          currentWorkspace && currentWorkspace.length
-            ? `/main/${currentWorkspace[0].code}`
-            : "/workspace"
+          currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/workspace"
         }
       />
       <Switch>
