@@ -98,7 +98,7 @@ class App extends React.Component {
       updateUserInfo,
     } = this;
     // console.log("app.js state의 현재 선택된 워크스페이스", currentWorkspace);
-    return isLogin ? (
+    return isLogin && currentWorkspace ? (
       <div>
         <ToMain
           isLogin={isLogin}
