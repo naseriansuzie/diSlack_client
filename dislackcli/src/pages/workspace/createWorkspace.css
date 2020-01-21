@@ -20,10 +20,6 @@
   margin-bottom: 1rem;
 }
 
-.workspace-create-title:hover {
-  color: black;
-}
-
 .workspace-create-title-1 {
   font-size: 18px;
   margin-bottom: 1rem;
@@ -51,5 +47,9 @@
 }
 
 .workspace-createBtn:hover {
+  background-color: #148467;
+}
+
+.workspace-createBtn:focus {
   background-color: #148467;
 }
