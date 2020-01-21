@@ -23,7 +23,7 @@ class WorkSpace extends React.Component {
   }
 
   // lifeCycle
-  async componentDidMount() {
+  componentDidMount() {
     if (this.props.isLogin) {
       this.getWorkSpace();
     }
