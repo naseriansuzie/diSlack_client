@@ -69,31 +69,6 @@ class Side extends React.Component {
       });
   };
 
-  // DM생성 OK
-  handleOkDM = e => {
-    this.setState({
-      visibleDM: false,
-    });
-    console.log("DM생성이름", this.state.newNameDM);
-    // const newDM = {
-    //   friend_id: friend_id
-    // };
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/create`,
-    //     newDM,
-    //     {
-    //       withCredentials: true, // 쿠키전달
-    //     },
-    //   )
-    //   .then(res => {
-    //     console.log("채널생성보냄!", res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-  };
-
   handleCancel = e => {
     console.log(e);
     this.setState({
@@ -103,15 +78,21 @@ class Side extends React.Component {
   };
 
   handleClick = e => {
-    console.log("채널click :", e);
     this.setState({
       current: e.key,
     });
   };
 
   render() {
-    // console.log("SIDER_PROPS", this.props);
-    const { channels, dms, clickedChannel } = this.props;
+    console.log("SIDER_PROPS", this.props);
+    const {
+      channels,
+      dms,
+      clickedChannel,
+      clickedDM,
+      currentWorkspace,
+      userInfo,
+    } = this.props;
     const { current } = this.state;
     return (
       <div style={{ height: "100%" }}>
@@ -203,24 +184,27 @@ class Side extends React.Component {
             />
           </div>
 
-          {dms.map((item, i) => (
-            <Menu.Item
-              className="Sider-item"
-              key={i}
-              style={{
-                backgroundColor: "#38ada9",
-                color: "#ecf0f1",
-                margin: "0",
-                height: "30px",
-              }}
-              onClick={e => {
-                this.clickedChannel(e);
-              }}
-            >
-              <Icon type="message" style={{ marginRight: "3%" }} />
-              {item.name}
-            </Menu.Item>
-          ))}
+          {dms.map((item, i) => {
+            console.log("DM_들!", item);
+            return (
+              <Menu.Item
+                className="Sider-item"
+                key={i}
+                style={{
+                  backgroundColor: "#400d3f",
+                  color: "#ecf0f1",
+                  margin: "0",
+                  height: "30px",
+                }}
+                onClick={e => {
+                  clickedDM(item.id);
+                }}
+              >
+                <Icon type="message" style={{ marginRight: "3%" }} />
+                {item.users[1].name}
+              </Menu.Item>
+            );
+          })}
           <SiderETC />
         </Menu>
 
@@ -255,6 +239,8 @@ class Side extends React.Component {
           <PlusDM
             handleOkDM={this.handleOkDM}
             handleState={this.handleStateDM}
+            currentWorkspace={currentWorkspace}
+            userInfo={userInfo}
           />
         </Modal>
       </div>
