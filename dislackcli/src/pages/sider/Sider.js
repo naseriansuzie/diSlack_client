@@ -66,6 +66,12 @@ class Side extends React.Component {
       })
       .catch(err => {
         console.log(err);
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
       });
   };
 
@@ -117,17 +123,26 @@ class Side extends React.Component {
       <div style={{ height: "100%" }}>
         <Button
           onClick={async () => {
-            const res = await axios.post(
-              `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/link/test`,
-              {
-                email: "miknignod@naver.com",
-              },
-              {
-                withCredentials: true, // 쿠키전달
-              },
-            );
-            if (res) {
-              alert("good");
+            try {
+              const res = await axios.post(
+                `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/link/test`,
+                {
+                  email: "miknignod@naver.com",
+                },
+                {
+                  withCredentials: true, // 쿠키전달
+                },
+              );
+              if (res) {
+                alert("good");
+              }
+            } catch (err) {
+              if (err.response.status === 419) {
+                localStorage.setItem("isLogin", null);
+                this.setState({ isLogin: false });
+                alert("다시 로그인 해주세요");
+                window.location = "/signin";
+              }
             }
           }}
         >

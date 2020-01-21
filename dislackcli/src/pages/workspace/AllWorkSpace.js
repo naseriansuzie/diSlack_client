@@ -40,9 +40,12 @@ class AllWorkSpace extends React.Component {
       // console.log("내가 가입하지 않은 워크스페이스들 = ", filteredList);
       // this.setState({ list: filteredList });
     } catch (err) {
-      if (err.response.status === 401) {
-        console.log("잘못된 코드로 join");
-      } else console.log(err);
+      if (err.response.status === 419) {
+        localStorage.setItem("isLogin", null);
+        this.setState({ isLogin: false });
+        alert("다시 로그인 해주세요");
+        window.location = "/signin";
+      }
     }
   }
 
@@ -63,7 +66,14 @@ class AllWorkSpace extends React.Component {
           list: res.data,
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        // if (err.response.status === 419) {
+        //   localStorage.setItem("isLogin", null);
+        //   this.setState({ isLogin: false });
+        //   alert("다시 로그인 해주세요");
+        //   window.location = "/signin";
+        // }
+      });
   }
 
   componentWillUnmount() {

@@ -3,7 +3,7 @@ import "./Home.css";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
 import ".././App.css";
-import Axios from "axios";
+import axios from "axios";
 
 const Home = props => {
   return (
@@ -23,13 +23,19 @@ const Home = props => {
             onClick={() => {
               localStorage.setItem("isLogin", null);
               localStorage.setItem("userInfo", null);
-              Axios.post(
-                `${process.env.REACT_APP_DEV_URL}/user/signout`,
-                null,
-                {
+              axios
+                .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
                   withCredentials: true,
-                },
-              ).then(res => props.handleLogout());
+                })
+                .then(res => props.handleLogout())
+                .catch(err => {
+                  if (err.response.status === 419) {
+                    localStorage.setItem("isLogin", null);
+                    this.setState({ isLogin: false });
+                    alert("다시 로그인 해주세요");
+                    window.location = "/signin";
+                  }
+                });
             }}
           >
             Sign out

@@ -101,6 +101,14 @@ class MainPage extends React.Component {
         } else {
           // console.log("메세지가 비어있습니다.");
         }
+      })
+      .catch(err => {
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
       });
     this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
@@ -132,8 +140,12 @@ class MainPage extends React.Component {
         }),
       )
       .catch(err => {
-        console.log("새로고침에러4");
-        console.log(err);
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
       });
   }
 
@@ -175,7 +187,15 @@ class MainPage extends React.Component {
           clickedMsg: [],
           filteredMembers: null,
         }),
-      );
+      )
+      .catch(err => {
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
+      });
   }
 
   handleProfileClose() {
@@ -202,6 +222,14 @@ class MainPage extends React.Component {
       .then(res => {
         // console.log("채널받아오는 API", res);
         this.setState({ channels: res.data, currentDisplay: res.data[0] });
+      })
+      .catch(err => {
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
       });
   };
 
@@ -230,6 +258,14 @@ class MainPage extends React.Component {
             const message = JSON.parse(data);
             this.setState({ msgs: this.state.msgs.concat(message) });
           });
+        })
+        .catch(err => {
+          if (err.response.status === 419) {
+            localStorage.setItem("isLogin", null);
+            this.setState({ isLogin: false });
+            alert("다시 로그인 해주세요");
+            window.location = "/signin";
+          }
         });
 
       await axios
@@ -248,6 +284,14 @@ class MainPage extends React.Component {
           } else {
             // console.log("메세지가 비어있습니다.");
           }
+        })
+        .catch(err => {
+          if (err.response.status === 419) {
+            localStorage.setItem("isLogin", null);
+            this.setState({ isLogin: false });
+            alert("다시 로그인 해주세요");
+            window.location = "/signin";
+          }
         });
 
       // 멤버리스트 받아오는 api 추가
@@ -263,7 +307,12 @@ class MainPage extends React.Component {
           this.setState({ memberList: res.data });
         });
     } catch (err) {
-      console.log(err);
+      if (err.response.status === 419) {
+        localStorage.setItem("isLogin", null);
+        this.setState({ isLogin: false });
+        alert("다시 로그인 해주세요");
+        window.location = "/signin";
+      }
     }
     console.log(this.scroll4);
 
