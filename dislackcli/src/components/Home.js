@@ -18,11 +18,8 @@ const Home = props => {
           <Link to="/signin" className="app-topMenuOptions">
             Sign in
           </Link>
-
-          <Link to="/workspace" className="app-workspace">
-            WORKSPACE
-          </Link>
           <Button
+            className="signoutBtn"
             onClick={() => {
               localStorage.setItem("isLogin", null);
               localStorage.setItem("userInfo", null);
@@ -37,6 +34,10 @@ const Home = props => {
           >
             Sign out
           </Button>
+
+          <Link to="/workspace" className="app-workspace">
+            WORKSPACE
+          </Link>
         </div>
       </div>
 

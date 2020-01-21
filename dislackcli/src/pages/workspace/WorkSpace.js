@@ -4,8 +4,10 @@ import { Row, Col } from "antd";
 import MyWorkSpace from "./MyWorkSpace";
 import AllWorkSpace from "./AllWorkSpace";
 import CreateWorkSpace from "./createWorkSpace";
+import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import axios from "axios";
+import "./workspace.css";
 
 class WorkSpace extends React.Component {
   constructor(props) {
@@ -61,38 +63,41 @@ class WorkSpace extends React.Component {
       updateCurrentWorkspace,
     } = this.props;
     const { workSpaceList } = this.state;
-    return workSpaceList.length ? (
-      <div>
-        <Row>
-          <Col span={12}>
-            <MyWorkSpace
-              handleLogout={handleLogout}
-              isLogin={isLogin}
-              userInfo={userInfo}
-              workSpaceList={workSpaceList}
-              handleClickMyWS={this.handleClickMyWS}
-            />
-          </Col>
-          <Col span={12}>
-            <AllWorkSpace
-              isLogin={isLogin}
-              userInfo={userInfo}
-              workSpaceList={workSpaceList}
-              updateCurrentWorkspace={updateCurrentWorkspace}
-            />
-          </Col>
-        </Row>
-        <Row style={{ marginBottom: "20%" }}>
-          <Col span={8} />
-          <Col span={8}>
+    // return workSpaceList.length ? (
+    return (
+      <div className="workspace-main">
+        <div className="workspace-left">
+          <div className="workspace-header">
+            <Link className="workspace-header-title" to="/">
+              Crong
+            </Link>
+          </div>
+          <div className="workspace-middle">
             <CreateWorkSpace getWorkSpace={this.getWorkSpace} />
-          </Col>
-          <Col span={8} />
-        </Row>
+            <div></div>
+          </div>
+        </div>
+
+        <div className="workspace-right">
+          <MyWorkSpace
+            handleLogout={handleLogout}
+            isLogin={isLogin}
+            userInfo={userInfo}
+            workSpaceList={workSpaceList}
+            handleClickMyWS={this.handleClickMyWS}
+          />
+          <AllWorkSpace
+            isLogin={isLogin}
+            userInfo={userInfo}
+            workSpaceList={workSpaceList}
+            updateCurrentWorkspace={updateCurrentWorkspace}
+          />
+        </div>
       </div>
-    ) : (
-      <div>WorkSpace is Loading..</div>
     );
+    // : (
+    //   <div>WorkSpace is Loading..</div>
+    // );
   }
 }
 
