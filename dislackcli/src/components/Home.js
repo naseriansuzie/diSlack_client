@@ -74,9 +74,9 @@ const Home = props => {
           width="870"
           height="490"
           src="https://www.youtube.com/embed/rZC7HYumJSo"
-          frameborder="0"
+          frameBorder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
+          allowFullScreen
         ></iframe>
         <div className="home-content-4">
           <div className="home-content-4-1">

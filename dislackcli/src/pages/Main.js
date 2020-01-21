@@ -8,7 +8,7 @@ import InputMsg from "./display/inputMsg";
 import Thread from "./display/Thread";
 import MemberList from "./display/MemberList";
 import UserProfile from "./display/UserProfile";
-import SiderHeader from "./sider/SiderHeader"
+import SiderHeader from "./sider/SiderHeader";
 import socketio from "socket.io-client";
 import "./Main.css";
 // import "antd/dist/antd.css";
@@ -40,7 +40,6 @@ class MainPage extends React.Component {
     this.getCN = this.getCN.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
-
   }
 
   // Methods
@@ -196,7 +195,7 @@ class MainPage extends React.Component {
       .get(
         `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
         {
-          withCredentials: true, // 쿠키전달
+          withCredentials: true,
         },
       )
       .then(res => {
@@ -214,14 +213,15 @@ class MainPage extends React.Component {
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
           {
-            withCredentials: true, // 쿠키전달
+            withCredentials: true,
           },
         )
         .then(res => {
-          // console.log("채널받아오는 API", res);
           this.setState({ channels: res.data, currentDisplay: res.data[0] });
 
-          this.socket = socketio.connect("http://localhost:4000/chat");
+          this.socket = socketio.connect(
+            `${process.env.REACT_APP_DEV_URL}/chat`,
+          );
           this.socket.on("connect", data => {
             this.socket.emit("joinchannel", this.state.currentDisplay.id);
           });
@@ -261,20 +261,7 @@ class MainPage extends React.Component {
           this.setState({ memberList: res.data });
         });
     } catch (err) {
-      console.log("새로고침에러5");
       console.log(err);
-      axios
-        .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
-          withCredentials: true,
-        })
-        .then(result => {
-          // console.log("로그아웃 결과", result);
-          this.setState({ isLogin: false });
-        })
-        .catch(err => {
-          console.log("새로고침에러3");
-          console.log(err);
-        });
     }
   }
 
@@ -318,9 +305,7 @@ class MainPage extends React.Component {
       this.props.isLogin &&
         (this.state.channels.length || this.state.dms.length) ? (
         <div className="main-container" style={{ overflow: "hidden" }}>
-          <Row
-          className="Main-Side"
-          >
+          <Row className="Main-Side">
             <Col
               span={3}
               style={{

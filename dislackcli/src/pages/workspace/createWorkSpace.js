@@ -13,7 +13,6 @@ class CreateWorkSpace extends React.Component {
   }
 
   async createWS(e) {
-    // console.log(e.target.value);
     await this.setState({ name: e.target.value });
     const workspaceName = { name: this.state.name };
     axios
@@ -21,7 +20,7 @@ class CreateWorkSpace extends React.Component {
         `${process.env.REACT_APP_DEV_URL}/workspace/create`,
         workspaceName,
         {
-          withCredentials: true, // 쿠키전달
+          withCredentials: true,
         },
       )
       .then(res => {
@@ -29,8 +28,11 @@ class CreateWorkSpace extends React.Component {
         this.props.getWorkSpace();
       })
       .catch(err => {
-        console.log("에러에용?", err);
-        alert("동일한 이름이 있습니다!");
+        if (err.response.status === 409) {
+          alert(
+            "동일한 이름의 워크스페이스가 존재합니다. 새로운 이름으로 만들어주세요!",
+          );
+        } else console.log(err);
       });
   }
 

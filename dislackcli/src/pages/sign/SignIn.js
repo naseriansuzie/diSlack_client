@@ -87,9 +87,14 @@ class Signin extends React.Component {
                       //this.props.updateUserInfo(res.data, this.state.email);
                       return res;
                     }
-                    alert("이메일이나 패스워드 확인하세요");
                   })
-                  .catch(err => {});
+                  .catch(err => {
+                    if (err.response.status) {
+                      alert(
+                        "회원 정보가 일치하지 않습니다. 이메일주소와 비밀번호를 확인해주세요!",
+                      );
+                    }
+                  });
               }}
             >
               <Form.Item>
