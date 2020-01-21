@@ -27,6 +27,25 @@ class WorkSpace extends React.Component {
   }
 
   // methods
+
+  getWorkSpace() {
+    axios
+      .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/my`, {
+        withCredentials: true,
+      })
+      .then(res => {
+        this.setState({ workSpaceList: res.data });
+      })
+      .catch(err => {
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
+      });
+  }
+
   handleClickMyWS(e) {
     const workSpaceId = e.target.id;
     const clickedWorkspace = this.props.workSpaceList.filter(
