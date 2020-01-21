@@ -20,6 +20,10 @@ class Thread extends React.Component {
       console.log(data);
       this.props.handleReply(JSON.parse(data));
     });
+    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+  }
+  componentDidUpdate() {
+    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
   componentWillUnmount() {
     this.socket.disconnect();
@@ -37,7 +41,10 @@ class Thread extends React.Component {
     console.log("클릭드메시지 =", clickedMsg);
     if (clickedMsg.length) {
       return (
-        <div className="Thread-container Thread-scroll">
+        <div
+          className="Thread-container Thread-scroll"
+          ref={ref => (this.scroll = ref)}
+        >
           <Col className="Thread-container">
             <Row className="Thread-pad Thread-back-color">
               <Col span={20}>
