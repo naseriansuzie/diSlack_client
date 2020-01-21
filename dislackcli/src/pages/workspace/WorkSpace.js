@@ -63,7 +63,6 @@ class WorkSpace extends React.Component {
       updateCurrentWorkspace,
     } = this.props;
     const { workSpaceList } = this.state;
-    // return workSpaceList.length ? (
     return (
       <div className="workspace-main">
         <div className="workspace-left">
@@ -95,9 +94,6 @@ class WorkSpace extends React.Component {
         </div>
       </div>
     );
-    // : (
-    //   <div>WorkSpace is Loading..</div>
-    // );
   }
 }
 
