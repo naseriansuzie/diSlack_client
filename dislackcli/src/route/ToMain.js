@@ -1,13 +1,10 @@
 import React from "react";
 import "../App.css";
 import { Redirect, Route, Switch, Link } from "react-router-dom";
-import { Row, Col } from "antd";
 import Signin from "../pages/sign/SignIn";
 import SignUp from "../pages/sign/SignUp";
 import MainPage from "../pages/Main";
-import MyWorkSpace from "../pages/workspace/MyWorkSpace";
-import AllWorkSpace from "../pages/workspace/AllWorkSpace";
-import CreateWorkSpace from "../pages/workspace/createWorkSpace";
+import WorkSpace from "../pages/workspace/WorkSpace";
 import "antd/dist/antd.css";
 import Home from "../components/Home";
 import "../components/Home.css";
@@ -23,6 +20,7 @@ export default function Tomain(props) {
     handleLogin,
     handleLogout,
     getWorkSpace,
+    updateCurrentWorkspace
   } = props;
   return (
     <div>
@@ -65,32 +63,18 @@ export default function Tomain(props) {
                   <Link to="/signin">Sign in</Link>
                 </div>
               </div>
-              <Row>
-                <Col span={12}>
-                  <MyWorkSpace
-                    handleLogout={handleLogout}
-                    isLogin={isLogin}
-                    userInfo={userInfo}
-                    workSpaceList={workSpaceList}
-                    handleClickMyWS={handleClickMyWS}
-                  />
-                </Col>
-                <Col span={12}>
-                  <AllWorkSpace
-                    isLogin={isLogin}
-                    userInfo={userInfo}
-                    workSpaceList={workSpaceList}
-                    updateWorkspace={updateWorkspace}
-                  />
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "20%" }}>
-                <Col span={8} />
-                <Col span={8}>
-                  <CreateWorkSpace getWorkSpace={getWorkSpace} />
-                </Col>
-                <Col span={8} />
-              </Row>
+              <div>
+                <WorkSpace
+                  handleLogout={handleLogout}
+                  isLogin={isLogin}
+                  userInfo={userInfo}
+                  workSpaceList={workSpaceList}
+                  handleClickMyWS={handleClickMyWS}
+                  updateWorkspace={updateWorkspace}
+                  getWorkSpace={getWorkSpace}
+                  updateCurrentWorkspace={updateCurrentWorkspace}
+                />
+              </div>
             </div>
           )}
         />
