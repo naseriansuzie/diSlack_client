@@ -96,6 +96,24 @@ class Side extends React.Component {
     const { current } = this.state;
     return (
       <div style={{ height: "100%" }}>
+        <Button
+          onClick={async () => {
+            const res = await axios.post(
+              `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/link/test`,
+              {
+                email: "miknignod@naver.com",
+              },
+              {
+                withCredentials: true, // 쿠키전달
+              },
+            );
+            if (res) {
+              alert("good");
+            }
+          }}
+        >
+          링크
+        </Button>
         <Menu
           className="Sider-Menu"
           onClick={this.handleClick}

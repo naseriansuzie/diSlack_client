@@ -459,6 +459,11 @@ class MainPage extends React.Component {
                   handleReplyClose={handleReplyClose}
                   handleClickProfile={handleClickProfile}
                   handleClickMemberList={handleClickMemberList}
+                  handleReply={reply => {
+                    this.setState({
+                      replies: this.state.replies.concat(reply),
+                    });
+                  }}
                 />
               ) : filteredMembers ? (
                 <MemberList

@@ -75,6 +75,9 @@ class App extends React.Component {
     this.getWorkSpace();
   }
 
+  componentWillUnmount() {
+    localStorage.setItem("isLogin", null);
+  }
   render() {
     const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
     const {

@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap");
+
+* {
+  /* outline: 1px solid red;
+    box-sizing: content-box; */
+  font-family: "Lato", sans-serif;
+}
+
+.workspace-main {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.workspace-left {
+  float: left;
+  width: 33%;
+}
+
+.workspace-header {
+  display: flex;
+  height: 70px;
+}
+
+.workspace-header-title {
+  margin: auto 2rem;
+  color: black;
+  font-weight: 900;
+  font-size: 33px;
+}
+
+.workspace-header-title:hover {
+  color: black;
+}
+
+.workspace-middle {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: absolute;
+  flex-direction: column;
+  height: 100%;
+  width: 33%;
+}
+
+.workspace-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #49154a;
+  color: white;
+}
