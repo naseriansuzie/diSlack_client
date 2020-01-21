@@ -1,3 +1,47 @@
 .scrollY {
   overflow-y: scroll;
 }
+
+.scrollY::-webkit-scrollbar {
+  display: none;
+}
+
+.workspace-list {
+  margin-top: 1rem;
+  display: flex;
+}
+
+.ant-list-item-meta-title {
+  font-size: 17px;
+  color: white;
+}
+
+.ant-list-item-meta-description {
+  font-size: 15px;
+  font-weight: 300;
+  color: white;
+  opacity: 0.8;
+}
+
+.workspace-listTitle {
+  margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: 2em;
+}
+
+.workspace-joinBtn {
+  color: white;
+  background: none;
+  font-weight: 700;
+}
+
+.workspace-joinBtn:hover {
+  border: none;
+  background-color: white;
+  color: #49154a;
+}
+
+.workspace-joinBtn:focus {
+  border: hidden;
+  color: #49154a;
+}

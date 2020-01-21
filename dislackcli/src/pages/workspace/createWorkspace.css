@@ -1,1 +1,55 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap");
+
+* {
+  font-family: "Lato", sans-serif;
+}
+
+.workspace-create-main {
+  width: 80%;
+}
+
+.workspace-create-form {
+  border: hidden;
+  color: black;
+  /* background-color: pink; */
+}
+
+.workspace-create-title {
+  font-weight: 900;
+  font-size: 30px;
+  margin-bottom: 1rem;
+}
+
+.workspace-create-title:hover {
+  color: black;
+}
+
+.workspace-create-title-1 {
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+
+.workspace-create-title-2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.workspace-input {
+  border: 1px solid gray;
+  height: 50px;
+  font-size: 18px;
+}
+
+.workspace-createBtn {
+  border: hidden;
+  font-size: 20px;
+  font-weight: 700;
+  top: 18rem;
+  height: 50px;
+  background-color: #007a5a;
+}
+
+.workspace-createBtn:hover {
+  background-color: #148467;
+}

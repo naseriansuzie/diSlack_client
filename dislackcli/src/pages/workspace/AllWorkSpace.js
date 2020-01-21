@@ -78,31 +78,28 @@ class AllWorkSpace extends React.Component {
             >
               <Col span={6} />
               <Col span={12}>
-                <Row
-                  style={{
-                    padding: "10px",
-                    fontWeight: "bold",
-                    fontSize: "2em",
-                  }}
-                >
-                  Other Workspace
-                </Row>
-                <Row style={{ padding: "10px" }}>
-                  Choose a Workspace you want to join
-                </Row>
+                <Row className="workspace-listTitle">Other Workspace</Row>
+                <Row>Choose a Workspace you want to join</Row>
                 <List
+                  className="workspace-list"
                   itemLayout="horizontal"
                   dataSource={list}
                   renderItem={item => (
                     <List.Item>
                       <List.Item.Meta
+                        className="ss"
                         avatar={
                           <Avatar src="https://images.unsplash.com/photo-1496200186974-4293800e2c20?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjF9" />
                         }
                         title={item.name}
                         description={`${process.env.REACT_APP_DEV_URL}/${item.code}`}
                       />
-                      <Button id={item.code} onClick={handleJoinWS}>
+
+                      <Button
+                        className="workspace-joinBtn"
+                        id={item.code}
+                        onClick={handleJoinWS}
+                      >
                         Join
                       </Button>
                     </List.Item>

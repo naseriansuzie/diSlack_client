@@ -141,21 +141,10 @@ class App extends React.Component {
             path="/signup"
             render={() => <SignUp isLogin={this.state.isLogin} />}
           />
-          <Route
+          {/* <Route
             path="/workspace"
             render={() => (
               <div>
-                <div className="appWs-header">
-                  <div className="appWs-header-1">
-                    <Link className="appWs-header-1-1" to="/">
-                      Crong
-                    </Link>
-                  </div>
-                  <div className="appWs-header-2">
-                    <Link to="/workspace">Find your workspace</Link>
-                    <Link to="/signin">Sign in</Link>
-                  </div>
-                </div>
                 <Row>
                   <Col span={12}>
                     <MyWorkSpace
@@ -183,7 +172,7 @@ class App extends React.Component {
                 </Row>
               </div>
             )}
-          />
+          /> */}
           <Route
             path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
             render={() => (
@@ -200,7 +189,6 @@ class App extends React.Component {
       </div>
     ) : (
       <div className="App">
-
         <Route
           exact
           path="/"
@@ -233,35 +221,37 @@ class App extends React.Component {
           path="/signup"
           render={() => <SignUp isLogin={this.state.isLogin} />}
         />
+
+        {/* //workspace page */}
         <Route
           path="/workspace"
           render={() => (
-            <div>
-              <Row>
-                <Col span={12}>
-                  <MyWorkSpace
-                    isLogin={isLogin}
-                    userInfo={userInfo}
-                    workSpaceList={workSpaceList}
-                    handleClickMyWS={handleClickMyWS}
-                  />
-                </Col>
-                <Col span={12}>
-                  <AllWorkSpace
-                    isLogin={isLogin}
-                    userInfo={userInfo}
-                    workSpaceList={workSpaceList}
-                    updateWorkspace={updateWorkspace}
-                  />
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "20%" }}>
-                <Col span={8} />
-                <Col span={8}>
+            <div className="workspace-main">
+              <div className="workspace-left">
+                <div className="workspace-header">
+                  <Link className="workspace-header-title" to="/">
+                    Crong
+                  </Link>
+                </div>
+                <div className="workspace-middle">
                   <CreateWorkSpace getWorkSpace={this.getWorkSpace} />
-                </Col>
-                <Col span={8} />
-              </Row>
+                  <div></div>
+                </div>
+              </div>
+              <div className="workspace-right">
+                <MyWorkSpace
+                  isLogin={isLogin}
+                  userInfo={userInfo}
+                  workSpaceList={workSpaceList}
+                  handleClickMyWS={handleClickMyWS}
+                />
+                <AllWorkSpace
+                  isLogin={isLogin}
+                  userInfo={userInfo}
+                  workSpaceList={workSpaceList}
+                  updateWorkspace={updateWorkspace}
+                />
+              </div>
             </div>
           )}
         />
