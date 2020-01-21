@@ -278,7 +278,16 @@ class MainPage extends React.Component {
       });
     }
 
-    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+    console.log(this.scroll.scrollTop);
+    console.log(this.scroll.scrollHeight - this.scroll.clientHeight);
+    if (
+      this.scroll.scrollHeight -
+        this.scroll.clientHeight -
+        this.scroll.scrollTop <=
+      300
+    )
+      this.scroll.scrollTop =
+        this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   render() {
