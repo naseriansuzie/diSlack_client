@@ -40,6 +40,7 @@ class MainPage extends React.Component {
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
     this.getCN = this.getCN.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
+    this.setChannelDM = this.setChannelDM.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
     this.clickedDM = this.clickedDM.bind(this)
   }
@@ -109,6 +110,12 @@ class MainPage extends React.Component {
   setCurrentDisPlay = e => {
     console.log(e);
   };
+
+  setChannelDM(type, data) {
+    if (type === "channel") {
+      this.setState({ channels: [...this.state.channels, data] });
+    } else this.setState({ dms: [...this.state.dms, data] });
+  }
 
   handleClickReply(msgId) {
     this.handleReplyClose();
@@ -359,6 +366,7 @@ class MainPage extends React.Component {
       handleMemberListClose,
       handleClickProfile,
       handleProfileClose,
+      setChannelDM,
     } = this;
 
     return (
@@ -406,6 +414,7 @@ class MainPage extends React.Component {
                 dms={dms}
                 currentWorkspace={currentWorkspace}
                 clickedChannel={this.clickedChannel}
+                setChannelDM={setChannelDM}
                 clickedDM={this.clickedDM}
                 userInfo={userInfo}
               />

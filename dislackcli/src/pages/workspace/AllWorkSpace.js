@@ -52,15 +52,17 @@ class AllWorkSpace extends React.Component {
         withCredentials: true,
       })
       .then(res => {
-        // console.log("마운트하면서 전체 워크스페이스리스트 =", res);
-        // console.log(this.props.workSpaceList);
-        const myList = this.props.workSpaceList.map(myWs => myWs.id);
-        // console.log("myList =", myList);
-        res.data = res.data.filter(ws => !myList.includes(ws.id));
-        // console.log("res.data =", res.data);
-        this.setState({
-          list: res.data,
-        });
+        axios
+          .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/my`, {
+            withCredentials: true,
+          })
+          .then(res2 => {
+            const myList = res2.data.map(myWs => myWs.id);
+            res.data = res.data.filter(ws => !myList.includes(ws.id));
+            this.setState({
+              list: res.data,
+            });
+          });
       })
       .catch(err => console.log(err));
   }

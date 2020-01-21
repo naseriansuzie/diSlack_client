@@ -20,7 +20,7 @@ class WorkSpace extends React.Component {
   }
 
   // lifeCycle
-  async componentDidMount() {
+  componentDidMount() {
     if (this.props.isLogin) {
       this.props.getWorkSpace();
     }
@@ -45,7 +45,6 @@ class WorkSpace extends React.Component {
     } = this.props;
 
     const { workSpaceList } = this.state;
-    // return workSpaceList.length ? (
     return (
       <div className="workspace-main">
         <div className="workspace-left">
@@ -77,9 +76,6 @@ class WorkSpace extends React.Component {
         </div>
       </div>
     );
-    // : (
-    //   <div>WorkSpace is Loading..</div>
-    // );
   }
 }
 
