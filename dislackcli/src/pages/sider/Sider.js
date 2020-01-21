@@ -64,7 +64,7 @@ class Side extends React.Component {
       .then(res => {
         console.log("채널생성보냄!", res);
         if (res.status === 201) {
-          setChannelDM("channel", res.data);
+          this.props.setChannelDM("channel", res.data);
         }
       })
       .catch(err => {

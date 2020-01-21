@@ -39,7 +39,7 @@ class MainPage extends React.Component {
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
     this.getCN = this.getCN.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
-    this.setChannelDm = this.setChannelDm.bind(this);
+    this.setChannelDM = this.setChannelDM.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
   }
 
@@ -110,7 +110,7 @@ class MainPage extends React.Component {
   };
 
   setChannelDM(type, data) {
-    if (type === "channels") {
+    if (type === "channel") {
       this.setState({ channels: [...this.state.channels, data] });
     } else this.setState({ dms: [...this.state.dms, data] });
   }
