@@ -14,45 +14,25 @@ class WorkSpace extends React.Component {
     super(props);
     console.log("워크스페이스_프롭스 : ", this.props, this.state);
     this.state = {
-      workSpaceList: [],
       currentWorkspace: this.props.currentWorkspace,
     };
-    this.updateWorkspace = this.updateWorkspace.bind(this);
-    this.getWorkSpace = this.getWorkSpace.bind(this);
     this.handleClickMyWS = this.handleClickMyWS.bind(this);
   }
 
   // lifeCycle
-  async componentDidMount() {
+  componentDidMount() {
     if (this.props.isLogin) {
-      this.getWorkSpace();
+      this.props.getWorkSpace();
     }
   }
 
   // methods
-  getWorkSpace() {
-    axios
-      .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/my`, {
-        withCredentials: true,
-      })
-      .then(res => {
-        this.setState({ workSpaceList: res.data });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
   handleClickMyWS(e) {
     const workSpaceId = e.target.id;
-    const clickedWorkspace = this.state.workSpaceList.filter(
+    const clickedWorkspace = this.props.workSpaceList.filter(
       ws => ws.id === Number(workSpaceId),
     );
     this.props.updateCurrentWorkspace(clickedWorkspace);
-  }
-
-  updateWorkspace(workSpace) {
-    this.setState({ workSpaceList: [...this.state.workSpaceList, workSpace] });
   }
 
   render() {
@@ -61,9 +41,10 @@ class WorkSpace extends React.Component {
       userInfo,
       handleLogout,
       updateCurrentWorkspace,
+      workSpaceList,
     } = this.props;
+
     const { workSpaceList } = this.state;
-    // return workSpaceList.length ? (
     return (
       <div className="workspace-main">
         <div className="workspace-left">
@@ -95,9 +76,6 @@ class WorkSpace extends React.Component {
         </div>
       </div>
     );
-    // : (
-    //   <div>WorkSpace is Loading..</div>
-    // );
   }
 }
 

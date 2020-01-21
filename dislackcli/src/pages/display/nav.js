@@ -62,6 +62,7 @@ class Nav extends React.Component {
 
   render() {
     const {
+      currentDisplay,
       channels,
       msgs,
       isLogin,
@@ -69,13 +70,17 @@ class Nav extends React.Component {
       state,
     } = this.props;
 
-    // console.log("NAV_PROPS : ", this.props);
+    console.log("NAV_PROPS : ", this.props);
+    console.log(currentDisplay);
     // console.log(state);
     return (
       <Row gutter={[8, 8]} className="nav-Row">
         <Col span={8} style={{ marginTop: "7px" }}>
           <strong style={{ fontSize: "20px", margin: "2%" }}>
-            # {state.currentDisplay.name}
+            #{" "}
+            {currentDisplay.name
+              ? currentDisplay.name
+              : currentDisplay.users[0].name}
           </strong>
           <div>
             <Icon type="star" style={{ marginLeft: "1%", marginRight: "1%" }} />
