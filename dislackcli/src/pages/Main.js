@@ -310,6 +310,7 @@ class MainPage extends React.Component {
         .then(res => {
           console.log("메시지 겟요청", res);
           if (res.data.length !== 0) {
+            console.log("1");
             this.setState({ msgs: res.data });
           } else {
             // console.log("메세지가 비어있습니다.");
@@ -332,7 +333,8 @@ class MainPage extends React.Component {
     } catch (err) {
       console.log(err);
     }
-
+    
+    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
 
   }
 
@@ -344,6 +346,17 @@ class MainPage extends React.Component {
         clickedMsg: clicked,
       });
     }
+
+    console.log(this.scroll.scrollTop);
+    console.log(this.scroll.scrollHeight - this.scroll.clientHeight);
+    if (
+      this.scroll.scrollHeight -
+        this.scroll.clientHeight -
+        this.scroll.scrollTop <=
+      300
+    )
+      this.scroll.scrollTop =
+        this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   render() {
@@ -430,9 +443,12 @@ class MainPage extends React.Component {
               style={{ height: "100%" }}
             >
               <Layout className="main-layout" style={{ height: "100%" }}>
-                <Content
+                <div
                   className="main-layout-content"
                   style={{ overflow: "scroll" }}
+                  ref={ref => {
+                    return (this.scroll = ref);
+                  }}
                 >
                   {msgs.length ? (
                     <MessageList
@@ -443,7 +459,7 @@ class MainPage extends React.Component {
                   ) : (
                     <div>아직 메시지가 없습니다.</div>
                   )}
-                </Content>
+                </div>
                 <Footer
                   style={{
                     backgroundColor: "#ecf0f1",
