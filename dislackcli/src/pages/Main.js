@@ -102,6 +102,7 @@ class MainPage extends React.Component {
           // console.log("메세지가 비어있습니다.");
         }
       });
+    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   setCurrentDisPlay = e => {
