@@ -39,10 +39,11 @@ class MainPage extends React.Component {
     this.handleCreateReply = this.handleCreateReply.bind(this);
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
     this.getCN = this.getCN.bind(this);
+    this.getDM = this.getDM.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
     this.setChannelDM = this.setChannelDM.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
-    this.clickedDM = this.clickedDM.bind(this)
+    this.clickedDM = this.clickedDM.bind(this);
   }
 
   // Methods
@@ -112,6 +113,7 @@ class MainPage extends React.Component {
   };
 
   setChannelDM(type, data) {
+    console.log("셋체널");
     if (type === "channel") {
       this.setState({ channels: [...this.state.channels, data] });
     } else this.setState({ dms: [...this.state.dms, data] });
@@ -216,20 +218,20 @@ class MainPage extends React.Component {
   // DM방 불러오기
   getDM = () => {
     axios
-    .get(
-      `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/list`,
-      {
-        withCredentials: true,
-      },
-    )
-    .then(res => {
-      console.log("방불러오기",res)
-      this.setState({dms : res.data})
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        console.log("방불러오기", res);
+        this.setState({ dms: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   // DM방 선택
   async clickedDM(id) {
@@ -240,21 +242,24 @@ class MainPage extends React.Component {
         return val;
       }
     });
-    console.log("선택한 DM",findDM)
+    console.log("선택한 DM", findDM);
     await this.setState({ currentDisplay: findDM[0], msgs: [] });
-
     // DM방 선택 시 대화 불러오기 /:code/directmessage/:id(room)/list
-    axios.get(`${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/directmessage/${id}/list`, {
-      withCredentials: true,
-    })
-    .then(res => {
-      console.log("메시지 겟요청", res);
-      if (res.data.length !== 0) {
-        this.setState({ msgs: res.data });
-      } else {
-        // console.log("메세지가 비어있습니다.");
-      }
-    })
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/directmessage/${id}/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        console.log("메시지 겟요청", res);
+        if (res.data.length !== 0) {
+          this.setState({ msgs: res.data });
+        } else {
+          // console.log("메세지가 비어있습니다.");
+        }
+      });
   }
 
   // LifeCycle
@@ -290,9 +295,8 @@ class MainPage extends React.Component {
             this.setState({ msgs: this.state.msgs.concat(message) });
           });
         });
-
-
-        const address = this.state.currentDisplay.name
+      
+      const address = this.state.currentDisplay.name
         ? "channelmessage"
         : "directmessage";
       await axios
@@ -324,7 +328,6 @@ class MainPage extends React.Component {
           // console.log("참여 중인 유저들 =", res.data);
           this.setState({ memberList: res.data });
         });
-
         this.getDM()
     } catch (err) {
       console.log(err);
@@ -345,7 +348,8 @@ class MainPage extends React.Component {
 
   render() {
     // console.log("로그인상태? : ", this.props.isLogin);
-    const { currentWorkspace,userInfo } = this.props;
+    const { currentWorkspace, userInfo } = this.props;
+
     const {
       channels,
       dms,
@@ -412,11 +416,11 @@ class MainPage extends React.Component {
               <Side
                 channels={channels}
                 dms={dms}
+                userInfo={userInfo}
                 currentWorkspace={currentWorkspace}
                 clickedChannel={this.clickedChannel}
                 setChannelDM={setChannelDM}
                 clickedDM={this.clickedDM}
-                userInfo={userInfo}
               />
             </Col>
             <Col
