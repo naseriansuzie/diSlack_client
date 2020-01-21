@@ -26,7 +26,6 @@ class AllWorkSpace extends React.Component {
         },
       );
       if (res.status === 200) {
-        // App.js에 currentDisplay를 바꿔야 하는데 지금 현재 wsID로 찾아야 된다.
         const joinWorkSpace = this.state.list;
         const result = joinWorkSpace.filter(ws => ws.code === workSpaceCode);
         this.props.updateCurrentWorkspace(result);

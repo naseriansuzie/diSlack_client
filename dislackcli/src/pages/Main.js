@@ -16,6 +16,7 @@ import "./Main.css";
 class MainPage extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props)
     this.state = {
       channels: [],
       dms: [],
@@ -204,12 +205,21 @@ class MainPage extends React.Component {
       });
   };
 
+
+
   // LifeCycle
-  async componentDidMount() {
-    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
-    // try {
+  componentDidMount() {
+    console.log("컴포넌트디드마운ㅌ트")
     try {
-      await axios
+      // 1. 새로고침시 currentWorkSpace 불러오기
+      let code = this.props.history.location.pathname.split('/main/')[1]
+      let result = this.props.workSpaceList.filter(val => {
+        return val.code === code
+      })
+      this.props.updateCurrentWorkspace(result)
+
+
+      axios
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
           {
@@ -231,7 +241,7 @@ class MainPage extends React.Component {
           });
         });
 
-      await axios
+      axios
         // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
@@ -249,7 +259,7 @@ class MainPage extends React.Component {
         });
 
       // 멤버리스트 받아오는 api 추가
-      await axios
+      axios
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/user/list`,
           {
@@ -263,6 +273,8 @@ class MainPage extends React.Component {
     } catch (err) {
       console.log(err);
     }
+
+
   }
 
   componentDidUpdate() {
@@ -305,7 +317,7 @@ class MainPage extends React.Component {
       this.props.isLogin &&
         (this.state.channels.length || this.state.dms.length) ? (
         <div className="main-container" style={{ overflow: "hidden" }}>
-          <Row className="Main-Side">
+          {/* <Row className="Main-Side">
             <Col
               span={3}
               style={{
@@ -321,7 +333,7 @@ class MainPage extends React.Component {
                 height: "100%",
                 backgroundColor: "white",
                 borderColor: "#bdc3c7",
-                borderBottom: "solid",
+                borderBottom: "solid", 
                 borderWidth: "0.5px",
                 position: "sticky",
                 top: 0,
@@ -335,7 +347,8 @@ class MainPage extends React.Component {
                 handleClickMemberList={handleClickMemberList}
               />
             </Col>
-          </Row>
+          </Row> */}
+
           <Row style={{ height: "850px", overflow: "hidden" }}>
             <Col span={3} style={{ height: "100%" }}>
               <Side

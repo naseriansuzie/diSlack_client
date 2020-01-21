@@ -17,13 +17,16 @@ class ToWorkSpace extends React.Component {
 
   render() {
     const {
+      currentWorkspace,
       isLogin,
       userInfo,
-      updateWorkspace,
       handleLogin,
       handleLogout,
       updateCurrentWorkspace,
       updateUserInfo,
+      getWorkSpace,
+      updateWorkspace,
+      workSpaceList,
     } = this.props;
     return (
       <div>
@@ -60,6 +63,9 @@ class ToWorkSpace extends React.Component {
                 userInfo={userInfo}
                 updateWorkspace={updateWorkspace}
                 updateCurrentWorkspace={updateCurrentWorkspace}
+                getWorkSpace={getWorkSpace}
+                currentWorkspace={currentWorkspace}
+                workSpaceList={workSpaceList}
               />
             </div>
           )}
