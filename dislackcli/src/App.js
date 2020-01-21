@@ -110,7 +110,9 @@ class App extends React.Component {
       }
     }
   }
-
+  componentWillUnmount() {
+    localStorage.setItem("isLogin", null);
+  }
   render() {
     const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
     const {
@@ -122,7 +124,7 @@ class App extends React.Component {
       updateUserInfo,
     } = this;
     // console.log("app.js state의 현재 선택된 워크스페이스", currentWorkspace);
-    return isLogin && currentWorkspace ? (
+    return isLogin ? (
       <div>
         <ToMain
           isLogin={isLogin}
