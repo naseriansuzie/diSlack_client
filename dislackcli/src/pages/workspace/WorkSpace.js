@@ -95,7 +95,7 @@ class WorkSpace extends React.Component {
         </div>
       </div>
     );
-    //: (
+    // : (
     //   <div>WorkSpace is Loading..</div>
     // );
   }
