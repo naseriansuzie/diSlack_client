@@ -251,3 +251,26 @@ body {
   background-color: #4a154a;
   color: white;
 }
+
+.signoutBtn {
+  margin-right: 0.5rem;
+  color: black;
+  font-size: 16px;
+  border: none;
+}
+
+.signoutBtn:hover {
+  color: #611f69;
+}
+
+/* .signoutBtn:focus {
+  outline: none;
+  border: none;
+  color: #611f69;
+} */
+
+.ant-btn:focus {
+  outline: hidden;
+  border: hidden;
+  color: #611f69;
+}

@@ -84,19 +84,10 @@ class AllWorkSpace extends React.Component {
             >
               <Col span={6} />
               <Col span={12}>
-                <Row
-                  style={{
-                    padding: "10px",
-                    fontWeight: "bold",
-                    fontSize: "2em",
-                  }}
-                >
-                  Other Workspace
-                </Row>
-                <Row style={{ padding: "10px" }}>
-                  Choose a Workspace you want to join
-                </Row>
+                <Row className="workspace-listTitle">Other Workspace</Row>
+                <Row>Choose a Workspace you want to join</Row>
                 <List
+                  className="workspace-list"
                   itemLayout="horizontal"
                   dataSource={list}
                   renderItem={item => (
@@ -108,7 +99,11 @@ class AllWorkSpace extends React.Component {
                         title={item.name}
                         description={`${process.env.REACT_APP_DEV_URL}/${item.code}`}
                       />
-                      <Button id={item.code} onClick={handleJoinWS}>
+                      <Button
+                        className="workspace-joinBtn"
+                        id={item.code}
+                        onClick={handleJoinWS}
+                      >
                         Join
                       </Button>
                     </List.Item>

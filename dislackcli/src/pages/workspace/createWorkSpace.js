@@ -52,18 +52,30 @@ class CreateWorkSpace extends React.Component {
 
   render() {
     return (
-      <Card style={{ width: 300 }}>
-        <div>Create Your Work Space</div>
-        <Input
-          placeholder="Create WorkSpace"
-          onKeyPress={e => {
-            this.clickEnter(e);
-          }}
-        />
-        <Button type="primary" style={{ marginTop: "5%", width: "100%" }}>
-          Create
-        </Button>
-      </Card>
+      <div className="workspace-create-main">
+        <Card className="workspace-create-form">
+          <div className="workspace-create-title">Create your workspace</div>
+          <div className="workspace-create-title-1">
+            Just one more workspace — a quick confirmation — before you say
+            goodbye to overstuffed inboxes for good.
+          </div>
+          <div className="workspace-create-title-2">Your workspace name</div>
+          <Input
+            className="workspace-input"
+            placeholder="Create WorkSpace"
+            onKeyPress={e => {
+              this.clickEnter(e);
+            }}
+          />
+          <Button
+            className="workspace-createBtn"
+            type="primary"
+            style={{ marginTop: "5%", width: "100%" }}
+          >
+            Create
+          </Button>
+        </Card>
+      </div>
     );
   }
 }
