@@ -93,12 +93,14 @@ class AllWorkSpace extends React.Component {
                   renderItem={item => (
                     <List.Item>
                       <List.Item.Meta
+                        className="ss"
                         avatar={
                           <Avatar src="https://images.unsplash.com/photo-1496200186974-4293800e2c20?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjF9" />
                         }
                         title={item.name}
                         description={`${process.env.REACT_APP_DEV_URL}/${item.code}`}
                       />
+
                       <Button
                         className="workspace-joinBtn"
                         id={item.code}
