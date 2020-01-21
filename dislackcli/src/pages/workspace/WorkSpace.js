@@ -1,10 +1,10 @@
 import React from "react";
 import "../../App.css";
 import { Row, Col } from "antd";
+import { Link } from "react-router-dom";
 import MyWorkSpace from "./MyWorkSpace";
 import AllWorkSpace from "./AllWorkSpace";
 import CreateWorkSpace from "./createWorkSpace";
-import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import axios from "axios";
 import "./workspace.css";
@@ -37,7 +37,7 @@ class WorkSpace extends React.Component {
         this.setState({ workSpaceList: res.data });
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
@@ -63,7 +63,6 @@ class WorkSpace extends React.Component {
       workSpaceList,
     } = this.props;
 
-    const { workSpaceList } = this.state;
     return (
       <div className="workspace-main">
         <div className="workspace-left">
@@ -74,7 +73,7 @@ class WorkSpace extends React.Component {
           </div>
           <div className="workspace-middle">
             <CreateWorkSpace getWorkSpace={this.getWorkSpace} />
-            <div></div>
+            <div />
           </div>
         </div>
 
