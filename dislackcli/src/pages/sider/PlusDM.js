@@ -3,6 +3,7 @@ import React from "react";
 import { Button, Modal, Form, Input, Radio } from "antd";
 import axios from "axios";
 import DmUserList from "./DmUserList";
+
 const PlusDM = Form.create({ name: "form_in_modal" })(
   // eslint-disable-next-line
   class extends React.Component {
@@ -17,6 +18,7 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
       this.getUserList = this.getUserList.bind(this);
       this.clickUser = this.clickUser.bind(this);
     }
+
     // methods
     // 1. 유저리스트 불러와서 뿌리기
     getUserList = () => {
@@ -34,12 +36,14 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
           this.setState({ userList });
         });
     };
+
     // 2. 유저선택
     clickUser = e => {
       console.log(e);
       const result = this.state.userList.filter(val => val.name === e);
       this.setState({ selectUser: result[0].id });
     };
+
     // 3. 방생성 요청
     createDM = () => {
       const user = { friend_id: this.state.selectUser };
@@ -59,6 +63,7 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
           console.log("방생성에러", err);
         });
     };
+
     // lifeCycle
     componentDidMount() {
       // 1. 모달창이 켜지면 유저리스트를 불러온다.
@@ -67,6 +72,7 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
     render() {
       const { userList } = this.state;
       // 자기자신을 제외한 유저리스트
+
       const { visible, onCancel, onCreate, form, handleState } = this.props;
       const { getFieldDecorator } = form;
       return (

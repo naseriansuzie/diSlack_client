@@ -12,11 +12,14 @@ class App extends React.Component {
       isLogin: this.props.isLogin,
       userInfo: this.props.userInfo,
       currentWorkspace: null,
+      workSpaceList: [],
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.updateCurrentWorkspace = this.updateCurrentWorkspace.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
+    this.getWorkSpace = this.getWorkSpace.bind(this);
+    this.updateWorkspace = this.updateWorkspace.bind(this);
   }
 
   handleLogin() {
@@ -44,61 +47,49 @@ class App extends React.Component {
     if (this.state.currentWorkspace !== null) {
       this.setState({ currentWorkspace: null });
     }
+    console.log("실행되니?", clickedWorkspace);
     this.setState({
       currentWorkspace: clickedWorkspace,
     });
   }
 
-  async updateWorkspace() {
-    try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_DEV_URL}/workspace/list/my`,
-        {
-          withCredentials: true,
-        },
-      );
-      console.log("마이 워크스페이스 업데이트", res.data);
-      this.setState({
-        workSpaceList: res.data,
+  getWorkSpace() {
+    axios
+      .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/my`, {
+        withCredentials: true,
+      })
+      .then(res => {
+        this.setState({ workSpaceList: res.data });
+      })
+      .catch(err => {
+        console.log(err);
       });
-    } catch (err) {
-      console.log("새로고침에러2");
-      console.log(err);
-    }
   }
 
-  //lifeCycle
-  async componentDidMount() {
-    if (this.state.isLogin) {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_DEV_URL}/workspace/list/my`,
-          {
-            withCredentials: true,
-          },
-        );
-        console.log("로그인 후 내 워크스페이스 불러오기", res.data);
-        this.setState({
-          workSpaceList: res.data,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    }
+  updateWorkspace(workSpace) {
+    this.setState({ workSpaceList: [...this.state.workSpaceList, workSpace] });
   }
+
+  // lifeCycle
+  async componentDidMount() {
+    this.getWorkSpace();
+  }
+
   componentWillUnmount() {
     localStorage.setItem("isLogin", null);
   }
   render() {
-    const { isLogin, currentWorkspace, userInfo } = this.state;
+    const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
     const {
       updateCurrentWorkspace,
       handleLogin,
       handleLogout,
       updateUserInfo,
+      getWorkSpace,
+      updateWorkspace,
     } = this;
     // console.log("app.js state의 현재 선택된 워크스페이스", currentWorkspace);
-    return isLogin && currentWorkspace ? (
+    return isLogin ? (
       <div>
         <ToMain
           isLogin={isLogin}
@@ -107,6 +98,9 @@ class App extends React.Component {
           updateCurrentWorkspace={updateCurrentWorkspace}
           handleLogin={handleLogin}
           handleLogout={handleLogout}
+          getWorkSpace={getWorkSpace}
+          updateWorkspace={updateWorkspace}
+          workSpaceList={workSpaceList}
         />
       </div>
     ) : (
@@ -119,6 +113,9 @@ class App extends React.Component {
           handleLogin={handleLogin}
           handleLogout={handleLogout}
           updateUserInfo={updateUserInfo}
+          getWorkSpace={getWorkSpace}
+          updateWorkspace={updateWorkspace}
+          workSpaceList={workSpaceList}
         />
       </div>
     );

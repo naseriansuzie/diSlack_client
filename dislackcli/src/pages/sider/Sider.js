@@ -63,6 +63,7 @@ class Side extends React.Component {
         console.log(err);
       });
   };
+
   handleCancel = e => {
     console.log(e);
     this.setState({
@@ -157,6 +158,7 @@ class Side extends React.Component {
               }}
             />
           </div>
+
           {dms.map((item, i) => {
             console.log("DM_들!", item);
             return (

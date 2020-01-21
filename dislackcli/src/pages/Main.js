@@ -16,6 +16,7 @@ import "./Main.css";
 class MainPage extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props)
     this.state = {
       channels: [],
       dms: [],
@@ -260,11 +261,19 @@ class MainPage extends React.Component {
         }
       });
   }
+
   // LifeCycle
   async componentDidMount() {
-    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
-    // try {
+    console.log("컴포넌트디드마운트")
     try {
+      // 1. 새로고침시 currentWorkSpace 불러오기
+      let code = this.props.history.location.pathname.split('/main/')[1]
+      let result = this.props.workSpaceList.filter(val => {
+        return val.code === code
+      })
+      this.props.updateCurrentWorkspace(result)
+
+
       await axios
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
@@ -286,7 +295,7 @@ class MainPage extends React.Component {
             this.setState({ msgs: this.state.msgs.concat(message) });
           });
         });
-
+      
       const address = this.state.currentDisplay.name
         ? "channelmessage"
         : "directmessage";
@@ -319,10 +328,12 @@ class MainPage extends React.Component {
           // console.log("참여 중인 유저들 =", res.data);
           this.setState({ memberList: res.data });
         });
-      this.getDM();
+        this.getDM()
     } catch (err) {
       console.log(err);
     }
+
+
   }
 
   componentDidUpdate() {
@@ -338,6 +349,7 @@ class MainPage extends React.Component {
   render() {
     // console.log("로그인상태? : ", this.props.isLogin);
     const { currentWorkspace, userInfo } = this.props;
+
     const {
       channels,
       dms,
@@ -382,13 +394,14 @@ class MainPage extends React.Component {
                 height: "100%",
                 backgroundColor: "white",
                 borderColor: "#bdc3c7",
-                borderBottom: "solid",
+                borderBottom: "solid", 
                 borderWidth: "0.5px",
                 position: "sticky",
                 top: 0,
               }}
             >
               <Nav
+              currentDisplay={currentDisplay}
                 msgs={msgs}
                 props={this.props}
                 state={this.state}
@@ -397,6 +410,7 @@ class MainPage extends React.Component {
               />
             </Col>
           </Row>
+
           <Row style={{ height: "850px", overflow: "hidden" }}>
             <Col span={3} style={{ height: "100%" }}>
               <Side

@@ -24,7 +24,11 @@ export default function Tomain(props) {
   } = props;
   return (
     <div>
-      <Redirect to={`/main/${currentWorkspace[0].code}`} />
+      <Redirect
+        to={
+          currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/workspace"
+        }
+      />
       <Switch>
         <Route
           exact
@@ -80,7 +84,7 @@ export default function Tomain(props) {
         />
         <Route
           path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
-          render={() => (
+          render={history => (
             <MainPage
               className="MainPage"
               isLogin={isLogin}
@@ -88,6 +92,10 @@ export default function Tomain(props) {
               workSpaceList={workSpaceList}
               currentWorkspace={currentWorkspace}
               handleLogout={handleLogout}
+              updateWorkspace={updateWorkspace}
+              getWorkSpace={getWorkSpace}
+              history={history}
+              updateCurrentWorkspace={updateCurrentWorkspace}
             />
           )}
         />
