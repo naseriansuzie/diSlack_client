@@ -49,9 +49,46 @@ class App extends React.Component {
     });
   }
 
-  // lifeCycle
-  async componentDidMount() {}
+  async updateWorkspace() {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_DEV_URL}/workspace/list/my`,
+        {
+          withCredentials: true,
+        },
+      );
+      console.log("마이 워크스페이스 업데이트", res.data);
+      this.setState({
+        workSpaceList: res.data,
+      });
+    } catch (err) {
+      console.log("새로고침에러2");
+      console.log(err);
+    }
+  }
 
+  //lifeCycle
+  async componentDidMount() {
+    if (this.state.isLogin) {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_DEV_URL}/workspace/list/my`,
+          {
+            withCredentials: true,
+          },
+        );
+        console.log("로그인 후 내 워크스페이스 불러오기", res.data);
+        this.setState({
+          workSpaceList: res.data,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+  componentWillUnmount() {
+    localStorage.setItem("isLogin", null);
+  }
   render() {
     const { isLogin, currentWorkspace, userInfo } = this.state;
     const {
