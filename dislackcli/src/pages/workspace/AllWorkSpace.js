@@ -18,38 +18,36 @@ class AllWorkSpace extends React.Component {
   async handleJoinWS(e) {
     const workSpaceCode = e.target.id;
     try {
-      const res = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_DEV_URL}/workspace/join`,
         { code: workSpaceCode },
         {
           withCredentials: true,
         },
       );
-      if (res.status === 200) {
-        const joinWorkSpace = this.state.list;
-        const result = joinWorkSpace.filter(ws => ws.code === workSpaceCode);
-        this.props.updateCurrentWorkspace(result);
-      }
-      // 구조 상 문제 때문에 안됨..?
-      // let myWorkSpaceCodes = await this.props.workSpaceList.map(ws => ws.code);
-      // console.log("조인한 후 내 워크스페이스 코드들 = ", myWorkSpaceCodes);
-      // let filteredList = await this.state.list.filter(
-      //   ws => !myWorkSpaceCodes.includes(ws.code),
-      // );
-      // console.log("내가 가입하지 않은 워크스페이스들 = ", filteredList);
-      // this.setState({ list: filteredList });
+      await this.props.getWorkSpace();
+      const joinWS = this.props.workSpaceList;
+      const result = joinWS.filter(ws => ws.code === workSpaceCode);
+      await this.props.updateWorkspace(result);
+      axios
+        .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/all`, {
+          withCredentials: true,
+        })
+        .then(res => this.setState({ list: res.data }));
     } catch (err) {
-      if (err.response.status === 419) {
+      if (err && err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
         window.location = "/signin";
       }
+      console.log(err);
     }
   }
 
   componentDidMount() {
     this._isMounted = true;
+
     axios
       .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/all`, {
         withCredentials: true,

@@ -32,7 +32,7 @@ export default function MyWorkSpace(props) {
                     />
                     <Link
                       to={`/main/${item.code}`}
-                      className="workspace-joinBtn"
+                      className="workspace-joinBtn ant-btn"
                       id={item.id}
                       onClick={props.handleClickMyWS}
                     >
