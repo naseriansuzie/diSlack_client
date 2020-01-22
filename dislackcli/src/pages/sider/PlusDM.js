@@ -8,7 +8,7 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
   // eslint-disable-next-line
   class extends React.Component {
     constructor(props) {
-      console.log("PLUS_DM_PROPS", props);
+      // console.log("PLUS_DM_PROPS", props);
       super(props);
       this.state = {
         name: "",
@@ -31,15 +31,18 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
         )
         .then(res => {
           // res.data는 유저데이터
-          const userList = res.data.filter(val => val !== this.props.userInfo);
-          console.log(userList);
+          const userList = res.data.filter(val => {
+            console.log("받아온 유저리스트1", val, this.props.userInfo);
+            return val.id !== this.props.userInfo.id;
+          });
+          console.log("필터링유저리스트", userList);
           this.setState({ userList });
         });
     };
 
     // 2. 유저선택
     clickUser = e => {
-      console.log(e);
+      // console.log(e);
       const result = this.state.userList.filter(val => val.name === e);
       this.setState({ selectUser: result[0].id });
     };
@@ -56,8 +59,16 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
           },
         )
         .then(res => {
-          console.log("방생성완료");
+          for (let i = 0; i < this.props.dms.length; i++) {
+            if (res.data.id === this.props.dms[i].id) {
+              alert("이미 방있슈");
+              this.props.handleOkDM();
+              return;
+            }
+          }
           this.props.setChannelDM("DM", res.data);
+          alert("방생겼슈");
+          this.props.handleOkDM();
         })
         .catch(err => {
           console.log("방생성에러", err);
@@ -77,8 +88,8 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
       const { visible, onCancel, onCreate, form, handleState } = this.props;
       const { getFieldDecorator } = form;
       return (
+        // 모든 유저 보이는 화면
         <div>
-          <div>선택한 유저 보이는 창</div>
           <div>
             {userList ? (
               userList.map(val => (
@@ -87,7 +98,7 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
                   userList={val}
                   clickUser={async e => {
                     await this.clickUser(e);
-                    console.log("유저클릭후", this.state);
+                    // console.log("유저클릭후", this.state);
                     await this.createDM();
                   }}
                 />

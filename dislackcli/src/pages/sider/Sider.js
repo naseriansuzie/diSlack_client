@@ -76,6 +76,12 @@ class Side extends React.Component {
       });
   };
 
+  handleOkDM = () => {
+    this.setState({
+      visibleDM: false,
+    });
+  };
+
   handleCancel = e => {
     console.log(e);
     this.setState({
@@ -173,25 +179,30 @@ class Side extends React.Component {
             />
           </div>
 
-          {dms.map((item, i) => (
+          {dms.map((item, i) => {
             // console.log("DM_들!", item);
-            <Menu.Item
-              className="Sider-item"
-              key={i}
-              style={{
-                backgroundColor: "#400d3f",
-                color: "#ecf0f1",
-                margin: "0",
-                height: "30px",
-              }}
-              onClick={e => {
-                clickedDM(item.id);
-              }}
-            >
-              <Icon type="message" style={{ marginRight: "3%" }} />
-              {item.users[1].name}
-            </Menu.Item>
-          ))}
+            const username = item.users.filter(
+              val => val.name !== userInfo.name,
+            );
+            return (
+              <Menu.Item
+                className="Sider-item"
+                key={i}
+                style={{
+                  backgroundColor: "#400d3f",
+                  color: "#ecf0f1",
+                  margin: "0",
+                  height: "30px",
+                }}
+                onClick={e => {
+                  clickedDM(item.id);
+                }}
+              >
+                <Icon type="message" style={{ marginRight: "3%" }} />
+                {username[0].name}
+              </Menu.Item>
+            );
+          })}
           <SiderETC />
         </Menu>
         {/* 채널생성 모달 */}
@@ -227,6 +238,7 @@ class Side extends React.Component {
             currentWorkspace={currentWorkspace}
             userInfo={userInfo}
             setChannelDM={setChannelDM}
+            dms={dms}
           />
         </Modal>
       </div>
