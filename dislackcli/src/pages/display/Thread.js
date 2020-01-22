@@ -12,7 +12,9 @@ class Thread extends React.Component {
   }
 
   componentDidMount() {
-    this.socket = socketio.connect("http://localhost:4000/channelThread");
+    this.socket = socketio.connect(
+      `${process.env.REACT_APP_DEV_URL}/channelThread`,
+    );
     this.socket.on("connect", data => {
       this.socket.emit("joinChannelThread", this.props.clickedMsg[0].id);
     });
@@ -22,12 +24,15 @@ class Thread extends React.Component {
     });
     this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
+
   componentDidUpdate() {
     this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
+
   componentWillUnmount() {
     this.socket.disconnect();
   }
+
   render() {
     const {
       currentDisplay,
@@ -65,23 +70,23 @@ class Thread extends React.Component {
             <Row className="Thread-sm-pad">
               {clickedMsg.length ? (
                 <MessageList
-                  thread={true}
+                  thread
                   msgs={makeNoReplyMessage(clickedMsg[0])}
                   handleClickReply={handleClickReply}
                   handleClickProfile={handleClickProfile}
                 />
               ) : (
-                <div></div>
+                <div />
               )}
             </Row>
 
             <Row className="Thread-sm-pad">
-              {clickedMsg[0].replyCount ? (
+              {clickedMsg[0].replyCount || replies.length > 0 ? (
                 <div className="Thread-hr">
-                  <span>{clickedMsg[0].replyCount}개의 댓글</span>
+                  <span>{replies.length}개의 댓글</span>
                 </div>
               ) : (
-                <div></div>
+                <div />
               )}
             </Row>
 
@@ -93,7 +98,7 @@ class Thread extends React.Component {
                   handleClickProfile={handleClickProfile}
                 />
               ) : (
-                <div></div>
+                <div />
               )}
             </Row>
             <Row>
@@ -105,7 +110,8 @@ class Thread extends React.Component {
           </Col>
         </div>
       );
-    } else return <div></div>;
+    }
+    return <div />;
   }
 }
 

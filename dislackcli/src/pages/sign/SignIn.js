@@ -89,7 +89,7 @@ class Signin extends React.Component {
                     }
                   })
                   .catch(err => {
-                    if (err.status) {
+                    if (err.response.status === 403) {
                       alert(
                         "회원 정보가 일치하지 않습니다. 이메일주소와 비밀번호를 확인해주세요!",
                       );

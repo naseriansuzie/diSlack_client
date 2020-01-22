@@ -11,11 +11,13 @@ export default function MessageEntries(props) {
     message,
     reply,
     replyCount,
+    replies,
     handleClickReply,
     handleClickProfile,
   } = props;
+
   const reCount =
-    replyCount && replyCount > 0 ? (
+    replyCount && replyCount > 0 && !replies.length ? (
       <div className="yeseReply">
         <a onClick={handleClickReply.bind(null, id)}>{replyCount}개의 댓글</a>
       </div>

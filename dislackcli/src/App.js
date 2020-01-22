@@ -12,14 +12,16 @@ class App extends React.Component {
       isLogin: this.props.isLogin,
       userInfo: this.props.userInfo,
       currentWorkspace: null,
-      workSpaceList: [],
+      currentURL: null,
     };
+
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.updateCurrentWorkspace = this.updateCurrentWorkspace.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
     this.getWorkSpace = this.getWorkSpace.bind(this);
     this.updateWorkspace = this.updateWorkspace.bind(this);
+    this.setCurrentURL = this.setCurrentURL.bind(this);
   }
 
   handleLogin() {
@@ -62,7 +64,13 @@ class App extends React.Component {
         this.setState({ workSpaceList: res.data });
       })
       .catch(err => {
-        console.log(err);
+        console.dir(err);
+        if (err.response && err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
       });
   }
 
@@ -70,34 +78,34 @@ class App extends React.Component {
     this.setState({ workSpaceList: [...this.state.workSpaceList, workSpace] });
   }
 
+  setCurrentURL(code) {
+    this.setState({ currentURL: code });
+  }
+
   // lifeCycle
   async componentDidMount() {
-    try {
-      const r = await axios.post(
-        `${process.env.REACT_APP_DEV_URL}/verify`,
-        null,
-        {
-          withCredentials: true,
-        },
+    await this.getWorkSpace();
+    console.log(
+      "겟 워크스페이스 이후 워크스페이스리스트",
+      this.state.workSpaceList,
+    );
+    if (this.state.workSpaceList) {
+      let result = this.state.workSpaceList.filter(
+        val => val.code === this.state.currentURL,
       );
-    } catch (err) {
-      if (err.response.status === 419) {
-        localStorage.setItem("isLogin", null);
-        this.setState({ isLogin: false });
-        alert("다시 로그인 해주세요");
-        window.location = "/signin";
-      }
+      console.log("url로 찾은 객체", result);
+      this.updateCurrentWorkspace(result);
     }
-
-    this.getWorkSpace();
-
   }
 
-  componentWillUnmount() {
-    localStorage.setItem("isLogin", null);
-  }
   render() {
-    const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
+    const {
+      isLogin,
+      currentWorkspace,
+      userInfo,
+      workSpaceList,
+      currentURL,
+    } = this.state;
     const {
       updateCurrentWorkspace,
       handleLogin,
@@ -105,6 +113,7 @@ class App extends React.Component {
       updateUserInfo,
       getWorkSpace,
       updateWorkspace,
+      setCurrentURL,
     } = this;
     // console.log("app.js state의 현재 선택된 워크스페이스", currentWorkspace);
     return isLogin ? (
@@ -119,6 +128,8 @@ class App extends React.Component {
           getWorkSpace={getWorkSpace}
           updateWorkspace={updateWorkspace}
           workSpaceList={workSpaceList}
+          setCurrentURL={setCurrentURL}
+          currentURL={currentURL}
         />
       </div>
     ) : (
