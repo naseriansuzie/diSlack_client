@@ -43,9 +43,19 @@ export default function ToMain(props) {
           }}
         />
         <Route
+          exact
+          path="/link/:code"
+          render={props => (
+            <div>
+              <Link {...props} isLogin={isLogin} />
+            </div>
+          )}
+        />
+        <Route
           path="/signin"
-          render={() => (
+          render={props => (
             <Signin
+              {...props}
               isLogin={isLogin}
               handleLogin={() => {
                 handleLogin();

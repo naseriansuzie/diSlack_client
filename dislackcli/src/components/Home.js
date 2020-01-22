@@ -37,8 +37,9 @@ const Home = props => {
                     }}
                   )
                 .catch(err => {
-                  console.log(err)
-                  if (err && err.response.status === 419) {
+
+                  if (err.response && err.response.status === 419) {
+
                     localStorage.setItem("isLogin", null);
                     // this.setState({ isLogin: false });
                     alert("다시 로그인 해주세요");

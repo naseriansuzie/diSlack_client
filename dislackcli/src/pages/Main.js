@@ -85,7 +85,12 @@ class MainPage extends React.Component {
 
     // 채널이 바뀌기 때문에 연결한 웹소켓을 해제
     this.socket.disconnect();
-    this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`);
+
+    this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`, {
+      path: "/socket.io",
+      transports: ["websocket"],
+    });
+
     this.socket.on("connect", data => {
       this.socket.emit("joinchannel", this.state.currentDisplay.id);
     });
@@ -394,6 +399,10 @@ class MainPage extends React.Component {
           this.setState({ channels: res.data, currentDisplay: res.data[0] });
           this.socket = socketio.connect(
             `${process.env.REACT_APP_DEV_URL}/chat`,
+            {
+              path: "/socket.io",
+              transports: ["websocket"],
+            },
           );
           this.socket.on("connect", data => {
             this.socket.emit("joinchannel", this.state.currentDisplay.id);
