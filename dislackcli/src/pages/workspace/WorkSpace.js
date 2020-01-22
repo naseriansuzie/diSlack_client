@@ -11,6 +11,7 @@ import "./workspace.css";
 
 class WorkSpace extends React.Component {
   constructor(props) {
+    console.log(props.workSpaceList);
     super(props);
     this.handleClickMyWS = this.handleClickMyWS.bind(this);
   }

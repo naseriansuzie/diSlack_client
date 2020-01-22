@@ -1,16 +1,38 @@
 import React from "react";
 import { Popover, Icon, Input } from "antd";
+import axios from "axios";
 import "./SiderHeader.css";
 
 class SiderHeader extends React.Component {
   constructor(props) {
     super(props);
-    this.handleLogOut = this.handleLogOut.bind(this);
   }
 
   // 로그아웃
-  handleLogOut = () => {
+  logout = () => {
     console.log("LOGOUT");
+    axios
+      .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
+        withCredentials: true,
+      })
+      .then(res => {
+        if (res.status === 205) {
+          console.log("로그아웃", res);
+          this.props.handleLogout();
+        } else {
+          console.log("오류는아닌데 205도 아님");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        if (err) {
+          localStorage.setItem("isLogin", null);
+          // this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
+        console.log(err);
+      });
   };
 
   render() {
@@ -24,11 +46,10 @@ class SiderHeader extends React.Component {
           <Popover
             className="SiderHeader-Pop"
             placement="bottom"
-            title={["LogOut", this.handleLogOut()]}
-            content="content"
+            content={<a onClick={this.logOut}>logout</a>}
             trigger="click"
           >
-            {currentWorkspace[0].name}{" "}
+            {currentWorkspace[0].name}
             <Icon className="SiderHeader-Icon-down" type="down" />
           </Popover>
           <Icon className="SiderHeader-Icon" type="bell" />

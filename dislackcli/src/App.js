@@ -65,6 +65,7 @@ class App extends React.Component {
       })
       .catch(err => {
         console.dir(err);
+
         if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
@@ -84,6 +85,19 @@ class App extends React.Component {
 
   // lifeCycle
   async componentDidMount() {
+    try {
+      await axios.post(`${process.env.REACT_APP_DEV_URL}/verify`, null, {
+        withCredentials: true,
+      });
+    } catch (err) {
+      if (err.response && err.response.status === 419) {
+        localStorage.setItem("isLogin", null);
+        this.setState({ isLogin: false });
+        alert("다시 로그인 해주세요");
+        window.location = "/signin";
+      }
+    }
+
     await this.getWorkSpace();
     console.log(
       "겟 워크스페이스 이후 워크스페이스리스트",
