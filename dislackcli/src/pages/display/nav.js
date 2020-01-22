@@ -56,7 +56,7 @@ class Nav extends React.Component {
   };
 
   searchSet(value) {
-    console.log("서치셋", value);
+    // console.log("서치셋", value);
     this.setState({ modalMsgs: value });
   }
 
@@ -70,8 +70,8 @@ class Nav extends React.Component {
       state,
     } = this.props;
 
-    console.log("NAV_PROPS : ", this.props);
-    console.log(currentDisplay);
+    // console.log("NAV_PROPS : ", this.props);
+    // console.log("NAV_CURRENTDISPLAY : ", currentDisplay);
     // console.log(state);
     return (
       <Row gutter={[8, 8]} className="nav-Row">

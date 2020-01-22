@@ -6,6 +6,7 @@ import PlusChannel from "./PlusChannel";
 import SiderETC from "./SiderETC";
 import "antd/dist/antd.css";
 import "./Sider.css";
+
 class Side extends React.Component {
   constructor(props) {
     super(props);
@@ -19,31 +20,36 @@ class Side extends React.Component {
     this.handleOkCN = this.handleOkCN.bind(this);
     this.handleStateCN = this.handleStateCN.bind(this);
   }
+
   // lifeCycle
   componentDidMount() {}
+
   // 채널명을 적어서 서버에 보내자
   handleStateCN = item => {
     this.setState(() => {
       this.setState({ newNameCN: item });
     });
   };
+
   // 모달 메소드 (showModal, handleOk, handleCancel)
   showModalCN = () => {
     this.setState({
       visibleCN: true,
     });
   };
+
   showModalDM = () => {
     this.setState({
       visibleDM: true,
     });
   };
+
   // 채널생성 OK
   handleOkCN = e => {
     this.setState({
       visibleCN: false,
     });
-    console.log("채널생성이름", this.state.newNameCN);
+    // console.log("채널생성이름", this.state.newNameCN);
     const newCN = {
       name: this.state.newNameCN,
     };
@@ -77,13 +83,15 @@ class Side extends React.Component {
       visibleDM: false,
     });
   };
+
   handleClick = e => {
     this.setState({
       current: e.key,
     });
   };
+
   render() {
-    console.log("SIDER_PROPS", this.props);
+    // console.log("SIDER_PROPS", this.props);
     const {
       channels,
       dms,
@@ -165,27 +173,25 @@ class Side extends React.Component {
             />
           </div>
 
-          {dms.map((item, i) => {
-            console.log("DM_들!", item);
-            return (
-              <Menu.Item
-                className="Sider-item"
-                key={i}
-                style={{
-                  backgroundColor: "#400d3f",
-                  color: "#ecf0f1",
-                  margin: "0",
-                  height: "30px",
-                }}
-                onClick={e => {
-                  clickedDM(item.id);
-                }}
-              >
-                <Icon type="message" style={{ marginRight: "3%" }} />
-                {item.users[1].name}
-              </Menu.Item>
-            );
-          })}
+          {dms.map((item, i) => (
+            // console.log("DM_들!", item);
+            <Menu.Item
+              className="Sider-item"
+              key={i}
+              style={{
+                backgroundColor: "#400d3f",
+                color: "#ecf0f1",
+                margin: "0",
+                height: "30px",
+              }}
+              onClick={e => {
+                clickedDM(item.id);
+              }}
+            >
+              <Icon type="message" style={{ marginRight: "3%" }} />
+              {item.users[1].name}
+            </Menu.Item>
+          ))}
           <SiderETC />
         </Menu>
         {/* 채널생성 모달 */}

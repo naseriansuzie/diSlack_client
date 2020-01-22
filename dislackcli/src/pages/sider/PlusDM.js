@@ -69,6 +69,7 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
       // 1. 모달창이 켜지면 유저리스트를 불러온다.
       this.getUserList();
     }
+
     render() {
       const { userList } = this.state;
       // 자기자신을 제외한 유저리스트

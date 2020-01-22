@@ -254,7 +254,7 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        console.log("방불러오기", res);
+        // console.log("방불러오기", res);
         this.setState({ dms: res.data });
       })
       .catch(err => {
@@ -293,15 +293,14 @@ class MainPage extends React.Component {
 
   // LifeCycle
   async componentDidMount() {
-    console.log("컴포넌트디드마운트")
+    console.log("컴포넌트디드마운트") 
     try {
-      // 1. 새로고침시 currentWorkSpace 불러오기
-      let code = this.props.history.location.pathname.split('/main/')[1]
-      let result = this.props.workSpaceList.filter(val => {
-        return val.code === code
-      })
-      this.props.updateCurrentWorkspace(result)
-
+      // // 1. 새로고침시 currentWorkSpace 불러오기
+      // let code = this.props.history.location.pathname.split('/main/')[1]
+      // let result = this.props.workSpaceList.filter(val => {
+      //   return val.code === code
+      // })
+      // this.props.updateCurrentWorkspace(result)
 
       await axios
         .get(
@@ -345,7 +344,7 @@ class MainPage extends React.Component {
           },
         )
         .then(res => {
-          console.log("메시지 겟요청", res);
+          // console.log("메시지 겟요청", res);
           if (res.data.length !== 0) {
             console.log("1");
             this.setState({ msgs: res.data });
@@ -376,6 +375,7 @@ class MainPage extends React.Component {
         });
         this.getDM()
     } catch (err) {
+      console.log("MainCDM_ERR", err)
       if (err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });

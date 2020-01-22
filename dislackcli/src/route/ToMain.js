@@ -9,7 +9,7 @@ import "antd/dist/antd.css";
 import Home from "../components/Home";
 import "../components/Home.css";
 
-export default function Tomain(props) {
+export default function ToMain(props) {
   const {
     isLogin,
     currentWorkspace,
@@ -25,9 +25,7 @@ export default function Tomain(props) {
   return (
     <div>
       <Redirect
-        to={
-          currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/workspace"
-        }
+        to={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
       />
       <Switch>
         <Route
