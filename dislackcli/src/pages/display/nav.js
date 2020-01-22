@@ -108,6 +108,7 @@ class Nav extends React.Component {
               await this.currentMsgs(item, async res => {
                 await this.searchSet(res);
                 await this.showModal(item, ms);
+                item = "";
               });
             }}
             style={{ width: "300px", marginLeft: "1%" }}

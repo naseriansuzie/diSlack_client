@@ -16,7 +16,7 @@ class InputMsg extends React.Component {
 
   deleteInput = e => {
     // console.log(e.target.value);
-    e.target.value = "";
+    console.log(e);
   };
 
   async handleChange(e) {
@@ -52,8 +52,6 @@ class InputMsg extends React.Component {
       e.preventDefault();
       if (e.target.value !== "") {
         this.handleChange(e);
-        // console.log("인풋값 : ", e.target.value);
-        this.deleteInput(e);
       }
     }
   };
@@ -68,8 +66,8 @@ class InputMsg extends React.Component {
             placeholder="Message"
             style={{ height: "100%" }}
             type="text"
-            onKeyPress={e => {
-              this.enterClick(e);
+            onKeyPress={async e => {
+              await this.enterClick(e);
             }}
           />
         </Form>
