@@ -81,9 +81,9 @@ class Thread extends React.Component {
             </Row>
 
             <Row className="Thread-sm-pad">
-              {clickedMsg[0].replyCount ? (
+              {clickedMsg[0].replyCount || replies.length > 0 ? (
                 <div className="Thread-hr">
-                  <span>{clickedMsg[0].replyCount}개의 댓글</span>
+                  <span>{replies.length}개의 댓글</span>
                 </div>
               ) : (
                 <div />
