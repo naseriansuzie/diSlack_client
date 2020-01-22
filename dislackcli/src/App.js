@@ -54,7 +54,7 @@ class App extends React.Component {
       currentWorkspace: clickedWorkspace,
     });
   }
-  
+
   getWorkSpace() {
     axios
       .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/my`, {
@@ -64,14 +64,13 @@ class App extends React.Component {
         this.setState({ workSpaceList: res.data });
       })
       .catch(err => {
-        console.dir(err);
-
         if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
-          this.setState({ isLogin: false });
+          // this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
         }
+        console.log(err);
       });
   }
 
@@ -104,7 +103,7 @@ class App extends React.Component {
       this.state.workSpaceList,
     );
     if (this.state.workSpaceList) {
-      let result = this.state.workSpaceList.filter(
+      const result = this.state.workSpaceList.filter(
         val => val.code === this.state.currentURL,
       );
       console.log("url로 찾은 객체", result);

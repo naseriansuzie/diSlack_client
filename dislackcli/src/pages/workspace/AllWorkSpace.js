@@ -32,7 +32,7 @@ class AllWorkSpace extends React.Component {
         })
         .then(res => this.setState({ list: res.data }));
     } catch (err) {
-      if (err && err.response.status === 419) {
+      if (err.response && err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
@@ -63,12 +63,12 @@ class AllWorkSpace extends React.Component {
           });
       })
       .catch(err => {
-        // if (err.response.status === 419) {
-        //   localStorage.setItem("isLogin", null);
-        //   this.setState({ isLogin: false });
-        //   alert("다시 로그인 해주세요");
-        //   window.location = "/signin";
-        // }
+        if (err.response && err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
       });
   }
 

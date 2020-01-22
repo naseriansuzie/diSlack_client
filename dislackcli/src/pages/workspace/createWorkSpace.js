@@ -34,7 +34,7 @@ class CreateWorkSpace extends React.Component {
           alert(
             "동일한 이름의 워크스페이스가 존재합니다. 새로운 이름으로 만들어주세요!",
           );
-        } else if (err.response.status === 419) {
+        } else if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");

@@ -113,7 +113,7 @@ class MainPage extends React.Component {
         }
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert(" 로그인 해주세요");
@@ -157,7 +157,7 @@ class MainPage extends React.Component {
         }),
       )
       .catch(err => {
-        if (err && err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
@@ -206,7 +206,7 @@ class MainPage extends React.Component {
         }),
       )
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
@@ -241,7 +241,7 @@ class MainPage extends React.Component {
         this.setState({ channels: res.data, currentDisplay: res.data[0] });
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
@@ -320,7 +320,7 @@ class MainPage extends React.Component {
         });
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
@@ -353,7 +353,7 @@ class MainPage extends React.Component {
         }
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
@@ -411,7 +411,7 @@ class MainPage extends React.Component {
           });
         })
         .catch(err => {
-          if (err.response.status === 419) {
+          if (err.response && err.response.status === 419) {
             localStorage.setItem("isLogin", null);
             this.setState({ isLogin: false });
             alert("다시 로그인 해주세요");
@@ -439,7 +439,7 @@ class MainPage extends React.Component {
           }
         })
         .catch(err => {
-          if (err.response.status === 419) {
+          if (err.response && err.response.status === 419) {
             localStorage.setItem("isLogin", null);
             this.setState({ isLogin: false });
             alert("다시 로그인 해주세요");
@@ -461,7 +461,7 @@ class MainPage extends React.Component {
       this.getDM();
     } catch (err) {
       console.log("MainCDM_ERR", err);
-      if (err && err.response.status === 419) {
+      if (err.response && err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
