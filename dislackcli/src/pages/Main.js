@@ -174,6 +174,7 @@ class MainPage extends React.Component {
       return msg;
     });
     this.setState({ msgs: renewMsgs, clickedMsg: [], replies: [] });
+    this.getMessage();
   }
 
   handleClickMemberList() {
