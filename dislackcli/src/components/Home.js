@@ -27,19 +27,16 @@ const Home = props => {
                 .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
                   withCredentials: true,
                 })
-                .then(res => 
-                  { 
-                    if( res.status === 205 ) {
-                      console.log("로그아웃", res)
-                      props.handleLogout()
-                    }else {
-                      console.log("오류는아닌데 205도 아님")
-                    }}
-                  )
+                .then(res => {
+                  if (res.status === 205) {
+                    console.log("로그아웃", res);
+                    props.handleLogout();
+                  } else {
+                    console.log("오류는아닌데 205도 아님");
+                  }
+                })
                 .catch(err => {
-
                   if (err.response && err.response.status === 419) {
-
                     localStorage.setItem("isLogin", null);
                     // this.setState({ isLogin: false });
                     alert("다시 로그인 해주세요");

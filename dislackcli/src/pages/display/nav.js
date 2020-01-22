@@ -12,13 +12,10 @@ class Nav extends React.Component {
   }
 
   showModal = (e, val) => {
-    // console.log("모달스테이트", val);
     this.setState(() => ({
       visible: true,
       target: e,
     }));
-
-    // console.log(this.state);
   };
 
   handleOk = e => {
@@ -54,7 +51,6 @@ class Nav extends React.Component {
   };
 
   searchSet(value) {
-    // console.log("서치셋", value);
     this.setState({ modalMsgs: value });
   }
 
@@ -68,9 +64,6 @@ class Nav extends React.Component {
       state,
     } = this.props;
 
-    // console.log("NAV_PROPS : ", this.props);
-    // console.log("NAV_CURRENTDISPLAY : ", currentDisplay);
-    // console.log(state);
     return (
       <Row gutter={[8, 8]} className="nav-Row">
         <Col span={8} style={{ marginTop: "7px" }}>
@@ -103,7 +96,6 @@ class Nav extends React.Component {
             placeholder="Input Search Text"
             onSearch={item => {
               const ms = this.state.modalMsgs;
-
               this.currentMsgs(item, async res => {
                 this.searchSet(res);
                 this.showModal(item, ms);
@@ -131,7 +123,6 @@ class Nav extends React.Component {
           >
             {this.state.modalMsgs ? (
               this.state.modalMsgs.map(item => (
-                // console.log("모달_매핑 ? ", item);
                 <ModalRender renderMsg={item} key={Math.random()} />
               ))
             ) : (
@@ -143,5 +134,4 @@ class Nav extends React.Component {
     );
   }
 }
-
 export default Nav;

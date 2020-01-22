@@ -168,7 +168,7 @@ class Side extends React.Component {
             className="Sider-Title"
             style={{ marginTop: "10%", marginBottom: "7%", marginLeft: "3%" }}
           >
-            Dm{" "}
+            Dm
             <Icon
               className="Sider-icon-plus"
               type="plus-circle"

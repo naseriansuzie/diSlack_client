@@ -97,7 +97,11 @@ export default function ToMain(props) {
           )}
         />
         <Route
-          path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
+          path={
+            currentWorkspace && currentWorkspace.length
+              ? `/main/${currentWorkspace[0].code}`
+              : "/"
+          }
           render={history => {
             console.log("이주소?");
             console.log(props.workSpaceList);

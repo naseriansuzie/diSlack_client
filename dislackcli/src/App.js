@@ -85,7 +85,7 @@ class App extends React.Component {
 
   // lifeCycle
   async componentDidMount() {
-        try {
+    try {
       await axios.post(`${process.env.REACT_APP_DEV_URL}/verify`, null, {
         withCredentials: true,
       });
@@ -97,7 +97,7 @@ class App extends React.Component {
         window.location = "/signin";
       }
     }
-    
+
     await this.getWorkSpace();
     console.log(
       "겟 워크스페이스 이후 워크스페이스리스트",

@@ -8,7 +8,6 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
   // eslint-disable-next-line
   class extends React.Component {
     constructor(props) {
-      // console.log("PLUS_DM_PROPS", props);
       super(props);
       this.state = {
         name: "",
@@ -42,7 +41,6 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
 
     // 2. 유저선택
     clickUser = e => {
-      // console.log(e);
       const result = this.state.userList.filter(val => val.name === e);
       this.setState({ selectUser: result[0].id });
     };
@@ -61,13 +59,13 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
         .then(res => {
           for (let i = 0; i < this.props.dms.length; i++) {
             if (res.data.id === this.props.dms[i].id) {
-              alert("이미 방있슈");
+              alert("DM창이 이미 존재합니다");
               this.props.handleOkDM();
               return;
             }
           }
           this.props.setChannelDM("DM", res.data);
-          alert("방생겼슈");
+          alert("DM창이 생성되었습니다.");
           this.props.handleOkDM();
         })
         .catch(err => {
@@ -98,7 +96,6 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
                   userList={val}
                   clickUser={async e => {
                     await this.clickUser(e);
-                    // console.log("유저클릭후", this.state);
                     await this.createDM();
                   }}
                 />

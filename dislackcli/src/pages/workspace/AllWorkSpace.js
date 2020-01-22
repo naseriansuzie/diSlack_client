@@ -26,9 +26,6 @@ class AllWorkSpace extends React.Component {
         },
       );
       await this.props.getWorkSpace();
-      const joinWS = this.props.workSpaceList;
-      const result = joinWS.filter(ws => ws.code === workSpaceCode);
-      await this.props.updateWorkspace(result);
       axios
         .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/all`, {
           withCredentials: true,

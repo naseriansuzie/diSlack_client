@@ -6,7 +6,6 @@ import "./SiderHeader.css";
 class SiderHeader extends React.Component {
   constructor(props) {
     super(props);
-    // this.handleLogOut = this.handleLogOut.bind(this);
     this.logOut = this.logOut.bind(this);
   }
 
@@ -51,7 +50,7 @@ class SiderHeader extends React.Component {
             content={<a onClick={this.logOut}>logout</a>}
             trigger="click"
           >
-            {currentWorkspace[0].name}{" "}
+            {currentWorkspace[0].name}
             <Icon className="SiderHeader-Icon-down" type="down" />
           </Popover>
           <Icon className="SiderHeader-Icon" type="bell" />
