@@ -13,8 +13,7 @@ class CreateWorkSpace extends React.Component {
     this.changeInputVal = this.changeInputVal.bind(this);
   }
 
-  async createWS(e) {
-    await this.setState({ name: e.target.value });
+  async createWS() {
     const workspaceName = { name: this.state.name };
     axios
       .post(
@@ -52,8 +51,12 @@ class CreateWorkSpace extends React.Component {
   clickEnter = e => {
     if (e.key === "Enter") {
       if (e.target.value !== "") {
-        this.createWS(e);
+        this.setState({ name: e.target.value });
+        this.createWS();
       }
+    }
+    if (e.key === "Click") {
+      this.createWS();
     }
   };
 
