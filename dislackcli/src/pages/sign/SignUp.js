@@ -43,6 +43,12 @@ class SignUp extends React.Component {
             if (err.response.status === 409) {
               alert("이미 가입한 회원입니다! 로그인해주세요 :)");
             }
+            if (err.response && err.response.status === 419) {
+              localStorage.setItem("isLogin", null);
+              this.setState({ isLogin: false });
+              alert("다시 로그인 해주세요");
+              window.location = "/signin";
+            } else console.log(err);
           });
       }
     });
