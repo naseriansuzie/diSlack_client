@@ -57,7 +57,7 @@ class WorkSpace extends React.Component {
             </Link>
           </div>
           <div className="workspace-middle">
-            <CreateWorkSpace getWorkSpace={this.getWorkSpace} />
+            <CreateWorkSpace getWorkSpace={getWorkSpace} />
             <div />
           </div>
         </div>

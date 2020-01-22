@@ -10,6 +10,7 @@ class CreateWorkSpace extends React.Component {
     this.state = {
       name: "",
     };
+    this.changeInputVal = this.changeInputVal.bind(this);
   }
 
   async createWS(e) {
@@ -27,8 +28,9 @@ class CreateWorkSpace extends React.Component {
         alert("워크스페이스가 생성되었습니다.");
         this.props.getWorkSpace();
       })
+      .then(() => this.setState({ name: "" }))
       .catch(err => {
-        if (err.response.status === 409) {
+        if (err && err.response.status === 409) {
           alert(
             "동일한 이름의 워크스페이스가 존재합니다. 새로운 이름으로 만들어주세요!",
           );
@@ -36,14 +38,12 @@ class CreateWorkSpace extends React.Component {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
-        }
+        } else console.log(err);
       });
   }
 
   clearInput = input => {
     input.target.value = "";
-    console.log(input.target.value);
-    // alert("워크스페이스가 생성되었습니다.");
   };
 
   clickEnter = e => {
@@ -53,6 +53,12 @@ class CreateWorkSpace extends React.Component {
       }
     }
   };
+
+  changeInputVal(e) {
+    const input = e.target.value;
+    console.log(input);
+    this.setState({ name: input });
+  }
 
   render() {
     return (
@@ -67,11 +73,16 @@ class CreateWorkSpace extends React.Component {
           <Input
             className="workspace-input"
             placeholder="Create WorkSpace"
+            value={this.state.name}
             onKeyPress={e => {
               this.clickEnter(e);
             }}
+            onChange={this.changeInputVal}
           />
           <Button
+            onClick={() => {
+              this.createWS();
+            }}
             className="workspace-createBtn"
             type="primary"
             style={{ marginTop: "5%", width: "100%" }}
