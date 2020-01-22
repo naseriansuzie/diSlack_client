@@ -4,19 +4,20 @@
 }
 
 .SiderHeader-Pop {
-  font-size: 25px;
+  font-size: 1vw;
   font-weight: bold;
   margin-left: 5%;
 }
 
 .SiderHeader-bottom {
-  font-size: 18px;
+  font-size: 0.7vw;
   margin-left: 5%;
 }
 .SiderHeader-Icon-down {
-  font-size: 15px;
+  font-size: 0.7vw;
+  margin-left: 1%;
 }
 .SiderHeader-Icon {
-  font-size: 20px;
+  font-size: 0.7vw;
   margin-left: 50%;
 }
