@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
-import { Card, Form } from "antd";
+import { Card, Form, Button } from "antd";
 import "../pages/sign/Signin.css";
 
 class Signin extends React.Component {
@@ -10,7 +10,7 @@ class Signin extends React.Component {
     this.state = {};
   }
   render() {
-    return (
+    return this.props.isLogin ? (
       <>
         <div className="signin-header">
           <div className="signin-header-1">
@@ -29,7 +29,30 @@ class Signin extends React.Component {
         </div>
 
         <div className="signin-main">
-          <Card className="signin-main-1"></Card>
+          <Card className="signin-main-1">
+            <Button
+              onClick={() => {
+                console.log(this.props.match.params.code);
+                axios
+                  .post(
+                    `${process.env.REACT_APP_DEV_URL}/workspace/join`,
+                    { code: this.props.match.params.code },
+                    {
+                      withCredentials: true,
+                    },
+                  )
+                  .then(res => {
+                    alert("OK");
+                    window.location = "/workspace";
+                  })
+                  .catch(err => {
+                    console.log(err.status);
+                  });
+              }}
+            >
+              JOIN
+            </Button>
+          </Card>
         </div>
         <div className="signin-aside">
           <div className="signin-aside-1">
@@ -71,6 +94,8 @@ class Signin extends React.Component {
           <div>Contact Us</div>
         </div>
       </>
+    ) : (
+      <Redirect to="/signin" />
     );
   }
 }

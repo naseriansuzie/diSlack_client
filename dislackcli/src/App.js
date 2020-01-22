@@ -70,21 +70,18 @@ class App extends React.Component {
   //lifeCycle
   async componentDidMount() {
     try {
-      const r = await axios.post(
-        `${process.env.REACT_APP_DEV_URL}/verify`,
-        null,
-        {
-          withCredentials: true,
-        },
-      );
+      await axios.post(`${process.env.REACT_APP_DEV_URL}/verify`, null, {
+        withCredentials: true,
+      });
     } catch (err) {
-      if (err.response.status === 419) {
+      if (err.response && err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
         window.location = "/signin";
       }
     }
+
     if (this.state.isLogin) {
       try {
         const res = await axios.get(
@@ -97,7 +94,7 @@ class App extends React.Component {
           workSpaceList: res.data,
         });
       } catch (err) {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");

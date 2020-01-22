@@ -12,7 +12,13 @@ class Thread extends React.Component {
   }
 
   componentDidMount() {
-    this.socket = socketio.connect("http://localhost:4000/channelThread");
+    this.socket = socketio.connect(
+      `${process.env.REACT_APP_DEV_URL}/channelThread`,
+      {
+        path: "/socket.io",
+        transports: ["websocket"],
+      },
+    );
     this.socket.on("connect", data => {
       this.socket.emit("joinChannelThread", this.props.clickedMsg[0].id);
     });
