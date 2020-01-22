@@ -22,20 +22,22 @@ export default function ToMain(props) {
     getWorkSpace,
     updateCurrentWorkspace,
   } = props;
+  console.log("여기는 tomain");
   return (
     <div>
-      <Redirect
+      {/* <Redirect
         to={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
-      />
+      /> */}
       <Switch>
         <Route
           exact
           path="/"
           render={() => {
-            if (isLogin) {
-              return <Redirect to="/workspace" />;
-            }
+            // if (isLogin) {
+            //   return <Redirect to="/workspace" />;
+            // }
             return <Home />;
+            //}
           }}
         />
         <Route
@@ -50,6 +52,7 @@ export default function ToMain(props) {
           )}
         />
         <Route path="/signup" render={() => <SignUp isLogin={isLogin} />} />
+
         <Route
           path="/workspace"
           render={() => (
@@ -67,6 +70,7 @@ export default function ToMain(props) {
               </div>
               <div>
                 <WorkSpace
+                  currentWorkspace={currentWorkspace}
                   handleLogout={handleLogout}
                   isLogin={isLogin}
                   userInfo={userInfo}
@@ -82,20 +86,23 @@ export default function ToMain(props) {
         />
         <Route
           path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
-          render={history => (
-            <MainPage
-              className="MainPage"
-              isLogin={isLogin}
-              userInfo={userInfo}
-              workSpaceList={workSpaceList}
-              currentWorkspace={currentWorkspace}
-              handleLogout={handleLogout}
-              updateWorkspace={updateWorkspace}
-              getWorkSpace={getWorkSpace}
-              history={history}
-              updateCurrentWorkspace={updateCurrentWorkspace}
-            />
-          )}
+          render={history => {
+            console.log("이주소?");
+            return (
+              <MainPage
+                className="MainPage"
+                isLogin={isLogin}
+                userInfo={userInfo}
+                workSpaceList={workSpaceList}
+                currentWorkspace={currentWorkspace}
+                handleLogout={handleLogout}
+                updateWorkspace={updateWorkspace}
+                getWorkSpace={getWorkSpace}
+                history={history}
+                updateCurrentWorkspace={updateCurrentWorkspace}
+              />
+            );
+          }}
         />
       </Switch>
     </div>

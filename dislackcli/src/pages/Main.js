@@ -16,7 +16,7 @@ import "./Main.css";
 class MainPage extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
+    console.log(this.props);
     this.state = {
       channels: [],
       dms: [],
@@ -293,7 +293,7 @@ class MainPage extends React.Component {
 
   // LifeCycle
   async componentDidMount() {
-    console.log("컴포넌트디드마운트") 
+    console.log("컴포넌트디드마운트");
     try {
       // // 1. 새로고침시 currentWorkSpace 불러오기
       // let code = this.props.history.location.pathname.split('/main/')[1]
@@ -331,7 +331,7 @@ class MainPage extends React.Component {
             window.location = "/signin";
           }
         });
-      
+
       const address = this.state.currentDisplay.name
         ? "channelmessage"
         : "directmessage";
@@ -373,19 +373,18 @@ class MainPage extends React.Component {
           // console.log("참여 중인 유저들 =", res.data);
           this.setState({ memberList: res.data });
         });
-        this.getDM()
+      this.getDM();
     } catch (err) {
-      console.log("MainCDM_ERR", err)
-      if (err.response.status === 419) {
+      console.log("MainCDM_ERR", err);
+      if (err.response && err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
         window.location = "/signin";
       }
     }
-    
-    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
 
+    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   componentDidUpdate() {
@@ -457,14 +456,14 @@ class MainPage extends React.Component {
                 height: "100%",
                 backgroundColor: "white",
                 borderColor: "#bdc3c7",
-                borderBottom: "solid", 
+                borderBottom: "solid",
                 borderWidth: "0.5px",
                 position: "sticky",
                 top: 0,
               }}
             >
               <Nav
-              currentDisplay={currentDisplay}
+                currentDisplay={currentDisplay}
                 msgs={msgs}
                 props={this.props}
                 state={this.state}

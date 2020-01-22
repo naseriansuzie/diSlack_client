@@ -1,6 +1,6 @@
 import { List, Avatar, Row, Col, Button } from "antd";
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import "./myws.css";
 
 export default function MyWorkSpace(props) {
@@ -30,13 +30,14 @@ export default function MyWorkSpace(props) {
                       title={item.name}
                       description={`${process.env.REACT_APP_DEV_URL}/${item.code}`}
                     />
-                    <Button
+                    <Link
+                      to={`/main/${item.code}`}
                       className="workspace-joinBtn"
                       id={item.id}
                       onClick={props.handleClickMyWS}
                     >
                       Launch
-                    </Button>
+                    </Link>
                   </List.Item>
                 )}
               />

@@ -22,10 +22,10 @@ class WorkSpace extends React.Component {
   // lifeCycle
   componentDidMount() {
     if (this.props.isLogin) {
-      this.props.getWorkSpace();
+      console.log("겟 워크스페이스 가동");
+      this.getWorkSpace();
     }
   }
-
   // methods
 
   getWorkSpace() {
@@ -34,9 +34,11 @@ class WorkSpace extends React.Component {
         withCredentials: true,
       })
       .then(res => {
+        console.log("res가 오면 여기로 온다", res);
         this.setState({ workSpaceList: res.data });
       })
       .catch(err => {
+        console.dir(err);
         if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
@@ -48,6 +50,12 @@ class WorkSpace extends React.Component {
 
   handleClickMyWS(e) {
     const workSpaceId = e.target.id;
+    console.log(
+      "클릭한 메시지 아이디 =",
+      workSpaceId,
+      "프롭스로 받은 워크스페이스리슽 =",
+      this.props.workSpaceList,
+    );
     const clickedWorkspace = this.props.workSpaceList.filter(
       ws => ws.id === Number(workSpaceId),
     );
