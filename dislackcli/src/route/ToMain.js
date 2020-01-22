@@ -51,7 +51,6 @@ export default function ToMain(props) {
             </div>
           )}
         />
-
         <Route
           path="/signin"
           render={props => (

@@ -54,7 +54,7 @@ class App extends React.Component {
       currentWorkspace: clickedWorkspace,
     });
   }
-
+  
   getWorkSpace() {
     axios
       .get(`${process.env.REACT_APP_DEV_URL}/workspace/list/my`, {

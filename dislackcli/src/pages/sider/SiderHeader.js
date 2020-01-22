@@ -6,10 +6,11 @@ import "./SiderHeader.css";
 class SiderHeader extends React.Component {
   constructor(props) {
     super(props);
+    this.logOut = this.logOut.bind(this);
   }
 
   // 로그아웃
-  logout = () => {
+  logOut = () => {
     console.log("LOGOUT");
     axios
       .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
