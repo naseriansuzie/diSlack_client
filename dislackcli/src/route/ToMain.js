@@ -38,7 +38,7 @@ export default function ToMain(props) {
             // if (isLogin) {
             //   return <Redirect to="/workspace" />;
             // }
-            return <Home />;
+            return <Home handleLogout={handleLogout} />;
             //}
           }}
         />

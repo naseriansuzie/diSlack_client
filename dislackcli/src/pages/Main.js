@@ -113,7 +113,7 @@ class MainPage extends React.Component {
         if (err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
-          alert("다시 로그인 해주세요");
+          alert(" 로그인 해주세요");
           window.location = "/signin";
         }
       });
