@@ -154,12 +154,12 @@ class MainPage extends React.Component {
         }),
       )
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   }
 
@@ -459,9 +459,7 @@ class MainPage extends React.Component {
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
         window.location = "/signin";
-      } else {
-        console.log(err)
-      }
+      } else console.log(err);
     }
     //this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
@@ -488,7 +486,6 @@ class MainPage extends React.Component {
   }
 
   render() {
-    // console.log("로그인상태? : ", this.props.isLogin);
     const { currentWorkspace, userInfo } = this.props;
 
     const {
@@ -581,6 +578,7 @@ class MainPage extends React.Component {
                   {msgs.length ? (
                     <MessageList
                       msgs={msgs}
+                      replies={replies}
                       handleClickReply={handleClickReply}
                       handleClickProfile={handleClickProfile}
                     />
