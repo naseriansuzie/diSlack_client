@@ -34,11 +34,11 @@ class Nav extends React.Component {
   currentMsgs = (item, cb) => {
     const curMsgs = this.props.msgs;
     const searchArr = curMsgs.filter(val1 => {
-      console.log("메세지들? : ", val1);
+      // console.log("메세지들? : ", val1);
       const itemArr = item.split("");
       const val1Arr = val1.message.split("");
-      console.log("메세지분리", val1Arr);
-      console.log("찾을것", itemArr);
+      // console.log("메세지분리", val1Arr);
+      // console.log("찾을것", itemArr);
       for (let i = 0; i < val1Arr.length; i++) {
         for (let j = 0; j < itemArr.length; j++) {
           if (val1Arr[i] === itemArr[j] && val1[i + 1] === itemArr[j + 1]) {
@@ -120,6 +120,7 @@ class Nav extends React.Component {
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             width={1400}
+            style={{ overflow: "scroll", height: "500px" }}
           >
             {this.state.modalMsgs ? (
               this.state.modalMsgs.map(item => (
