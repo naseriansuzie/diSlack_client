@@ -11,8 +11,6 @@ class Nav extends React.Component {
     this.state = { visible: false, modalMsgs: null };
   }
 
-  // 라이프 사이클로 컴포넌트디드업데이트
-
   showModal = (e, val) => {
     // console.log("모달스테이트", val);
     this.setState(() => ({
@@ -103,12 +101,12 @@ class Nav extends React.Component {
           <Icon type="setting" style={{ marginLeft: "1%" }} />
           <Search
             placeholder="Input Search Text"
-            onSearch={async item => {
+            onSearch={item => {
               const ms = this.state.modalMsgs;
-              await this.currentMsgs(item, async res => {
-                await this.searchSet(res);
-                await this.showModal(item, ms);
-                item = "";
+
+              this.currentMsgs(item, async res => {
+                this.searchSet(res);
+                this.showModal(item, ms);
               });
             }}
             style={{ width: "300px", marginLeft: "1%" }}
