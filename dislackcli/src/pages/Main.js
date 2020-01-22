@@ -44,6 +44,9 @@ class MainPage extends React.Component {
     this.setChannelDM = this.setChannelDM.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
     this.clickedDM = this.clickedDM.bind(this);
+    this.getChannel = this.getChannel.bind(this);
+    this.getMessage = this.getMessage.bind(this);
+    this.getMembers = this.getMembers.bind(this);
   }
 
   // Methods
@@ -291,6 +294,85 @@ class MainPage extends React.Component {
       });
   }
 
+  //채널리스트 불러오기
+  getChannel() {
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        console.log(res.data[0]);
+        this.setState({ channels: res.data, currentDisplay: res.data[0] });
+
+        this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`);
+        this.socket.on("connect", data => {
+          this.socket.emit("joinchannel", this.state.currentDisplay.id);
+        });
+        this.socket.on("message", data => {
+          const message = JSON.parse(data);
+          this.setState({ msgs: this.state.msgs.concat(message) });
+        });
+      })
+      .catch(err => {
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
+      });
+  }
+
+  //채널 or dm 메시지 불러오기
+  getMessage() {
+    console.log(this.state.channels);
+    const address = this.state.currentDisplay.name
+      ? "channelmessage"
+      : "directmessage";
+    axios
+      // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${address}/${this.state.currentDisplay.id}/list`,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        // console.log("메시지 겟요청", res);
+        if (res.data.length !== 0) {
+          console.log("1");
+          this.setState({ msgs: res.data });
+        } else {
+          // console.log("메세지가 비어있습니다.");
+        }
+      })
+      .catch(err => {
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
+      });
+  }
+  // 멤버리스트 불러오기
+  getMembers() {
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/user/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        // console.log("참여 중인 유저들 =", res.data);
+        this.setState({ memberList: res.data });
+      })
+      .catch(err => console.log(err));
+  }
   // LifeCycle
   async componentDidMount() {
     console.log("컴포넌트디드마운트");
@@ -301,7 +383,6 @@ class MainPage extends React.Component {
       //   return val.code === code
       // })
       // this.props.updateCurrentWorkspace(result)
-
       await axios
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
@@ -311,7 +392,6 @@ class MainPage extends React.Component {
         )
         .then(res => {
           this.setState({ channels: res.data, currentDisplay: res.data[0] });
-
           this.socket = socketio.connect(
             `${process.env.REACT_APP_DEV_URL}/chat`,
           );
@@ -331,7 +411,6 @@ class MainPage extends React.Component {
             window.location = "/signin";
           }
         });
-
       const address = this.state.currentDisplay.name
         ? "channelmessage"
         : "directmessage";
@@ -360,7 +439,6 @@ class MainPage extends React.Component {
             window.location = "/signin";
           }
         });
-
       // 멤버리스트 받아오는 api 추가
       await axios
         .get(
@@ -376,18 +454,17 @@ class MainPage extends React.Component {
       this.getDM();
     } catch (err) {
       console.log("MainCDM_ERR", err);
-      if (err.response && err.response.status === 419) {
+      if (err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
         window.location = "/signin";
       }
     }
-
-    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+    //this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
     console.log("update");
     const clicked = this.state.msgs.filter(msg => msg.clicked);
     if (clicked.length && this.state.clickedMsg[0] !== clicked[0]) {

@@ -35,6 +35,7 @@ const Home = props => {
                     alert("다시 로그인 해주세요");
                     window.location = "/signin";
                   }
+                  console.log(err);
                 });
             }}
           >

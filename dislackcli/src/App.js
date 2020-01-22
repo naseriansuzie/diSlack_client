@@ -12,6 +12,7 @@ class App extends React.Component {
       isLogin: this.props.isLogin,
       userInfo: this.props.userInfo,
       currentWorkspace: null,
+      currentURL: null,
     };
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -20,6 +21,7 @@ class App extends React.Component {
     this.updateUserInfo = this.updateUserInfo.bind(this);
     this.getWorkSpace = this.getWorkSpace.bind(this);
     this.updateWorkspace = this.updateWorkspace.bind(this);
+    this.setCurrentURL = this.setCurrentURL.bind(this);
   }
 
   handleLogin() {
@@ -70,13 +72,34 @@ class App extends React.Component {
     this.setState({ workSpaceList: [...this.state.workSpaceList, workSpace] });
   }
 
+  setCurrentURL(code) {
+    this.setState({ currentURL: code });
+  }
+
   // lifeCycle
   async componentDidMount() {
-    this.getWorkSpace();
+    await this.getWorkSpace();
+    console.log(
+      "겟 워크스페이스 이후 워크스페이스리스트",
+      this.state.workSpaceList,
+    );
+    if (this.state.workSpaceList) {
+      let result = this.state.workSpaceList.filter(
+        val => val.code === this.state.currentURL,
+      );
+      console.log("url로 찾은 객체", result);
+      this.updateCurrentWorkspace(result);
+    }
   }
 
   render() {
-    const { isLogin, currentWorkspace, userInfo, workSpaceList } = this.state;
+    const {
+      isLogin,
+      currentWorkspace,
+      userInfo,
+      workSpaceList,
+      currentURL,
+    } = this.state;
     const {
       updateCurrentWorkspace,
       handleLogin,
@@ -84,6 +107,7 @@ class App extends React.Component {
       updateUserInfo,
       getWorkSpace,
       updateWorkspace,
+      setCurrentURL,
     } = this;
     // console.log("app.js state의 현재 선택된 워크스페이스", currentWorkspace);
     return isLogin ? (
@@ -98,6 +122,8 @@ class App extends React.Component {
           getWorkSpace={getWorkSpace}
           updateWorkspace={updateWorkspace}
           workSpaceList={workSpaceList}
+          setCurrentURL={setCurrentURL}
+          currentURL={currentURL}
         />
       </div>
     ) : (

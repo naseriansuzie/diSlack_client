@@ -21,6 +21,8 @@ export default function ToMain(props) {
     handleLogout,
     getWorkSpace,
     updateCurrentWorkspace,
+    setCurrentURL,
+    currentURL,
   } = props;
   console.log("여기는 tomain");
   return (
@@ -88,6 +90,7 @@ export default function ToMain(props) {
           path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
           render={history => {
             console.log("이주소?");
+            console.log(props.workSpaceList);
             return (
               <MainPage
                 className="MainPage"
@@ -100,6 +103,8 @@ export default function ToMain(props) {
                 getWorkSpace={getWorkSpace}
                 history={history}
                 updateCurrentWorkspace={updateCurrentWorkspace}
+                setCurrentURL={setCurrentURL}
+                currentURL={currentURL}
               />
             );
           }}
