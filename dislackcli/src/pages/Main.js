@@ -120,7 +120,7 @@ class MainPage extends React.Component {
           window.location = "/signin";
         }
       });
-    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+  
   }
 
   setCurrentDisPlay = e => {
@@ -468,7 +468,8 @@ class MainPage extends React.Component {
         window.location = "/signin";
       } else console.log(err);
     }
-    //this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+
   }
 
   async componentDidUpdate() {
@@ -480,16 +481,14 @@ class MainPage extends React.Component {
       });
     }
 
-    // console.log(this.scroll.scrollTop);
-    // console.log(this.scroll.scrollHeight - this.scroll.clientHeight);
-    // if (
-    //   this.scroll.scrollHeight -
-    //     this.scroll.clientHeight -
-    //     this.scroll.scrollTop <=
-    //   300
-    // )
-    //   this.scroll.scrollTop =
-    //     this.scroll.scrollHeight - this.scroll.clientHeight;
+    if (
+      this.scroll.scrollHeight -
+        this.scroll.clientHeight -
+        this.scroll.scrollTop <=
+      300
+    )
+      this.scroll.scrollTop =
+        this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   render() {
@@ -577,7 +576,7 @@ class MainPage extends React.Component {
               <Layout className="main-layout" style={{ height: "100%" }}>
                 <div
                   className="main-layout-content"
-                  style={{ overflow: "scroll" }}
+                  style={{ overflow: "scroll" ,height:'100%' }}
                   ref={ref => {
                     return (this.scroll = ref);
                   }}
