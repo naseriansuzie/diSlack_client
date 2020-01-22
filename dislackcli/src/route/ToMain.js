@@ -34,13 +34,15 @@ export default function ToMain(props) {
         <Route
           exact
           path="/"
-          render={() => {
-            // if (isLogin) {
-            //   return <Redirect to="/workspace" />;
+          render={
+            () => (
+              // if (isLogin) {
+              //   return <Redirect to="/workspace" />;
+              // }
+              <Home handleLogout={handleLogout} />
+            )
             // }
-            return <Home handleLogout={handleLogout} />;
-            //}
-          }}
+          }
         />
         <Route
           exact
@@ -104,7 +106,7 @@ export default function ToMain(props) {
           }
           render={history => {
             console.log("이주소?");
-            console.log(props.workSpaceList);
+            console.log(workSpaceList);
             return (
               <MainPage
                 className="MainPage"

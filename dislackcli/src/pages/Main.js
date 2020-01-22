@@ -412,6 +412,7 @@ class MainPage extends React.Component {
     console.log("컴포넌트디드마운트");
     try {
       // // 1. 새로고침시 currentWorkSpace 불러오기
+      // console.log(this.props)
       // let code = this.props.history.location.pathname.split('/main/')[1]
       // let result = this.props.workSpaceList.filter(val => {
       //   return val.code === code
@@ -498,7 +499,9 @@ class MainPage extends React.Component {
         window.location = "/signin";
       } else console.log(err);
     }
-    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+    if(this.scroll) {
+      this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+    }
 
   }
 
@@ -510,20 +513,20 @@ class MainPage extends React.Component {
         clickedMsg: clicked,
       });
     }
-
-    if (
-      this.scroll.scrollHeight -
-        this.scroll.clientHeight -
-        this.scroll.scrollTop <=
-      300
-    )
-      this.scroll.scrollTop =
-        this.scroll.scrollHeight - this.scroll.clientHeight;
+    if(this.scroll) {
+      if (
+        this.scroll.scrollHeight -
+          this.scroll.clientHeight -
+          this.scroll.scrollTop <=
+        300
+      )
+        this.scroll.scrollTop =
+          this.scroll.scrollHeight - this.scroll.clientHeight;
+    }
   }
 
   render() {
     const { currentWorkspace, userInfo } = this.props;
-
     const {
       channels,
       dms,
@@ -582,6 +585,7 @@ class MainPage extends React.Component {
                 state={this.state}
                 channels={channels}
                 handleClickMemberList={handleClickMemberList}
+                currentWorkspace={currentWorkspace}
               />
             </Col>
           </Row>
