@@ -16,6 +16,7 @@ import "./Main.css";
 class MainPage extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props);
     this.state = {
       channels: [],
       dms: [],
@@ -38,8 +39,14 @@ class MainPage extends React.Component {
     this.handleCreateReply = this.handleCreateReply.bind(this);
     this.clickedMsgUpdate = this.clickedMsgUpdate.bind(this);
     this.getCN = this.getCN.bind(this);
+    this.getDM = this.getDM.bind(this);
     this.setCurrentDisPlay = this.setCurrentDisPlay.bind(this);
+    this.setChannelDM = this.setChannelDM.bind(this);
     this.clickedChannel = this.clickedChannel.bind(this);
+    this.clickedDM = this.clickedDM.bind(this);
+    this.getChannel = this.getChannel.bind(this);
+    this.getMessage = this.getMessage.bind(this);
+    this.getMembers = this.getMembers.bind(this);
   }
 
   // Methods
@@ -78,10 +85,12 @@ class MainPage extends React.Component {
 
     // 채널이 바뀌기 때문에 연결한 웹소켓을 해제
     this.socket.disconnect();
-    this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/caht`, {
+
+    this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`, {
       path: "/socket.io",
       transports: ["websocket"],
     });
+
     this.socket.on("connect", data => {
       this.socket.emit("joinchannel", this.state.currentDisplay.id);
     });
@@ -109,7 +118,7 @@ class MainPage extends React.Component {
         if (err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
-          alert("다시 로그인 해주세요");
+          alert(" 로그인 해주세요");
           window.location = "/signin";
         }
       });
@@ -119,6 +128,13 @@ class MainPage extends React.Component {
   setCurrentDisPlay = e => {
     console.log(e);
   };
+
+  setChannelDM(type, data) {
+    console.log("셋체널");
+    if (type === "channel") {
+      this.setState({ channels: [...this.state.channels, data] });
+    } else this.setState({ dms: [...this.state.dms, data] });
+  }
 
   handleClickReply(msgId) {
     this.handleReplyClose();
@@ -143,12 +159,12 @@ class MainPage extends React.Component {
         }),
       )
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   }
 
@@ -236,11 +252,142 @@ class MainPage extends React.Component {
       });
   };
 
+  // DM방 불러오기
+  getDM = () => {
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        // console.log("방불러오기", res);
+        this.setState({ dms: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  // DM방 선택
+  async clickedDM(id) {
+    console.log("DM이클릭되었습니다 : ", id);
+    let allDM = this.state.dms;
+    let findDM = allDM.filter(val => {
+      if (val.id === id) {
+        return val;
+      }
+    });
+    console.log("선택한 DM", findDM);
+    await this.setState({ currentDisplay: findDM[0], msgs: [] });
+    // DM방 선택 시 대화 불러오기 /:code/directmessage/:id(room)/list
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/directmessage/${id}/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        console.log("메시지 겟요청", res);
+        if (res.data.length !== 0) {
+          this.setState({ msgs: res.data });
+        } else {
+          // console.log("메세지가 비어있습니다.");
+        }
+      });
+  }
+
+  //채널리스트 불러오기
+  getChannel() {
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        console.log(res.data[0]);
+        this.setState({ channels: res.data, currentDisplay: res.data[0] });
+
+        this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`);
+        this.socket.on("connect", data => {
+          this.socket.emit("joinchannel", this.state.currentDisplay.id);
+        });
+        this.socket.on("message", data => {
+          const message = JSON.parse(data);
+          this.setState({ msgs: this.state.msgs.concat(message) });
+        });
+      })
+      .catch(err => {
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
+      });
+  }
+
+  //채널 or dm 메시지 불러오기
+  getMessage() {
+    console.log(this.state.channels);
+    const address = this.state.currentDisplay.name
+      ? "channelmessage"
+      : "directmessage";
+    axios
+      // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${address}/${this.state.currentDisplay.id}/list`,
+        {
+          withCredentials: true, // 쿠키전달
+        },
+      )
+      .then(res => {
+        // console.log("메시지 겟요청", res);
+        if (res.data.length !== 0) {
+          console.log("1");
+          this.setState({ msgs: res.data });
+        } else {
+          // console.log("메세지가 비어있습니다.");
+        }
+      })
+      .catch(err => {
+        if (err.response.status === 419) {
+          localStorage.setItem("isLogin", null);
+          this.setState({ isLogin: false });
+          alert("다시 로그인 해주세요");
+          window.location = "/signin";
+        }
+      });
+  }
+  // 멤버리스트 불러오기
+  getMembers() {
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/user/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        // console.log("참여 중인 유저들 =", res.data);
+        this.setState({ memberList: res.data });
+      })
+      .catch(err => console.log(err));
+  }
   // LifeCycle
   async componentDidMount() {
-    // 워크스페이스 아이디로 채널이랑 (디엠)을 다 불러온다 -> SETSTATE를 해주면 된다. + currentDisplay에 채널의 0번째 껄 셋스테이트한다.
-    // try {
+    console.log("컴포넌트디드마운트");
     try {
+      // // 1. 새로고침시 currentWorkSpace 불러오기
+      // let code = this.props.history.location.pathname.split('/main/')[1]
+      // let result = this.props.workSpaceList.filter(val => {
+      //   return val.code === code
+      // })
+      // this.props.updateCurrentWorkspace(result)
       await axios
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
@@ -250,7 +397,6 @@ class MainPage extends React.Component {
         )
         .then(res => {
           this.setState({ channels: res.data, currentDisplay: res.data[0] });
-
           this.socket = socketio.connect(
             `${process.env.REACT_APP_DEV_URL}/chat`,
             {
@@ -274,17 +420,19 @@ class MainPage extends React.Component {
             window.location = "/signin";
           }
         });
-
+      const address = this.state.currentDisplay.name
+        ? "channelmessage"
+        : "directmessage";
       await axios
         // create dm api 생성 후 채널인지 dm인지 분기하는 코드 필요
         .get(
-          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/list`,
+          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/${address}/${this.state.currentDisplay.id}/list`,
           {
             withCredentials: true, // 쿠키전달
           },
         )
         .then(res => {
-          // console.log("채널에 메시지 겟요청", res);
+          // console.log("메시지 겟요청", res);
           if (res.data.length !== 0) {
             console.log("1");
             this.setState({ msgs: res.data });
@@ -300,7 +448,6 @@ class MainPage extends React.Component {
             window.location = "/signin";
           }
         });
-
       // 멤버리스트 받아오는 api 추가
       await axios
         .get(
@@ -313,20 +460,20 @@ class MainPage extends React.Component {
           // console.log("참여 중인 유저들 =", res.data);
           this.setState({ memberList: res.data });
         });
+      this.getDM();
     } catch (err) {
-      if (err.response.status === 419) {
+      console.log("MainCDM_ERR", err);
+      if (err && err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
         window.location = "/signin";
-      }
+      } else console.log(err);
     }
-    console.log(this.scroll4);
-
-    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+    //this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
     console.log("update");
     const clicked = this.state.msgs.filter(msg => msg.clicked);
     if (clicked.length && this.state.clickedMsg[0] !== clicked[0]) {
@@ -335,21 +482,21 @@ class MainPage extends React.Component {
       });
     }
 
-    console.log(this.scroll.scrollTop);
-    console.log(this.scroll.scrollHeight - this.scroll.clientHeight);
-    if (
-      this.scroll.scrollHeight -
-        this.scroll.clientHeight -
-        this.scroll.scrollTop <=
-      300
-    )
-      this.scroll.scrollTop =
-        this.scroll.scrollHeight - this.scroll.clientHeight;
+    // console.log(this.scroll.scrollTop);
+    // console.log(this.scroll.scrollHeight - this.scroll.clientHeight);
+    // if (
+    //   this.scroll.scrollHeight -
+    //     this.scroll.clientHeight -
+    //     this.scroll.scrollTop <=
+    //   300
+    // )
+    //   this.scroll.scrollTop =
+    //     this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   render() {
-    // console.log("로그인상태? : ", this.props.isLogin);
-    const { currentWorkspace } = this.props;
+    const { currentWorkspace, userInfo } = this.props;
+
     const {
       channels,
       dms,
@@ -370,6 +517,7 @@ class MainPage extends React.Component {
       handleMemberListClose,
       handleClickProfile,
       handleProfileClose,
+      setChannelDM,
     } = this;
 
     return (
@@ -400,6 +548,7 @@ class MainPage extends React.Component {
               }}
             >
               <Nav
+                currentDisplay={currentDisplay}
                 msgs={msgs}
                 props={this.props}
                 state={this.state}
@@ -408,13 +557,17 @@ class MainPage extends React.Component {
               />
             </Col>
           </Row>
+
           <Row style={{ height: "850px", overflow: "hidden" }}>
             <Col span={3} style={{ height: "100%" }}>
               <Side
                 channels={channels}
                 dms={dms}
+                userInfo={userInfo}
                 currentWorkspace={currentWorkspace}
                 clickedChannel={this.clickedChannel}
+                setChannelDM={setChannelDM}
+                clickedDM={this.clickedDM}
               />
             </Col>
             <Col
@@ -434,6 +587,7 @@ class MainPage extends React.Component {
                   {msgs.length ? (
                     <MessageList
                       msgs={msgs}
+                      replies={replies}
                       handleClickReply={handleClickReply}
                       handleClickProfile={handleClickProfile}
                     />

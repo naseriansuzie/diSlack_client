@@ -3,7 +3,7 @@ import MessageEntries from "./MessageEntries";
 
 export default function MessageList(props) {
   const { handleClickReply, handleClickProfile, handleCreateReply } = props;
-  let { msgs, thread } = props;
+  let { msgs, thread, replies } = props;
   msgs = msgs.map(msg => {
     const dateTime = msg.createdAt
       .split("T")
@@ -28,6 +28,7 @@ export default function MessageList(props) {
                 thread={thread}
                 key={i}
                 {...msg}
+                replies={replies}
                 handleClickReply={handleClickReply}
                 handleClickProfile={handleClickProfile}
               />

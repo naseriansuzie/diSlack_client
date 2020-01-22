@@ -5,34 +5,39 @@ import axios from "axios";
 class InputMsg extends React.Component {
   constructor(props) {
     super(props);
-    // console.log("INPUT_PROPS", props);
     this.state = {
       message: "",
     };
     this.deleteInput = this.deleteInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.enterClick = this.enterClick.bind(this);
+    this.changeInputVal = this.changeInputVal.bind(this);
   }
 
   deleteInput = e => {
-    // console.log(e.target.value);
-    e.target.value = "";
+    console.log(e);
   };
 
+  changeInputVal(e) {
+    const input = e.target.value;
+    console.log(input);
+    this.setState({ message: input });
+  }
+
   async handleChange(e) {
-    await this.setState({ message: e.target.value });
-    const msg = this.state;
-    // 변수하나를 해서 type이 있으면 ch , 없으면 dm 으로 해서 주소도 변수로 한다. -> 쓰레드 인풋 메세지에도 해야 한다.
+    const address = this.props.currentDisplay.name
+      ? "channelmessage"
+      : "directmessage";
     axios
       .post(
-        `${process.env.REACT_APP_DEV_URL}/${this.props.props.currentWorkspace[0].code}/channelmessage/${this.props.currentDisplay.id}`,
-        msg,
+        `${process.env.REACT_APP_DEV_URL}/${this.props.props.currentWorkspace[0].code}/${address}/${this.props.currentDisplay.id}`,
+        { message: this.state.message },
         {
           withCredentials: true, // 쿠키전달
         },
       )
       .then(res => {
-        // console.log(res); app.js의 네임을 쓴다
+        this.setState({ message: "" });
       })
       .catch(err => {
         if (err.response.status === 419) {
@@ -48,8 +53,6 @@ class InputMsg extends React.Component {
       e.preventDefault();
       if (e.target.value !== "") {
         this.handleChange(e);
-        // console.log("인풋값 : ", e.target.value);
-        this.deleteInput(e);
       }
     }
   };
@@ -62,10 +65,12 @@ class InputMsg extends React.Component {
           <Input
             className="input_msg"
             placeholder="Message"
+            value={this.state.message}
             style={{ height: "100%" }}
             type="text"
-            onKeyPress={e => {
-              this.enterClick(e);
+            onChange={this.changeInputVal}
+            onKeyPress={async e => {
+              await this.enterClick(e);
             }}
           />
         </Form>
@@ -73,5 +78,4 @@ class InputMsg extends React.Component {
     );
   }
 }
-
 export default InputMsg;

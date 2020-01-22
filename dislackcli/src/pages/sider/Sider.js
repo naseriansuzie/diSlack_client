@@ -49,7 +49,7 @@ class Side extends React.Component {
     this.setState({
       visibleCN: false,
     });
-    console.log("채널생성이름", this.state.newNameCN);
+    // console.log("채널생성이름", this.state.newNameCN);
     const newCN = {
       name: this.state.newNameCN,
     };
@@ -63,6 +63,7 @@ class Side extends React.Component {
       )
       .then(res => {
         console.log("채널생성보냄!", res);
+        this.props.setChannelDM("channel", res.data);
       })
       .catch(err => {
         console.log(err);
@@ -75,29 +76,10 @@ class Side extends React.Component {
       });
   };
 
-  // DM생성 OK
-  handleOkDM = e => {
+  handleOkDM = () => {
     this.setState({
       visibleDM: false,
     });
-    console.log("DM생성이름", this.state.newNameDM);
-    // const newDM = {
-    //   friend_id: friend_id
-    // };
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/create`,
-    //     newDM,
-    //     {
-    //       withCredentials: true, // 쿠키전달
-    //     },
-    //   )
-    //   .then(res => {
-    //     console.log("채널생성보냄!", res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
   };
 
   handleCancel = e => {
@@ -109,7 +91,6 @@ class Side extends React.Component {
   };
 
   handleClick = e => {
-    console.log("채널click :", e);
     this.setState({
       current: e.key,
     });
@@ -117,37 +98,19 @@ class Side extends React.Component {
 
   render() {
     // console.log("SIDER_PROPS", this.props);
-    const { channels, dms, clickedChannel } = this.props;
+    const {
+      channels,
+      dms,
+      clickedChannel,
+      clickedDM,
+      currentWorkspace,
+      userInfo,
+      setChannelDM,
+    } = this.props;
     const { current } = this.state;
+
     return (
       <div style={{ height: "100%" }}>
-        <Button
-          onClick={async () => {
-            try {
-              const res = await axios.post(
-                `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/link/test`,
-                {
-                  email: "miknignod@naver.com",
-                },
-                {
-                  withCredentials: true, // 쿠키전달
-                },
-              );
-              if (res) {
-                alert("good");
-              }
-            } catch (err) {
-              if (err.response.status === 419) {
-                localStorage.setItem("isLogin", null);
-                this.setState({ isLogin: false });
-                alert("다시 로그인 해주세요");
-                window.location = "/signin";
-              }
-            }
-          }}
-        >
-          링크
-        </Button>
         <Menu
           className="Sider-Menu"
           onClick={this.handleClick}
@@ -169,7 +132,6 @@ class Side extends React.Component {
             />
             Thread{" "}
           </div>
-
           <div
             className="Sider-Title"
             style={{ marginTop: "5%", marginLeft: "3%", marginBottom: "7%" }}
@@ -184,7 +146,6 @@ class Side extends React.Component {
               }}
             />
           </div>
-
           {channels.map((item, i) => (
             <Menu.Item
               className="Sider-item"
@@ -218,27 +179,32 @@ class Side extends React.Component {
             />
           </div>
 
-          {dms.map((item, i) => (
-            <Menu.Item
-              className="Sider-item"
-              key={i}
-              style={{
-                backgroundColor: "#38ada9",
-                color: "#ecf0f1",
-                margin: "0",
-                height: "30px",
-              }}
-              onClick={e => {
-                this.clickedChannel(e);
-              }}
-            >
-              <Icon type="message" style={{ marginRight: "3%" }} />
-              {item.name}
-            </Menu.Item>
-          ))}
+          {dms.map((item, i) => {
+            // console.log("DM_들!", item);
+            const username = item.users.filter(
+              val => val.name !== userInfo.name,
+            );
+            return (
+              <Menu.Item
+                className="Sider-item"
+                key={i}
+                style={{
+                  backgroundColor: "#400d3f",
+                  color: "#ecf0f1",
+                  margin: "0",
+                  height: "30px",
+                }}
+                onClick={e => {
+                  clickedDM(item.id);
+                }}
+              >
+                <Icon type="message" style={{ marginRight: "3%" }} />
+                {username[0].name}
+              </Menu.Item>
+            );
+          })}
           <SiderETC />
         </Menu>
-
         {/* 채널생성 모달 */}
         <Modal
           title="Create Channel"
@@ -255,7 +221,6 @@ class Side extends React.Component {
             handleState={this.handleStateCN}
           />
         </Modal>
-
         {/* DM 생성 모달 */}
         <Modal
           title="Create DM"
@@ -270,11 +235,14 @@ class Side extends React.Component {
           <PlusDM
             handleOkDM={this.handleOkDM}
             handleState={this.handleStateDM}
+            currentWorkspace={currentWorkspace}
+            userInfo={userInfo}
+            setChannelDM={setChannelDM}
+            dms={dms}
           />
         </Modal>
       </div>
     );
   }
 }
-
 export default Side;

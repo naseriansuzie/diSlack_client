@@ -11,8 +11,6 @@ class Nav extends React.Component {
     this.state = { visible: false, modalMsgs: null };
   }
 
-  // 라이프 사이클로 컴포넌트디드업데이트
-
   showModal = (e, val) => {
     // console.log("모달스테이트", val);
     this.setState(() => ({
@@ -56,12 +54,13 @@ class Nav extends React.Component {
   };
 
   searchSet(value) {
-    console.log("서치셋", value);
+    // console.log("서치셋", value);
     this.setState({ modalMsgs: value });
   }
 
   render() {
     const {
+      currentDisplay,
       channels,
       msgs,
       isLogin,
@@ -70,12 +69,16 @@ class Nav extends React.Component {
     } = this.props;
 
     // console.log("NAV_PROPS : ", this.props);
+    // console.log("NAV_CURRENTDISPLAY : ", currentDisplay);
     // console.log(state);
     return (
       <Row gutter={[8, 8]} className="nav-Row">
         <Col span={8} style={{ marginTop: "7px" }}>
           <strong style={{ fontSize: "20px", margin: "2%" }}>
-            # {state.currentDisplay.name}
+            #{" "}
+            {currentDisplay.name
+              ? currentDisplay.name
+              : currentDisplay.users[0].name}
           </strong>
           <div>
             <Icon type="star" style={{ marginLeft: "1%", marginRight: "1%" }} />
@@ -98,11 +101,12 @@ class Nav extends React.Component {
           <Icon type="setting" style={{ marginLeft: "1%" }} />
           <Search
             placeholder="Input Search Text"
-            onSearch={async item => {
+            onSearch={item => {
               const ms = this.state.modalMsgs;
-              await this.currentMsgs(item, async res => {
-                await this.searchSet(res);
-                await this.showModal(item, ms);
+
+              this.currentMsgs(item, async res => {
+                this.searchSet(res);
+                this.showModal(item, ms);
               });
             }}
             style={{ width: "300px", marginLeft: "1%" }}

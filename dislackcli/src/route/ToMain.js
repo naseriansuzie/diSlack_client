@@ -9,7 +9,7 @@ import "antd/dist/antd.css";
 import Home from "../components/Home";
 import "../components/Home.css";
 
-export default function Tomain(props) {
+export default function ToMain(props) {
   const {
     isLogin,
     currentWorkspace,
@@ -21,19 +21,25 @@ export default function Tomain(props) {
     handleLogout,
     getWorkSpace,
     updateCurrentWorkspace,
+    setCurrentURL,
+    currentURL,
   } = props;
+  console.log("여기는 tomain");
   return (
     <div>
-      <Redirect to={`/main/${currentWorkspace[0].code}`} />
+      {/* <Redirect
+        to={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
+      /> */}
       <Switch>
         <Route
           exact
           path="/"
           render={() => {
-            if (isLogin) {
-              return <Redirect to="/workspace" />;
-            }
-            return <Home />;
+            // if (isLogin) {
+            //   return <Redirect to="/workspace" />;
+            // }
+            return <Home handleLogout={handleLogout} />;
+            //}
           }}
         />
         <Route
@@ -58,6 +64,7 @@ export default function Tomain(props) {
           )}
         />
         <Route path="/signup" render={() => <SignUp isLogin={isLogin} />} />
+
         <Route
           path="/workspace"
           render={() => (
@@ -75,6 +82,7 @@ export default function Tomain(props) {
               </div>
               <div>
                 <WorkSpace
+                  currentWorkspace={currentWorkspace}
                   handleLogout={handleLogout}
                   isLogin={isLogin}
                   userInfo={userInfo}
@@ -90,16 +98,26 @@ export default function Tomain(props) {
         />
         <Route
           path={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
-          render={() => (
-            <MainPage
-              className="MainPage"
-              isLogin={isLogin}
-              userInfo={userInfo}
-              workSpaceList={workSpaceList}
-              currentWorkspace={currentWorkspace}
-              handleLogout={handleLogout}
-            />
-          )}
+          render={history => {
+            console.log("이주소?");
+            console.log(props.workSpaceList);
+            return (
+              <MainPage
+                className="MainPage"
+                isLogin={isLogin}
+                userInfo={userInfo}
+                workSpaceList={workSpaceList}
+                currentWorkspace={currentWorkspace}
+                handleLogout={handleLogout}
+                updateWorkspace={updateWorkspace}
+                getWorkSpace={getWorkSpace}
+                history={history}
+                updateCurrentWorkspace={updateCurrentWorkspace}
+                setCurrentURL={setCurrentURL}
+                currentURL={currentURL}
+              />
+            );
+          }}
         />
       </Switch>
     </div>
