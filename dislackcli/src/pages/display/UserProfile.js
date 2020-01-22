@@ -4,7 +4,8 @@ import "./ThreadCommon.css";
 import "./UserProfile.css";
 
 export default function UserProfile(props) {
-  const { clickedUser, handleProfileClose } = props;
+  // console.log("유저프로필_프롭스", props);
+  const { clickedUser, handleProfileClose, profileDM } = props;
   if (clickedUser) {
     return (
       <div className="Thread-container">
@@ -38,7 +39,14 @@ export default function UserProfile(props) {
                 </List.Item>
                 <List.Item>
                   <Col span={12} className="User-btn-display">
-                    <Button className="User-btn User-text">Message</Button>
+                    <Button
+                      className="User-btn User-text"
+                      onClick={() => {
+                        profileDM();
+                      }}
+                    >
+                      Message
+                    </Button>
                   </Col>
                   <Col span={12} className="User-btn-display">
                     <Button className="User-btn User-text">Edit Profile</Button>
@@ -65,5 +73,6 @@ export default function UserProfile(props) {
         </Col>
       </div>
     );
-  } else return <div>사용자를 다시 찾아주세요!</div>;
+  }
+  return <div>사용자를 다시 찾아주세요!</div>;
 }

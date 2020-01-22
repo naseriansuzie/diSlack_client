@@ -47,6 +47,7 @@ class MainPage extends React.Component {
     this.getChannel = this.getChannel.bind(this);
     this.getMessage = this.getMessage.bind(this);
     this.getMembers = this.getMembers.bind(this);
+    this.profileDM = this.profileDM.bind(this)
   }
 
   // Methods
@@ -376,6 +377,36 @@ class MainPage extends React.Component {
       })
       .catch(err => console.log(err));
   }
+
+  // RightProfileMessage
+  profileDM = () => {
+    const user = { friend_id: this.state.clickedUser.id };
+    console.log(user)
+    console.log(this.props.currentWorkspace)
+    axios
+        .post(
+          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/create`,
+          user,
+          {
+            withCredentials: true,
+          },
+        )
+        .then(res => {
+          for (let i = 0; i < this.state.dms.length; i++) {
+            if (res.data.id === this.state.dms[i].id) {
+              alert("DM창이 이미 존재합니다");
+              return;
+            }
+          }
+          this.setChannelDM("DM", res.data);
+          alert("DM창이 생성되었습니다.");
+          
+        })
+        .catch(err => {
+          console.log("방생성에러", err);
+        });
+  }
+
   // LifeCycle
   async componentDidMount() {
     console.log("컴포넌트디드마운트");
@@ -432,7 +463,6 @@ class MainPage extends React.Component {
         .then(res => {
           // console.log("메시지 겟요청", res);
           if (res.data.length !== 0) {
-            console.log("1");
             this.setState({ msgs: res.data });
           } else {
             // console.log("메세지가 비어있습니다.");
@@ -515,6 +545,7 @@ class MainPage extends React.Component {
       handleClickProfile,
       handleProfileClose,
       setChannelDM,
+      profileDM
     } = this;
 
     return (
@@ -634,6 +665,7 @@ class MainPage extends React.Component {
                 />
               ) : clickedUser ? (
                 <UserProfile
+                profileDM={profileDM}
                   clickedUser={clickedUser}
                   handleProfileClose={handleProfileClose}
                   // dm 생성 함수 부분도 나중에 props로 내리기

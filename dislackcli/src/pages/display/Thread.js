@@ -11,6 +11,11 @@ class Thread extends React.Component {
     super(props);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps);
+    console.log(prevState);
+  }
+
   componentDidMount() {
     this.socket = socketio.connect(
       `${process.env.REACT_APP_DEV_URL}/channelThread`,
