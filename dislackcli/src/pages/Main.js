@@ -121,7 +121,7 @@ class MainPage extends React.Component {
           window.location = "/signin";
         } else console.log(err);
       });
-  
+      this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   setCurrentDisPlay = e => {
