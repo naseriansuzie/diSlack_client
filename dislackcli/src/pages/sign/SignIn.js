@@ -1,8 +1,8 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
 import { Form, Icon, Input, Button, Checkbox, Card } from "antd";
-import { Link } from "react-router-dom";
+
 import "antd/dist/antd.css";
 import "./Signin.css";
 
@@ -84,12 +84,12 @@ class Signin extends React.Component {
                         JSON.stringify(res.data),
                       );
                       this.props.handleLogin();
-                      //this.props.updateUserInfo(res.data, this.state.email);
+                      // this.props.updateUserInfo(res.data, this.state.email);
                       return res;
                     }
                   })
                   .catch(err => {
-                    if (err.response.status === 403) {
+                    if (err.response && err.response.status === 403) {
                       alert(
                         "회원 정보가 일치하지 않습니다. 이메일주소와 비밀번호를 확인해주세요!",
                       );

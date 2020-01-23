@@ -66,7 +66,7 @@ class App extends React.Component {
       .catch(err => {
         if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
-          this.setState({ isLogin: false });
+          // this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
         } else console.log(err);
@@ -102,7 +102,7 @@ class App extends React.Component {
       this.state.workSpaceList,
     );
     if (this.state.workSpaceList) {
-      let result = this.state.workSpaceList.filter(
+      const result = this.state.workSpaceList.filter(
         val => val.code === this.state.currentURL,
       );
       console.log("url로 찾은 객체", result);

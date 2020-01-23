@@ -56,7 +56,10 @@ export default class UserProfile extends React.Component {
                   </List.Item>
                   <List.Item>
                     <Col span={12} className="User-btn-display">
-                      <Button className="User-btn User-text">Message</Button>
+                      <Button className="User-btn User-text"
+                        onClick={() => {
+                        profileDM();
+                      }}>Message</Button>
                     </Col>
                     <Col span={12} className="User-btn-display">
                       <Button

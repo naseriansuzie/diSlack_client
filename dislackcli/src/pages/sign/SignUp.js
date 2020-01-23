@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import {
   Form,
@@ -15,7 +15,7 @@ import {
 import axios from "axios";
 import dotenv from "dotenv";
 import "./Signup.css";
-import { Link } from "react-router-dom";
+
 dotenv.config();
 
 class SignUp extends React.Component {
@@ -40,7 +40,7 @@ class SignUp extends React.Component {
             }
           })
           .catch(err => {
-            if (err.response.status === 409) {
+            if (err.response && err.response.status === 409) {
               alert("이미 가입한 회원입니다! 로그인해주세요 :)");
             }
             if (err.response && err.response.status === 419) {

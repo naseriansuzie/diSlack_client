@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Icon, Input, Modal, Button, Divider } from "antd";
 import { relative } from "path";
+import axios from "axios";
 import ModalRender from "./ModalRender";
 
 const { Search } = Input;
@@ -8,7 +9,7 @@ const { Search } = Input;
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { visible: false, modalMsgs: null };
+    this.state = { visible: false, modalMsgs: null, userCount: null };
   }
 
   showModal = (e, val) => {
@@ -34,11 +35,11 @@ class Nav extends React.Component {
   currentMsgs = (item, cb) => {
     const curMsgs = this.props.msgs;
     const searchArr = curMsgs.filter(val1 => {
-      console.log("메세지들? : ", val1);
+      // console.log("메세지들? : ", val1);
       const itemArr = item.split("");
       const val1Arr = val1.message.split("");
-      console.log("메세지분리", val1Arr);
-      console.log("찾을것", itemArr);
+      // console.log("메세지분리", val1Arr);
+      // console.log("찾을것", itemArr);
       for (let i = 0; i < val1Arr.length; i++) {
         for (let j = 0; j < itemArr.length; j++) {
           if (val1Arr[i] === itemArr[j] && val1[i + 1] === itemArr[j + 1]) {
@@ -52,6 +53,26 @@ class Nav extends React.Component {
 
   searchSet(value) {
     this.setState({ modalMsgs: value });
+  }
+
+  // 모든 유저 불러오기
+  getUserList = () => {
+    axios
+      .get(
+        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/user/list`,
+        {
+          withCredentials: true,
+        },
+      )
+      .then(res => {
+        // res.data는 유저데이터
+        this.setState({ userCount: res.data.length });
+      });
+  };
+
+  // LifeCycle
+  componentDidMount() {
+    this.getUserList();
   }
 
   render() {
@@ -81,6 +102,7 @@ class Nav extends React.Component {
               onClick={handleClickMemberList}
               style={{ marginLeft: "1%", marginRight: "1%" }}
             />
+            {this.state.userCount}
             <Icon type="line" rotate={90} />
             <Icon
               type="pushpin"
@@ -120,6 +142,7 @@ class Nav extends React.Component {
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             width={1400}
+            style={{ overflow: "scroll", height: "500px", overflowX: "hidden" }}
           >
             {this.state.modalMsgs ? (
               this.state.modalMsgs.map(item => (

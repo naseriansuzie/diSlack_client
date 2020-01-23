@@ -11,6 +11,11 @@ class Thread extends React.Component {
     super(props);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps);
+    console.log(prevState);
+  }
+
   componentDidMount() {
     this.type = this.props.currentDisplay.name;
     console.log("TYPE!!", this.type);

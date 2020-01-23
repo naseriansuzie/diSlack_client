@@ -47,6 +47,7 @@ class MainPage extends React.Component {
     this.getChannel = this.getChannel.bind(this);
     this.getMessage = this.getMessage.bind(this);
     this.getMembers = this.getMembers.bind(this);
+    this.profileDM = this.profileDM.bind(this)
   }
 
   // Methods
@@ -120,7 +121,7 @@ class MainPage extends React.Component {
           window.location = "/signin";
         } else console.log(err);
       });
-    this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+  
   }
 
   setCurrentDisPlay = e => {
@@ -393,11 +394,42 @@ class MainPage extends React.Component {
       })
       .catch(err => console.log(err));
   }
+
+  // RightProfileMessage
+  profileDM = () => {
+    const user = { friend_id: this.state.clickedUser.id };
+    console.log(user)
+    console.log(this.props.currentWorkspace)
+    axios
+        .post(
+          `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/create`,
+          user,
+          {
+            withCredentials: true,
+          },
+        )
+        .then(res => {
+          for (let i = 0; i < this.state.dms.length; i++) {
+            if (res.data.id === this.state.dms[i].id) {
+              alert("DM창이 이미 존재합니다");
+              return;
+            }
+          }
+          this.setChannelDM("DM", res.data);
+          alert("DM창이 생성되었습니다.");
+          
+        })
+        .catch(err => {
+          console.log("방생성에러", err);
+        });
+  }
+
   // LifeCycle
   async componentDidMount() {
     console.log("컴포넌트디드마운트");
     try {
       // // 1. 새로고침시 currentWorkSpace 불러오기
+      // console.log(this.props)
       // let code = this.props.history.location.pathname.split('/main/')[1]
       // let result = this.props.workSpaceList.filter(val => {
       //   return val.code === code
@@ -449,7 +481,6 @@ class MainPage extends React.Component {
         .then(res => {
           // console.log("메시지 겟요청", res);
           if (res.data.length !== 0) {
-            console.log("1");
             this.setState({ msgs: res.data });
           } else {
             // console.log("메세지가 비어있습니다.");
@@ -499,9 +530,6 @@ class MainPage extends React.Component {
       });
     }
 
-    console.log(this.scroll);
-    // console.log(this.scroll.scrollTop);
-    // console.log(this.scroll.scrollHeight - this.scroll.clientHeight);
     if (
       this.scroll &&
       this.scroll.scrollHeight -
@@ -515,7 +543,6 @@ class MainPage extends React.Component {
 
   render() {
     const { currentWorkspace, userInfo } = this.props;
-
     const {
       channels,
       dms,
@@ -537,6 +564,7 @@ class MainPage extends React.Component {
       handleClickProfile,
       handleProfileClose,
       setChannelDM,
+      profileDM
     } = this;
 
     return (
@@ -573,6 +601,7 @@ class MainPage extends React.Component {
                 state={this.state}
                 channels={channels}
                 handleClickMemberList={handleClickMemberList}
+                currentWorkspace={currentWorkspace}
               />
             </Col>
           </Row>
@@ -598,7 +627,7 @@ class MainPage extends React.Component {
               <Layout className="main-layout" style={{ height: "100%" }}>
                 <div
                   className="main-layout-content"
-                  style={{ overflow: "scroll" }}
+                  style={{ overflow: "scroll" ,height:'100%' }}
                   ref={ref => {
                     return (this.scroll = ref);
                   }}
@@ -656,6 +685,7 @@ class MainPage extends React.Component {
                 />
               ) : clickedUser ? (
                 <UserProfile
+                profileDM={profileDM}
                   clickedUser={clickedUser}
                   handleProfileClose={handleProfileClose}
                   // dm 생성 함수 부분도 나중에 props로 내리기
