@@ -34,6 +34,7 @@ export default class MemberList extends React.Component {
   }
 
   sendEmail() {
+    console.log(this.state);
     axios
       .post(
         `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/link`,

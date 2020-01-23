@@ -60,17 +60,6 @@ export default function ToMain(props) {
           path="/workspace"
           render={() => (
             <div>
-              <div className="appWs-header">
-                <div className="appWs-header-1">
-                  <Link className="appWs-header-1-1" to="/">
-                    Crong
-                  </Link>
-                </div>
-                <div className="appWs-header-2">
-                  <Link to="/workspace">Find your workspace</Link>
-                  <Link to="/signin">Sign in</Link>
-                </div>
-              </div>
               <div>
                 <WorkSpace
                   currentWorkspace={currentWorkspace}

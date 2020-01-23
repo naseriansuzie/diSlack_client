@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import socketio from "socket.io-client";
 import { Menu, Icon, Modal, Button } from "antd";
 import PlusDM from "./PlusDM";
 import PlusChannel from "./PlusChannel";
@@ -22,7 +23,23 @@ class Side extends React.Component {
   }
 
   // lifeCycle
-  componentDidMount() {}
+  componentDidMount() {
+    this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/room`, {
+      path: "/socket.io",
+      transports: ["websocket"],
+    });
+    this.socket.on("connect", data => {
+      this.socket.emit("joinchannel", this.state.currentDisplay.id);
+    });
+    this.socket.on("createChannel", data => {
+      const channel = JSON.parse(data);
+      this.props.setChannelDM("channel", channel);
+    });
+  }
+
+  componentWillUnmount() {
+    this.socket.disconnect();
+  }
 
   // 채널명을 적어서 서버에 보내자
   handleStateCN = item => {
@@ -60,9 +77,7 @@ class Side extends React.Component {
           withCredentials: true, // 쿠키전달
         },
       )
-      .then(res => {
-        this.props.setChannelDM("channel", res.data);
-      })
+      .then(res => {})
       .catch(err => {
         if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
