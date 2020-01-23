@@ -40,11 +40,12 @@ class InputMsg extends React.Component {
         this.setState({ message: "" });
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
-        }
+          window.location = "/signin";
+        } else console.log(err);
       });
   }
 

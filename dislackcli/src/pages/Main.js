@@ -113,12 +113,12 @@ class MainPage extends React.Component {
         }
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
-          alert(" 로그인 해주세요");
+          alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
     this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
@@ -161,7 +161,7 @@ class MainPage extends React.Component {
         }),
       )
       .catch(err => {
-        if (err && err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
@@ -178,6 +178,7 @@ class MainPage extends React.Component {
       return msg;
     });
     this.setState({ msgs: renewMsgs, clickedMsg: [], replies: [] });
+    this.getMessage();
   }
 
   handleClickMemberList() {
@@ -210,12 +211,12 @@ class MainPage extends React.Component {
         }),
       )
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   }
 
@@ -245,12 +246,12 @@ class MainPage extends React.Component {
         this.setState({ channels: res.data, currentDisplay: res.data[0] });
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   };
 
@@ -336,12 +337,12 @@ class MainPage extends React.Component {
         });
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   }
 
@@ -369,12 +370,12 @@ class MainPage extends React.Component {
         }
       })
       .catch(err => {
-        if (err.response.status === 419) {
+        if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   }
   // 멤버리스트 불러오기
@@ -427,12 +428,12 @@ class MainPage extends React.Component {
           });
         })
         .catch(err => {
-          if (err.response.status === 419) {
+          if (err.response && err.response.status === 419) {
             localStorage.setItem("isLogin", null);
             this.setState({ isLogin: false });
             alert("다시 로그인 해주세요");
             window.location = "/signin";
-          }
+          } else console.log(err);
         });
       const address = this.state.currentDisplay.name
         ? "channelmessage"
@@ -455,12 +456,12 @@ class MainPage extends React.Component {
           }
         })
         .catch(err => {
-          if (err.response.status === 419) {
+          if (err.response && err.response.status === 419) {
             localStorage.setItem("isLogin", null);
             this.setState({ isLogin: false });
             alert("다시 로그인 해주세요");
             window.location = "/signin";
-          }
+          } else console.log(err);
         });
       // 멤버리스트 받아오는 api 추가
       await axios
@@ -477,7 +478,7 @@ class MainPage extends React.Component {
       this.getDM();
     } catch (err) {
       console.log("MainCDM_ERR", err);
-      if (err && err.response.status === 419) {
+      if (err.response && err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
