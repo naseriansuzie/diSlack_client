@@ -16,7 +16,6 @@ import "./Main.css";
 class MainPage extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
     this.state = {
       channels: [],
       dms: [],
@@ -75,7 +74,6 @@ class MainPage extends React.Component {
   }
 
   async clickedChannel(id) {
-    console.log("채널이클릭되었습니다 : ", id);
     let allCN = this.state.channels;
     let findCN = allCN.filter(val => {
       if (val.id === id) {
@@ -106,11 +104,8 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        // console.log("채널에 메시지 겟요청", res);
         if (res.data.length !== 0) {
           this.setState({ msgs: res.data });
-        } else {
-          // console.log("메세지가 비어있습니다.");
         }
       })
       .catch(err => {
@@ -121,15 +116,13 @@ class MainPage extends React.Component {
           window.location = "/signin";
         } else console.log(err);
       });
-  
+      this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   setCurrentDisPlay = e => {
-    console.log(e);
   };
 
   setChannelDM(type, data) {
-    console.log("셋체널");
     if (type === "channel") {
       this.setState({ channels: [...this.state.channels, data] });
     } else this.setState({ dms: [...this.state.dms, data] });
@@ -243,7 +236,6 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        // console.log("채널받아오는 API", res);
         this.setState({ channels: res.data, currentDisplay: res.data[0] });
       })
       .catch(err => {
@@ -266,7 +258,6 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        // console.log("방불러오기", res);
         this.setState({ dms: res.data });
       })
       .catch(err => {
@@ -276,6 +267,7 @@ class MainPage extends React.Component {
 
   // DM방 선택
   async clickedDM(id) {
+    
     this.socket.disconnect();
     this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`, {
       path: "/socket.io",
@@ -288,16 +280,13 @@ class MainPage extends React.Component {
       const message = JSON.parse(data);
       this.setState({ msgs: this.state.msgs.concat(message) });
     });
-    console.log("DM이클릭되었습니다 : ", id);
     let allDM = this.state.dms;
     let findDM = allDM.filter(val => {
       if (val.id === id) {
         return val;
       }
     });
-    console.log("선택한 DM", findDM);
     await this.setState({ currentDisplay: findDM[0], msgs: [] });
-    // DM방 선택 시 대화 불러오기 /:code/directmessage/:id(room)/list
     axios
       .get(
         `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/directmessage/${id}/list`,
@@ -306,11 +295,8 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        console.log("메시지 겟요청", res);
         if (res.data.length !== 0) {
           this.setState({ msgs: res.data });
-        } else {
-          // console.log("메세지가 비어있습니다.");
         }
       });
   }
@@ -325,7 +311,6 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        console.log(res.data[0]);
         this.setState({ channels: res.data, currentDisplay: res.data[0] });
 
         this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`);
@@ -349,7 +334,6 @@ class MainPage extends React.Component {
 
   //채널 or dm 메시지 불러오기
   getMessage() {
-    console.log(this.state.channels);
     const address = this.state.currentDisplay.name
       ? "channelmessage"
       : "directmessage";
@@ -362,13 +346,9 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        // console.log("메시지 겟요청", res);
         if (res.data.length !== 0) {
-          console.log("1");
           this.setState({ msgs: res.data });
-        } else {
-          // console.log("메세지가 비어있습니다.");
-        }
+        } 
       })
       .catch(err => {
         if (err.response && err.response.status === 419) {
@@ -389,7 +369,6 @@ class MainPage extends React.Component {
         },
       )
       .then(res => {
-        // console.log("참여 중인 유저들 =", res.data);
         this.setState({ memberList: res.data });
       })
       .catch(err => console.log(err));
@@ -398,8 +377,6 @@ class MainPage extends React.Component {
   // RightProfileMessage
   profileDM = () => {
     const user = { friend_id: this.state.clickedUser.id };
-    console.log(user)
-    console.log(this.props.currentWorkspace)
     axios
         .post(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/room/create`,
@@ -420,21 +397,13 @@ class MainPage extends React.Component {
           
         })
         .catch(err => {
-          console.log("방생성에러", err);
+          console.log(err);
         });
   }
 
   // LifeCycle
   async componentDidMount() {
-    console.log("컴포넌트디드마운트");
     try {
-      // // 1. 새로고침시 currentWorkSpace 불러오기
-      // console.log(this.props)
-      // let code = this.props.history.location.pathname.split('/main/')[1]
-      // let result = this.props.workSpaceList.filter(val => {
-      //   return val.code === code
-      // })
-      // this.props.updateCurrentWorkspace(result)
       await axios
         .get(
           `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channel/list`,
@@ -479,12 +448,10 @@ class MainPage extends React.Component {
           },
         )
         .then(res => {
-          // console.log("메시지 겟요청", res);
+          
           if (res.data.length !== 0) {
             this.setState({ msgs: res.data });
-          } else {
-            // console.log("메세지가 비어있습니다.");
-          }
+          } 
         })
         .catch(err => {
           if (err.response && err.response.status === 419) {
@@ -503,12 +470,11 @@ class MainPage extends React.Component {
           },
         )
         .then(res => {
-          // console.log("참여 중인 유저들 =", res.data);
           this.setState({ memberList: res.data });
         });
       this.getDM();
     } catch (err) {
-      console.log("MainCDM_ERR", err);
+      console.log(err);
       if (err.response && err.response.status === 419) {
         localStorage.setItem("isLogin", null);
         this.setState({ isLogin: false });
@@ -522,7 +488,6 @@ class MainPage extends React.Component {
   }
 
   async componentDidUpdate() {
-    console.log("update");
     const clicked = this.state.msgs.filter(msg => msg.clicked);
     if (clicked.length && this.state.clickedMsg[0] !== clicked[0]) {
       this.setState({
@@ -638,6 +603,7 @@ class MainPage extends React.Component {
                       replies={replies}
                       handleClickReply={handleClickReply}
                       handleClickProfile={handleClickProfile}
+                      currentWorkspace={currentWorkspace}
                     />
                   ) : (
                     <div>아직 메시지가 없습니다.</div>
@@ -682,6 +648,7 @@ class MainPage extends React.Component {
                   filteredMembers={filteredMembers}
                   handleClickProfile={handleClickProfile}
                   handleMemberListClose={handleMemberListClose}
+                  currentWorkspace={currentWorkspace}
                 />
               ) : clickedUser ? (
                 <UserProfile

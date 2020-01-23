@@ -8,6 +8,7 @@ import WorkSpace from "../pages/workspace/WorkSpace";
 import "antd/dist/antd.css";
 import Home from "../components/Home";
 import "../components/Home.css";
+import LinkCode from "../components/Link";
 
 export default function ToMain(props) {
   const {
@@ -30,16 +31,14 @@ export default function ToMain(props) {
         <Route
           exact
           path="/"
-          render={
-            () => <Home isLogin={isLogin} handleLogout={handleLogout} />;
-          }
+          render={() => <Home isLogin={isLogin} handleLogout={handleLogout} />}
         />
         <Route
           exact
           path="/link/:code"
           render={props => (
             <div>
-              <Link {...props} isLogin={isLogin} />
+              <LinkCode {...props} isLogin={isLogin} />
             </div>
           )}
         />
@@ -61,17 +60,6 @@ export default function ToMain(props) {
           path="/workspace"
           render={() => (
             <div>
-              <div className="appWs-header">
-                <div className="appWs-header-1">
-                  <Link className="appWs-header-1-1" to="/">
-                    Crong
-                  </Link>
-                </div>
-                <div className="appWs-header-2">
-                  <Link to="/workspace">Find your workspace</Link>
-                  <Link to="/signin">Sign in</Link>
-                </div>
-              </div>
               <div>
                 <WorkSpace
                   currentWorkspace={currentWorkspace}
@@ -94,24 +82,22 @@ export default function ToMain(props) {
               ? `/main/${currentWorkspace[0].code}`
               : "/"
           }
-          render={history => {
-            return (
-              <MainPage
-                className="MainPage"
-                isLogin={isLogin}
-                userInfo={userInfo}
-                workSpaceList={workSpaceList}
-                currentWorkspace={currentWorkspace}
-                handleLogout={handleLogout}
-                updateWorkspace={updateWorkspace}
-                getWorkSpace={getWorkSpace}
-                history={history}
-                updateCurrentWorkspace={updateCurrentWorkspace}
-                setCurrentURL={setCurrentURL}
-                currentURL={currentURL}
-              />
-            );
-          }}
+          render={history => (
+            <MainPage
+              className="MainPage"
+              isLogin={isLogin}
+              userInfo={userInfo}
+              workSpaceList={workSpaceList}
+              currentWorkspace={currentWorkspace}
+              handleLogout={handleLogout}
+              updateWorkspace={updateWorkspace}
+              getWorkSpace={getWorkSpace}
+              history={history}
+              updateCurrentWorkspace={updateCurrentWorkspace}
+              setCurrentURL={setCurrentURL}
+              currentURL={currentURL}
+            />
+          )}
         />
       </Switch>
     </div>

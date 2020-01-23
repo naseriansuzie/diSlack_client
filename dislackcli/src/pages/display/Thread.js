@@ -11,14 +11,8 @@ class Thread extends React.Component {
     super(props);
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps);
-    console.log(prevState);
-  }
-
   componentDidMount() {
     this.type = this.props.currentDisplay.name;
-    console.log("TYPE!!", this.type);
     this.socket = socketio.connect(
       `${process.env.REACT_APP_DEV_URL}/channelThread`,
       {
@@ -33,7 +27,6 @@ class Thread extends React.Component {
       );
     });
     this.socket.on("message", data => {
-      console.log(data);
       this.props.handleReply(JSON.parse(data));
     });
     this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
@@ -57,7 +50,6 @@ class Thread extends React.Component {
       handleReplyClose,
       handleClickProfile,
     } = this.props;
-    console.log("클릭드메시지 =", clickedMsg);
     if (clickedMsg.length) {
       return (
         <div

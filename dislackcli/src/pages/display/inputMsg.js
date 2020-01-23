@@ -14,13 +14,10 @@ class InputMsg extends React.Component {
     this.changeInputVal = this.changeInputVal.bind(this);
   }
 
-  deleteInput = e => {
-    console.log(e);
-  };
+  deleteInput = e => {};
 
   changeInputVal(e) {
     const input = e.target.value;
-    console.log(input);
     this.setState({ message: input });
   }
 
@@ -59,7 +56,6 @@ class InputMsg extends React.Component {
   };
 
   render() {
-    // console.log("인풋메시지_프롭스", this.props);
     return (
       <div style={{ margin: "1%" }}>
         <Form style={{ height: "50px" }}>

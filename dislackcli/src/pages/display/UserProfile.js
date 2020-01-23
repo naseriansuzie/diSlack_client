@@ -15,14 +15,17 @@ export default class UserProfile extends React.Component {
   handleOKImg = e => {
     this.setState({ visibleImg: false });
   };
+
   handleCancel = e => {
     this.setState({ visibleImg: false });
   };
+
   showModalImg = () => {
     this.setState({ visibleImg: true });
   };
+
   render() {
-    const { clickedUser, handleProfileClose } = this.props;
+    const { clickedUser, handleProfileClose, profileDM } = this.props;
     if (clickedUser) {
       return (
         <div className="Thread-container">
@@ -56,10 +59,14 @@ export default class UserProfile extends React.Component {
                   </List.Item>
                   <List.Item>
                     <Col span={12} className="User-btn-display">
-                      <Button className="User-btn User-text"
+                      <Button
+                        className="User-btn User-text"
                         onClick={() => {
-                        profileDM();
-                      }}>Message</Button>
+                          profileDM();
+                        }}
+                      >
+                        Message
+                      </Button>
                     </Col>
                     <Col span={12} className="User-btn-display">
                       <Button
@@ -108,6 +115,7 @@ export default class UserProfile extends React.Component {
           </Col>
         </div>
       );
-    } else return <div>사용자를 다시 찾아주세요!</div>;
+    }
+    return <div>사용자를 다시 찾아주세요!</div>;
   }
 }
