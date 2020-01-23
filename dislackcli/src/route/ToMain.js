@@ -30,9 +30,7 @@ export default function ToMain(props) {
         <Route
           exact
           path="/"
-          render={
-            () => <Home isLogin={isLogin} handleLogout={handleLogout} />;
-          }
+          render={() => <Home isLogin={isLogin} handleLogout={handleLogout} />}
         />
         <Route
           exact
@@ -94,24 +92,22 @@ export default function ToMain(props) {
               ? `/main/${currentWorkspace[0].code}`
               : "/"
           }
-          render={history => {
-            return (
-              <MainPage
-                className="MainPage"
-                isLogin={isLogin}
-                userInfo={userInfo}
-                workSpaceList={workSpaceList}
-                currentWorkspace={currentWorkspace}
-                handleLogout={handleLogout}
-                updateWorkspace={updateWorkspace}
-                getWorkSpace={getWorkSpace}
-                history={history}
-                updateCurrentWorkspace={updateCurrentWorkspace}
-                setCurrentURL={setCurrentURL}
-                currentURL={currentURL}
-              />
-            );
-          }}
+          render={history => (
+            <MainPage
+              className="MainPage"
+              isLogin={isLogin}
+              userInfo={userInfo}
+              workSpaceList={workSpaceList}
+              currentWorkspace={currentWorkspace}
+              handleLogout={handleLogout}
+              updateWorkspace={updateWorkspace}
+              getWorkSpace={getWorkSpace}
+              history={history}
+              updateCurrentWorkspace={updateCurrentWorkspace}
+              setCurrentURL={setCurrentURL}
+              currentURL={currentURL}
+            />
+          )}
         />
       </Switch>
     </div>

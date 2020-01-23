@@ -22,7 +22,6 @@ const DmUserList = props => {
           author={
             <a style={{ marginTop: "6px" }}>
               <strong style={{ fontSize: "15px", fontSize: "20px" }}>
-                {" "}
                 {userList.name}
               </strong>
             </a>

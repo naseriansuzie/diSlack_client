@@ -49,7 +49,12 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
 
     // 2. 유저선택
     clickUser = e => {
-      const result = this.state.userList.filter(val => val.name === e);
+      console.log(e);
+      const result = this.state.userList.filter(val => {
+        console.log(val.name);
+        return val.name === e;
+      });
+      console.log(result);
       this.setState({ selectUser: result[0].id });
     };
 
