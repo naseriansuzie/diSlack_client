@@ -19,13 +19,20 @@ class ThreadInputMsg extends React.Component {
     e.target.value = "";
   };
 
+  componentDidMount() {
+    this.type = this.props.currentDisplay.name;
+  }
   async handleChange(e) {
     await this.setState({ reply: e.target.value });
     const reply = this.state;
     ///:code/channelmessage/:id(channel)/:id(message)
     axios
       .post(
-        `${process.env.REACT_APP_DEV_URL}/${this.props.props.currentWorkspace[0].code}/channelmessage/${this.props.currentDisplay.id}/${this.props.props.clickedMsg[0].id}`,
+        `${process.env.REACT_APP_DEV_URL}/${
+          this.props.props.currentWorkspace[0].code
+        }/${this.type ? "channelmessage" : "directmessage"}/${
+          this.props.currentDisplay.id
+        }/${this.props.props.clickedMsg[0].id}`,
         reply,
         {
           withCredentials: true, // 쿠키전달
