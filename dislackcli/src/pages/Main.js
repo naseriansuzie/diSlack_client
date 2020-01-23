@@ -603,6 +603,7 @@ class MainPage extends React.Component {
                       replies={replies}
                       handleClickReply={handleClickReply}
                       handleClickProfile={handleClickProfile}
+                      currentWorkspace={currentWorkspace}
                     />
                   ) : (
                     <div>아직 메시지가 없습니다.</div>
@@ -647,6 +648,7 @@ class MainPage extends React.Component {
                   filteredMembers={filteredMembers}
                   handleClickProfile={handleClickProfile}
                   handleMemberListClose={handleMemberListClose}
+                  currentWorkspace={currentWorkspace}
                 />
               ) : clickedUser ? (
                 <UserProfile

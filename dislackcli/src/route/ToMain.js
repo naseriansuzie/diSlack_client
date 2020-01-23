@@ -8,6 +8,7 @@ import WorkSpace from "../pages/workspace/WorkSpace";
 import "antd/dist/antd.css";
 import Home from "../components/Home";
 import "../components/Home.css";
+import LinkCode from "../components/Link";
 
 export default function ToMain(props) {
   const {
@@ -37,7 +38,7 @@ export default function ToMain(props) {
           path="/link/:code"
           render={props => (
             <div>
-              <Link {...props} isLogin={isLogin} />
+              <LinkCode {...props} isLogin={isLogin} />
             </div>
           )}
         />
