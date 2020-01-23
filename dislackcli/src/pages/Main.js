@@ -80,7 +80,7 @@ class MainPage extends React.Component {
         return val;
       }
     });
-    // await this.setState({ currentDisplay: findCN[0], msgs: [] });
+    await this.setState({ currentDisplay: findCN[0], msgs: [] });
 
     // 채널이 바뀌기 때문에 연결한 웹소켓을 해제
     this.socket.disconnect();
@@ -267,6 +267,7 @@ class MainPage extends React.Component {
 
   // DM방 선택
   async clickedDM(id) {
+    
     this.socket.disconnect();
     this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`, {
       path: "/socket.io",
@@ -285,6 +286,7 @@ class MainPage extends React.Component {
         return val;
       }
     });
+    await this.setState({ currentDisplay: findDM[0], msgs: [] });
     axios
       .get(
         `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/directmessage/${id}/list`,
