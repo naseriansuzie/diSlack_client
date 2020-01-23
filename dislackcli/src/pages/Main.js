@@ -138,7 +138,11 @@ class MainPage extends React.Component {
     this.handleReplyClose();
     axios
       .get(
-        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/${msgId}/list`,
+        `${process.env.REACT_APP_DEV_URL}/${
+          this.props.currentWorkspace[0].code
+        }/${
+          this.state.currentDisplay.name ? "channelmessage" : "directmessage"
+        }/${this.state.currentDisplay.id}/${msgId}/list`,
         {
           withCredentials: true,
         },
@@ -271,6 +275,18 @@ class MainPage extends React.Component {
 
   // DM방 선택
   async clickedDM(id) {
+    this.socket.disconnect();
+    this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`, {
+      path: "/socket.io",
+      transports: ["websocket"],
+    });
+    this.socket.on("connect", data => {
+      this.socket.emit("joindirect", this.state.currentDisplay.id);
+    });
+    this.socket.on("message", data => {
+      const message = JSON.parse(data);
+      this.setState({ msgs: this.state.msgs.concat(message) });
+    });
     console.log("DM이클릭되었습니다 : ", id);
     let allDM = this.state.dms;
     let findDM = allDM.filter(val => {
@@ -469,7 +485,9 @@ class MainPage extends React.Component {
         window.location = "/signin";
       } else console.log(err);
     }
-    //this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
+    this.scroll &&
+      (this.scroll.scrollTop =
+        this.scroll.scrollHeight - this.scroll.clientHeight);
   }
 
   async componentDidUpdate() {
@@ -481,16 +499,18 @@ class MainPage extends React.Component {
       });
     }
 
+    console.log(this.scroll);
     // console.log(this.scroll.scrollTop);
     // console.log(this.scroll.scrollHeight - this.scroll.clientHeight);
-    // if (
-    //   this.scroll.scrollHeight -
-    //     this.scroll.clientHeight -
-    //     this.scroll.scrollTop <=
-    //   300
-    // )
-    //   this.scroll.scrollTop =
-    //     this.scroll.scrollHeight - this.scroll.clientHeight;
+    if (
+      this.scroll &&
+      this.scroll.scrollHeight -
+        this.scroll.clientHeight -
+        this.scroll.scrollTop <=
+        300
+    )
+      this.scroll.scrollTop =
+        this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   render() {
