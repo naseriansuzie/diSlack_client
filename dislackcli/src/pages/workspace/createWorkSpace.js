@@ -61,7 +61,6 @@ class CreateWorkSpace extends React.Component {
 
   changeInputVal(e) {
     const input = e.target.value;
-    console.log(input);
     this.setState({ name: input });
   }
 

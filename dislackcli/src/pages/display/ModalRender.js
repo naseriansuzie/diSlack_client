@@ -2,7 +2,6 @@ import React from "react";
 import { Comment, Icon, Tooltip, Avatar } from "antd";
 
 export default function MessageList(props) {
-  // console.log("모달프롭스", props);
   const { id, user_id, user, time, message, reply } = props.renderMsg;
   const imgs = [
     "https://ca.slack-edge.com/TEYSE8X7A-UGZKRTKS7-g1211904810f-512",

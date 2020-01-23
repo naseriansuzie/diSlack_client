@@ -11,7 +11,6 @@ import "./workspace.css";
 
 class WorkSpace extends React.Component {
   constructor(props) {
-    console.log(props.workSpaceList);
     super(props);
     this.handleClickMyWS = this.handleClickMyWS.bind(this);
   }
@@ -19,12 +18,6 @@ class WorkSpace extends React.Component {
   // methods
   handleClickMyWS(e) {
     const workSpaceId = e.target.id;
-    console.log(
-      "클릭한 메시지 아이디 =",
-      workSpaceId,
-      "프롭스로 받은 워크스페이스리스트 =",
-      this.props.workSpaceList,
-    );
     const clickedWorkspace = this.props.workSpaceList.filter(
       ws => ws.id === Number(workSpaceId),
     );

@@ -49,7 +49,6 @@ class App extends React.Component {
     if (this.state.currentWorkspace !== null) {
       this.setState({ currentWorkspace: null });
     }
-    console.log("실행되니?", clickedWorkspace);
     this.setState({
       currentWorkspace: clickedWorkspace,
     });
@@ -97,15 +96,10 @@ class App extends React.Component {
     }
 
     await this.getWorkSpace();
-    console.log(
-      "겟 워크스페이스 이후 워크스페이스리스트",
-      this.state.workSpaceList,
-    );
     if (this.state.workSpaceList) {
       const result = this.state.workSpaceList.filter(
         val => val.code === this.state.currentURL,
       );
-      console.log("url로 찾은 객체", result);
       this.updateCurrentWorkspace(result);
     }
   }
@@ -127,7 +121,7 @@ class App extends React.Component {
       setCurrentURL,
     } = this;
 
-    //return isLogin ? (
+    // return isLogin ? (
     return (
       <div>
         <ToMain

@@ -30,11 +30,10 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
         )
         .then(res => {
           // res.data는 유저데이터
-          const userList = res.data.filter(val => {
-            console.log("받아온 유저리스트1", val, this.props.userInfo);
-            return val.id !== this.props.userInfo.id;
-          });
-          console.log("필터링유저리스트", userList);
+          const userList = res.data.filter(
+            val => val.id !== this.props.userInfo.id,
+          );
+
           this.setState({ userList });
         })
         .catch(err => {
@@ -49,12 +48,7 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
 
     // 2. 유저선택
     clickUser = e => {
-      console.log(e);
-      const result = this.state.userList.filter(val => {
-        console.log(val.name);
-        return val.name === e;
-      });
-      console.log(result);
+      const result = this.state.userList.filter(val => val.name === e);
       this.setState({ selectUser: result[0].id });
     };
 
@@ -82,7 +76,7 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
           this.props.handleOkDM();
         })
         .catch(err => {
-          console.log("방생성에러", err);
+          console.log(err);
         });
     };
 

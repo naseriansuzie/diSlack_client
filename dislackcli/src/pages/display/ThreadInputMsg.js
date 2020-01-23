@@ -5,7 +5,6 @@ import axios from "axios";
 class ThreadInputMsg extends React.Component {
   constructor(props) {
     super(props);
-    console.log("INPUT_PROPS", props);
     this.state = {
       reply: "",
     };
@@ -15,13 +14,13 @@ class ThreadInputMsg extends React.Component {
   }
 
   deleteInput = e => {
-    // console.log(e.target.value);
     e.target.value = "";
   };
 
   componentDidMount() {
     this.type = this.props.currentDisplay.name;
   }
+
   async handleChange(e) {
     await this.setState({ reply: e.target.value });
     const reply = this.state;
@@ -38,9 +37,7 @@ class ThreadInputMsg extends React.Component {
           withCredentials: true, // 쿠키전달
         },
       )
-      .then(res => {
-        // console.log(res); app.js의 네임을 쓴다
-      })
+      .then(res => {})
       .catch(err => {
         if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
@@ -56,14 +53,12 @@ class ThreadInputMsg extends React.Component {
       e.preventDefault();
       if (e.target.value !== "") {
         this.handleChange(e);
-        // console.log("인풋값 : ", e.target.value);
         this.deleteInput(e);
       }
     }
   };
 
   render() {
-    // console.log("인풋메시지_프롭스", this.props);
     return (
       <div style={{ margin: "1%" }}>
         <Form style={{ height: "50px" }}>

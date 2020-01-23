@@ -37,11 +37,8 @@ const Home = props => {
                   })
                   .then(res => {
                     if (res.status === 205) {
-                      console.log("로그아웃", res);
                       props.handleLogout();
-                    } else {
-                      console.log("오류는아닌데 205도 아님");
-                    }
+                    } 
                   })
                   .catch(err => {
                     if (err.response && err.response.status === 419) {

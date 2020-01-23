@@ -11,17 +11,13 @@ class SiderHeader extends React.Component {
 
   // 로그아웃
   logOut = () => {
-    console.log("LOGOUT");
     axios
       .post(`${process.env.REACT_APP_DEV_URL}/user/signout`, null, {
         withCredentials: true,
       })
       .then(res => {
         if (res.status === 205) {
-          console.log("로그아웃", res);
           this.props.handleLogout();
-        } else {
-          console.log("오류는아닌데 205도 아님");
         }
       })
       .catch(err => {
@@ -37,10 +33,7 @@ class SiderHeader extends React.Component {
   };
 
   render() {
-    // console.log("싸이더혜떠", this.props, this.state);
-    // console.log("현재워크스페이스 ", this.props);
     const { currentWorkspace, userInfo } = this.props.props;
-    // console.log(currentWorkspace, userInfo);
     return (
       <div className="SiderHeader-container">
         <div>

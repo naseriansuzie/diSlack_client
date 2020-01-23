@@ -49,7 +49,6 @@ class Side extends React.Component {
     this.setState({
       visibleCN: false,
     });
-    // console.log("채널생성이름", this.state.newNameCN);
     const newCN = {
       name: this.state.newNameCN,
     };
@@ -62,7 +61,6 @@ class Side extends React.Component {
         },
       )
       .then(res => {
-        console.log("채널생성보냄!", res);
         this.props.setChannelDM("channel", res.data);
       })
       .catch(err => {
@@ -82,7 +80,6 @@ class Side extends React.Component {
   };
 
   handleCancel = e => {
-    console.log(e);
     this.setState({
       visibleCN: false,
       visibleDM: false,
@@ -96,7 +93,6 @@ class Side extends React.Component {
   };
 
   render() {
-    // console.log("SIDER_PROPS", this.props);
     const {
       channels,
       dms,
@@ -179,7 +175,6 @@ class Side extends React.Component {
           </div>
 
           {dms.map((item, i) => {
-            // console.log("DM_들!", item);
             const username = item.users.filter(
               val => val.name !== userInfo.name,
             );
