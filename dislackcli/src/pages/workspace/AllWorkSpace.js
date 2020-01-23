@@ -37,8 +37,7 @@ class AllWorkSpace extends React.Component {
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
         window.location = "/signin";
-      }
-      console.log(err);
+      } else console.log(err);
     }
   }
 
@@ -68,7 +67,7 @@ class AllWorkSpace extends React.Component {
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   }
 

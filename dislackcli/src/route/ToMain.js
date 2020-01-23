@@ -24,24 +24,14 @@ export default function ToMain(props) {
     setCurrentURL,
     currentURL,
   } = props;
-  console.log("여기는 tomain");
   return (
     <div>
-      {/* <Redirect
-        to={currentWorkspace ? `/main/${currentWorkspace[0].code}` : "/"}
-      /> */}
       <Switch>
         <Route
           exact
           path="/"
           render={
-            () => (
-              // if (isLogin) {
-              //   return <Redirect to="/workspace" />;
-              // }
-              <Home handleLogout={handleLogout} />
-            )
-            // }
+            () => <Home isLogin={isLogin} handleLogout={handleLogout} />;
           }
         />
         <Route
@@ -105,8 +95,6 @@ export default function ToMain(props) {
               : "/"
           }
           render={history => {
-            console.log("이주소?");
-            console.log(workSpaceList);
             return (
               <MainPage
                 className="MainPage"

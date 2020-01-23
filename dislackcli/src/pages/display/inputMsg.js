@@ -44,7 +44,8 @@ class InputMsg extends React.Component {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
-        }
+          window.location = "/signin";
+        } else console.log(err);
       });
   }
 

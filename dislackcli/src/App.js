@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import axios from "axios";
 import ToMain from "./route/ToMain";
-import ToWorkSpace from "./route/ToWorkSpace";
+// import ToWorkSpace from "./route/ToWorkSpace";
 import "antd/dist/antd.css";
 
 class App extends React.Component {
@@ -69,8 +69,7 @@ class App extends React.Component {
           // this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
-        console.log(err);
+        } else console.log(err);
       });
   }
 
@@ -94,7 +93,7 @@ class App extends React.Component {
         this.setState({ isLogin: false });
         alert("다시 로그인 해주세요");
         window.location = "/signin";
-      }
+      } else console.log(err);
     }
 
     await this.getWorkSpace();
@@ -123,13 +122,13 @@ class App extends React.Component {
       updateCurrentWorkspace,
       handleLogin,
       handleLogout,
-      updateUserInfo,
       getWorkSpace,
       updateWorkspace,
       setCurrentURL,
     } = this;
-    // console.log("app.js state의 현재 선택된 워크스페이스", currentWorkspace);
-    return isLogin ? (
+
+    //return isLogin ? (
+    return (
       <div>
         <ToMain
           isLogin={isLogin}
@@ -145,22 +144,23 @@ class App extends React.Component {
           currentURL={currentURL}
         />
       </div>
-    ) : (
-      <div className="App">
-        <ToWorkSpace
-          isLogin={isLogin}
-          currentWorkspace={currentWorkspace}
-          userInfo={userInfo}
-          updateCurrentWorkspace={updateCurrentWorkspace}
-          handleLogin={handleLogin}
-          handleLogout={handleLogout}
-          updateUserInfo={updateUserInfo}
-          getWorkSpace={getWorkSpace}
-          updateWorkspace={updateWorkspace}
-          workSpaceList={workSpaceList}
-        />
-      </div>
     );
+    // ) : (
+    //   <div className="App">
+    //     <ToWorkSpace
+    //       isLogin={isLogin}
+    //       currentWorkspace={currentWorkspace}
+    //       userInfo={userInfo}
+    //       updateCurrentWorkspace={updateCurrentWorkspace}
+    //       handleLogin={handleLogin}
+    //       handleLogout={handleLogout}
+    //       updateUserInfo={updateUserInfo}
+    //       getWorkSpace={getWorkSpace}
+    //       updateWorkspace={updateWorkspace}
+    //       workSpaceList={workSpaceList}
+    //     />
+    //   </div>
+    // );
   }
 }
 export default App;

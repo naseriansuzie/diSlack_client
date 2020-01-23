@@ -36,6 +36,14 @@ const PlusDM = Form.create({ name: "form_in_modal" })(
           });
           console.log("필터링유저리스트", userList);
           this.setState({ userList });
+        })
+        .catch(err => {
+          if (err.response && err.response.status === 419) {
+            localStorage.setItem("isLogin", null);
+            this.setState({ isLogin: false });
+            alert("다시 로그인 해주세요");
+            window.location = "/signin";
+          } else console.log(err);
         });
     };
 

@@ -17,6 +17,8 @@ class Thread extends React.Component {
   }
 
   componentDidMount() {
+    this.type = this.props.currentDisplay.name;
+    console.log("TYPE!!", this.type);
     this.socket = socketio.connect(
       `${process.env.REACT_APP_DEV_URL}/channelThread`,
       {
@@ -25,7 +27,10 @@ class Thread extends React.Component {
       },
     );
     this.socket.on("connect", data => {
-      this.socket.emit("joinChannelThread", this.props.clickedMsg[0].id);
+      this.socket.emit(
+        `${this.type ? "joinChannelThread" : "joinDirectThread"}`,
+        this.props.clickedMsg[0].id,
+      );
     });
     this.socket.on("message", data => {
       console.log(data);

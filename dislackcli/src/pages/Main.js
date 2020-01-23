@@ -117,9 +117,9 @@ class MainPage extends React.Component {
         if (err.response && err.response.status === 419) {
           localStorage.setItem("isLogin", null);
           this.setState({ isLogin: false });
-          alert(" 로그인 해주세요");
+          alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   
   }
@@ -139,7 +139,11 @@ class MainPage extends React.Component {
     this.handleReplyClose();
     axios
       .get(
-        `${process.env.REACT_APP_DEV_URL}/${this.props.currentWorkspace[0].code}/channelmessage/${this.state.currentDisplay.id}/${msgId}/list`,
+        `${process.env.REACT_APP_DEV_URL}/${
+          this.props.currentWorkspace[0].code
+        }/${
+          this.state.currentDisplay.name ? "channelmessage" : "directmessage"
+        }/${this.state.currentDisplay.id}/${msgId}/list`,
         {
           withCredentials: true,
         },
@@ -175,6 +179,7 @@ class MainPage extends React.Component {
       return msg;
     });
     this.setState({ msgs: renewMsgs, clickedMsg: [], replies: [] });
+    this.getMessage();
   }
 
   handleClickMemberList() {
@@ -212,7 +217,7 @@ class MainPage extends React.Component {
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   }
 
@@ -247,7 +252,7 @@ class MainPage extends React.Component {
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   };
 
@@ -271,6 +276,18 @@ class MainPage extends React.Component {
 
   // DM방 선택
   async clickedDM(id) {
+    this.socket.disconnect();
+    this.socket = socketio.connect(`${process.env.REACT_APP_DEV_URL}/chat`, {
+      path: "/socket.io",
+      transports: ["websocket"],
+    });
+    this.socket.on("connect", data => {
+      this.socket.emit("joindirect", this.state.currentDisplay.id);
+    });
+    this.socket.on("message", data => {
+      const message = JSON.parse(data);
+      this.setState({ msgs: this.state.msgs.concat(message) });
+    });
     console.log("DM이클릭되었습니다 : ", id);
     let allDM = this.state.dms;
     let findDM = allDM.filter(val => {
@@ -326,7 +343,7 @@ class MainPage extends React.Component {
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   }
 
@@ -359,7 +376,7 @@ class MainPage extends React.Component {
           this.setState({ isLogin: false });
           alert("다시 로그인 해주세요");
           window.location = "/signin";
-        }
+        } else console.log(err);
       });
   }
   // 멤버리스트 불러오기
@@ -448,7 +465,7 @@ class MainPage extends React.Component {
             this.setState({ isLogin: false });
             alert("다시 로그인 해주세요");
             window.location = "/signin";
-          }
+          } else console.log(err);
         });
       const address = this.state.currentDisplay.name
         ? "channelmessage"
@@ -475,7 +492,7 @@ class MainPage extends React.Component {
             this.setState({ isLogin: false });
             alert("다시 로그인 해주세요");
             window.location = "/signin";
-          }
+          } else console.log(err);
         });
       // 멤버리스트 받아오는 api 추가
       await axios
@@ -499,10 +516,9 @@ class MainPage extends React.Component {
         window.location = "/signin";
       } else console.log(err);
     }
-    if(this.scroll) {
-      this.scroll.scrollTop = this.scroll.scrollHeight - this.scroll.clientHeight;
-    }
-
+    this.scroll &&
+      (this.scroll.scrollTop =
+        this.scroll.scrollHeight - this.scroll.clientHeight);
   }
 
   async componentDidUpdate() {
@@ -513,16 +529,16 @@ class MainPage extends React.Component {
         clickedMsg: clicked,
       });
     }
-    if(this.scroll) {
-      if (
-        this.scroll.scrollHeight -
-          this.scroll.clientHeight -
-          this.scroll.scrollTop <=
+
+    if (
+      this.scroll &&
+      this.scroll.scrollHeight -
+        this.scroll.clientHeight -
+        this.scroll.scrollTop <=
         300
-      )
-        this.scroll.scrollTop =
-          this.scroll.scrollHeight - this.scroll.clientHeight;
-    }
+    )
+      this.scroll.scrollTop =
+        this.scroll.scrollHeight - this.scroll.clientHeight;
   }
 
   render() {
