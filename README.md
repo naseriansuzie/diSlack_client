@@ -32,7 +32,7 @@ We basically, used 'Node.js' for Server and 'React' for Client.
 
 **Client**
 
-React / Socekt.io / antd / css / jwt / react-router-dom / hooks
+React / Socekt.io / antd / css / jwt / react-router-dom
 
 **Server**
 
