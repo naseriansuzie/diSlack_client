@@ -52,10 +52,10 @@ AWS - S3, EC2, RDS
 - WorkSpace join, creation  
   <img src="https://user-images.githubusercontent.com/53066365/76074989-9297f780-5fdf-11ea-8b1e-d40dbd43ba2d.gif" width="90%" height="90%">
 
-- Real time conversaion @ channels & DMs  
+- Real time conversation @ channels & DMs  
   <img src="https://user-images.githubusercontent.com/53066365/76075011-99bf0580-5fdf-11ea-9537-107be237c91c.gif" width="90%" height="90%">
 
-- Real time conversaion @ Message Thread
+- Real time conversation @ Message Thread
   <img src="https://user-images.githubusercontent.com/53066365/76075023-9cb9f600-5fdf-11ea-8236-c72597c87d7d.gif" width="90%" height="90%">
 
 - Keyword Searching
